@@ -1,0 +1,29 @@
+let year_date = loadDiscrete('year_date', [], [22]) in
+let distance = loadDiscrete('distance', [year_date], [3000, 22]) in
+let air_time = loadDiscrete('air_time', [distance], [1858, 3000]) in
+let arr_delay = loadDiscrete('arr_delay', [distance], [971, 3000]) in
+let taxi_out = loadDiscrete('taxi_out', [distance], [428, 3000]) in
+let origin = loadDiscrete('origin', [distance], [372, 3000]) in
+let dest = loadDiscrete('dest', [distance], [372, 3000]) in
+let taxi_in = loadDiscrete('taxi_in', [distance], [255, 3000]) in
+let unique_carrier = loadDiscrete('unique_carrier', [distance], [26, 3000]) in
+let dep_delay = loadDiscrete('dep_delay', [arr_delay], [750, 971]) in
+let origin_state_abr = loadDiscrete('origin_state_abr', [origin], [53, 372]) in
+let dest_state_abr = loadDiscrete('dest_state_abr', [dest], [53, 372]) in
+
+let dest_ = select dest [101] in
+let flightsProb0 = query [air_time, origin_state_abr] [dest_] [] [] in
+
+let air_time_m = loadTensor('air_time_m', [1858]) in
+let nrows = 1000000000 in
+let flightsProb0Norm = normalize flightsProb0 [1] in
+let exp_air_time = expectation [air_time, origin_state_abr] flightsProb0Norm air_time_m [0] in
+
+let flightsProb0_count = expectation [origin_state_abr] flightsProb0 exp_air_time [0, 1] in
+let sum_air_time = nrows * flightsProb0_count in
+
+let flights_origin_state_abr_b2v = loadDictionary('flights_origin_state_abr_b2v', [53, 53]) in
+
+let sum_air_timerev = map sum_air_time [flights_origin_state_abr_b2v] in
+let sum_air_timerev_lift = lift sum_air_timerev in
+sum_air_timerev_lift

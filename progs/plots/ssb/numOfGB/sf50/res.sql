@@ -1,0 +1,9 @@
+\copy (select COUNT(*) from lineorder, dwdate, part, supplier where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and s_region = 'AMERICA' and d_weeknuminyear = 6 and lo_quantity>=26 and lo_quantity<=35) To '~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/postges/psql_q0.csv' With CSV DELIMITER ',' HEADER
+
+\copy (select p_mfgr, COUNT(*) from lineorder, dwdate, part, supplier where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and s_region = 'AMERICA' and d_weeknuminyear = 6 and lo_quantity>=26 and lo_quantity<=35 group by p_mfgr) To '~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/postges/psql_q1.csv' With CSV DELIMITER ',' HEADER
+
+\copy (select p_mfgr, p_category, COUNT(*) from lineorder, dwdate, part, supplier where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and s_region = 'AMERICA' and d_weeknuminyear = 6 and lo_quantity>=26 and lo_quantity<=35 group by p_mfgr, p_category) To '~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/postges/psql_q2.csv' With CSV DELIMITER ',' HEADER
+
+\copy (select p_mfgr, p_category, p_type, COUNT(*) from lineorder, dwdate, part, supplier where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and s_region = 'AMERICA' and d_weeknuminyear = 6 and lo_quantity>=26 and lo_quantity<=35 group by p_mfgr, p_category, p_type) To '~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/postges/psql_q3.csv' With CSV DELIMITER ',' HEADER
+
+\copy (select p_mfgr, p_category, p_type, p_brand1, COUNT(*) from lineorder, dwdate, part, supplier where lo_orderdate = d_datekey and lo_partkey = p_partkey and lo_suppkey = s_suppkey and s_region = 'AMERICA' and d_weeknuminyear = 6 and lo_quantity>=26 and lo_quantity<=35 group by p_mfgr, p_category, p_type, p_brand1) To '~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/postges/psql_q4.csv' With CSV DELIMITER ',' HEADER

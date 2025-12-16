@@ -1,0 +1,14 @@
+// http://webppl.org/
+var prog = function() {
+  var x = flip(0.6);
+  var y = flip(0.3);
+  var z = x || y;
+  condition(z);
+  return x
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  prog);
+
+print(dist);

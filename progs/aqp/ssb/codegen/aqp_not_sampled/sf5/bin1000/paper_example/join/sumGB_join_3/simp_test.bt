@@ -1,0 +1,21 @@
+let customer = query [c_custkey, c_city] [c_nation_] [] [] in
+let supplier = query [s_suppkey, s_city] [s_nation_] [] [] in
+let dwdate = query [d_datekey, d_year] [d_year_] [] [] in
+let lineorder = query [lo_custkey, lo_suppkey, lo_orderdate, lo_revenue] [] [] [] in
+
+let prep1 = outer lineorder customer in
+let join1 = expectation [lo_suppkey, lo_orderdate, lo_revenue, c_city] prep1 rho1 [0, 4] in
+let prep2 = outer join1 supplier in
+let join2 = expectation [lo_orderdate, lo_revenue, c_city, s_city] prep2 rho2 [0, 4] in
+let prep3 = outer join2 dwdate in
+let join3 = expectation [lo_revenue, c_city, s_city, d_year] prep3 rho3 [0, 4] in
+
+let join3Norm = normalize join3 [1, 2, 3] in
+let exp_lo_revenue = expectation [lo_revenue,c_city,s_city,d_year] join3Norm lo_revenue_m [0] in
+
+let join3_exp_count = expectation [c_city, s_city, d_year] join3 exp_lo_revenue [0, 1, 2, 3] in
+let sum_lo_revenue = join3_exp_count * nrows in
+
+let sum_lo_revenue_rev = map sum_lo_revenue_decompress2 [customer_c_city_b2v, supplier_s_city_b2v, dwdate_d_year_b2v] in
+let sum_lo_revenue_rev_lift = lift sum_lo_revenue_rev in
+sum_lo_revenue_rev_lift

@@ -1,0 +1,6 @@
+let hospital = discrete(0.535050,0.464950) in
+let surgery = discrete(0.423462,0.576538) in
+let gallstones = discrete(0.153076,0.846924) in
+let choledocholithotomy = if ((gallstones == int(1, 0))) then (discrete(0.710280,0.289720)) else (discrete(0.037162,0.962838)) in
+let transfusion = if ((hospital == int(1, 0))) then (if ((surgery == int(1, 0))) then (if ((choledocholithotomy == int(1, 0))) then (discrete(0.333333,0.666667)) else (discrete(0.289618,0.710383))) else (if ((choledocholithotomy == int(1, 0))) then (discrete(0.166667,0.833333)) else (discrete(0.118182,0.881818)))) else (if ((surgery == int(1, 0))) then (if ((choledocholithotomy == int(1, 0))) then (discrete(0.125000,0.875000)) else (discrete(0.300000,0.700000))) else (if ((choledocholithotomy == int(1, 0))) then (discrete(0.010989,0.989011)) else (discrete(0.010791,0.989209)))) in
+transfusion

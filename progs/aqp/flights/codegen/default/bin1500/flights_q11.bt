@@ -1,0 +1,46 @@
+let year_date = loadDiscrete('year_date', [], [22]) in
+let distance = loadDiscrete('distance', [year_date], [3000, 22]) in
+let air_time = loadDiscrete('air_time', [distance], [1862, 3000]) in
+let arr_delay = loadDiscrete('arr_delay', [distance], [966, 3000]) in
+let taxi_out = loadDiscrete('taxi_out', [distance], [427, 3000]) in
+let taxi_in = loadDiscrete('taxi_in', [distance], [256, 3000]) in
+let dest = loadDiscrete('dest', [distance], [362, 3000]) in
+let origin = loadDiscrete('origin', [distance], [361, 3000]) in
+let unique_carrier = loadDiscrete('unique_carrier', [distance], [26, 3000]) in
+let dep_delay = loadDiscrete('dep_delay', [arr_delay], [750, 966]) in
+let dest_state_abr = loadDiscrete('dest_state_abr', [dest], [53, 362]) in
+let origin_state_abr = loadDiscrete('origin_state_abr', [origin], [53, 361]) in
+
+let unique_carrier_ = select unique_carrier [3] in
+let origin_ = select origin [0] in
+let flightsProb0 = query [taxi_out, dest_state_abr] [unique_carrier_, origin_] [] [] in
+
+let taxi_out_m = loadTensor('taxi_out_m', [427]) in
+let nrows = 500000 in
+let unique_carrier_ = select unique_carrier [3] in
+let origin_ = select origin [0] in
+let flightsProb1 = query [taxi_in, dest_state_abr] [unique_carrier_, origin_] [] [] in
+
+let taxi_in_m = loadTensor('taxi_in_m', [256]) in
+let flightsProb0Norm = normalize flightsProb0 [1] in
+let exp_taxi_out = expectation [dest_state_abr] flightsProb0Norm taxi_out_m [0] in
+
+let flightsProb0_um = unitMat flightsProb0 in
+let flightsProb0_count = expectation [dest_state_abr] flightsProb0 flightsProb0_um [0, 1] in
+let count_taxi_out = nrows * flightsProb0_count in
+let sum_taxi_out = exp_taxi_out * count_taxi_out in
+
+let flightsProb1Norm = normalize flightsProb1 [1] in
+let exp_taxi_in = expectation [dest_state_abr] flightsProb1Norm taxi_in_m [0] in
+
+let flightsProb1_um = unitMat flightsProb1 in
+let flightsProb1_count = expectation [dest_state_abr] flightsProb1 flightsProb1_um [0, 1] in
+let count_taxi_in = nrows * flightsProb1_count in
+let sum_taxi_in = exp_taxi_in * count_taxi_in in
+
+let res0 = sum_taxi_out - sum_taxi_in in
+let flights_dest_state_abr_b2v = loadDictionary('flights_dest_state_abr_b2v', [53, 53]) in
+
+let res0rev = map res0 [flights_dest_state_abr_b2v] in
+let res0rev_lift = lift res0rev in
+res0rev_lift

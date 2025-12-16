@@ -1,0 +1,12 @@
+\copy (SELECT AVG(dep_delay) FROM flights WHERE origin='ATL') To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q0.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT AVG(distance) FROM flights WHERE unique_carrier='TW') To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q1.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights WHERE origin_state_abr='LA' GROUP BY unique_carrier) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q2.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights WHERE origin_state_abr='LA' AND  dest_state_abr='CA' GROUP BY unique_carrier) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q3.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, COUNT(*) FROM flights WHERE origin_state_abr='LA' AND dest='JFK' GROUP BY year_date) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q4.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, SUM(distance) FROM flights WHERE unique_carrier='9E' GROUP BY year_date) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q5.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT origin_state_abr, SUM(air_time) FROM flights WHERE dest='HPN' GROUP BY origin_state_abr) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q6.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, AVG(dep_delay) FROM flights WHERE year_date=2005 AND origin='PHX' GROUP BY unique_carrier) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q7.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT dest_state_abr, COUNT(*) FROM flights WHERE distance>2500 GROUP BY dest_state_abr) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q8.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights WHERE air_time>1000 AND dep_delay>1500 GROUP BY unique_carrier) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q9.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, SUM(arr_delay*dep_delay) FROM flights WHERE origin_state_abr = 'CA' AND dest_state_abr = 'HI' GROUP BY year_date) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q10.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT dest_state_abr, SUM(taxi_out) FROM flights WHERE unique_carrier = 'UA' AND origin = 'ATL' GROUP BY dest_state_abr) To '~/Desktop/bayes-aqp/Benchmarks/flights/1B/postgres/psql_q11.csv' With CSV DELIMITER ',' HEADER

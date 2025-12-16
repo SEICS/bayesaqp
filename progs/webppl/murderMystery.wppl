@@ -1,0 +1,27 @@
+// http://webppl.org/
+var mystery = function() {
+  var aliceDunnit  = flip(0.3)
+  var withGun = aliceDunnit ? flip(0.03) : flip(0.8);
+  return [aliceDunnit, withGun];
+}
+
+var gunFoundAtScene = function(gunFound) {
+  var res = mystery();
+  var aliceDunnit = res[0];
+  var withGun = res[1];
+  var obs = withGun ? gunFound : !gunFound;
+  condition(obs);
+  return aliceDunnit;
+}
+
+var prog = function() {
+  return gunFoundAtScene(true);
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  prog);
+
+print(dist);
+// {"probs":[0.984182776801406,0.01581722319859402],"support":[false,true]}
+

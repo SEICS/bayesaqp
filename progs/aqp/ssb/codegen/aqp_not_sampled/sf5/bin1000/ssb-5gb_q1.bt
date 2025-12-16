@@ -1,0 +1,55 @@
+let d_datekey = loadDiscrete('d_datekey', [], [1186]) in
+let d_date = loadDiscrete('d_date', [d_datekey], [1186, 1186]) in
+let d_yearmonthnum = loadDiscrete('d_yearmonthnum', [d_datekey], [84, 1186]) in
+let d_daynuminyear = loadDiscrete('d_daynuminyear', [d_date], [366, 1186]) in
+let d_daynuminmonth = loadDiscrete('d_daynuminmonth', [d_date], [31, 1186]) in
+let d_dayofweek = loadDiscrete('d_dayofweek', [d_date], [7, 1186]) in
+let d_lastdayinmonthfl = loadDiscrete('d_lastdayinmonthfl', [d_date], [2, 1186]) in
+let d_holidayfl = loadDiscrete('d_holidayfl', [d_date], [2, 1186]) in
+let d_weeknuminyear = loadDiscrete('d_weeknuminyear', [d_daynuminyear], [53, 366]) in
+let d_daynuminweek = loadDiscrete('d_daynuminweek', [d_dayofweek], [7, 7]) in
+let d_weekdayfl = loadDiscrete('d_weekdayfl', [d_dayofweek], [2, 7]) in
+let d_lastdayinweekfl = loadDiscrete('d_lastdayinweekfl', [d_dayofweek], [2, 7]) in
+let d_yearmonth = loadDiscrete('d_yearmonth', [d_yearmonthnum], [84, 84]) in
+let d_month = loadDiscrete('d_month', [d_yearmonthnum], [12, 84]) in
+let d_year = loadDiscrete('d_year', [d_yearmonthnum], [7, 84]) in
+let d_sellingseason = loadDiscrete('d_sellingseason', [d_yearmonthnum], [5, 84]) in
+let d_monthnuminyear = loadDiscrete('d_monthnuminyear', [d_month], [12, 12]) in
+let lo_orderkey = loadDiscrete('lo_orderkey', [], [1500]) in
+let lo_ordertotalprice = loadDiscrete('lo_ordertotalprice', [lo_orderkey], [2000, 1500]) in
+let lo_orderdate = loadDiscrete('lo_orderdate', [lo_ordertotalprice], [1453, 2000]) in
+let lo_custkey = loadDiscrete('lo_custkey', [lo_ordertotalprice], [1495, 2000]) in
+let lo_revenue = loadDiscrete('lo_revenue', [lo_ordertotalprice], [2000, 2000]) in
+let lo_extendedprice = loadDiscrete('lo_extendedprice', [lo_revenue], [2000, 2000]) in
+let lo_suppkey = loadDiscrete('lo_suppkey', [lo_revenue], [1450, 2000]) in
+let lo_discount = loadDiscrete('lo_discount', [lo_revenue], [10, 2000]) in
+let lo_supplycost = loadDiscrete('lo_supplycost', [lo_extendedprice], [2000, 2000]) in
+let lo_quantity = loadDiscrete('lo_quantity', [lo_extendedprice], [50, 2000]) in
+let lo_partkey = loadDiscrete('lo_partkey', [lo_supplycost], [1499, 2000]) in
+
+let d_yearmonthnum_ = select d_yearmonthnum [21] in
+let dwdateProb0 = query [d_datekey] [d_yearmonthnum_] [] [] in
+let lineorder_nrows = 29999795 in
+let dwdate_nrows = 2556 in
+let nrows = dwdate_nrows * lineorder_nrows in
+let lo_discount_ = select lo_discount [3, 4, 5] in
+let lo_quantity_ = select lo_quantity [3, 36, 38, 40, 15, 17, 19, 22, 26, 29] in
+let lineorderProb0 = query [lo_orderdate, lo_extendedprice, lo_discount] [lo_discount_, lo_quantity_] [] [] in
+
+let lo_extendedprice_m = loadTensor('lo_extendedprice_m', [2000]) in
+let lo_discount_m_ = loadTensor('lo_discount_m', [10]) in
+let lo_discount_m = filter lo_discount_m_ [3, 4, 5] in
+let m3_lineorder_dwdate = loadTensor('lo_orderdate_d_datekey', [1453, 1186]) in
+let lineorderProb0_0 = outer lineorderProb0 dwdateProb0 in
+let lineorderProb0_1 = expectation [lo_extendedprice, lo_discount] lineorderProb0_0 m3_lineorder_dwdate [0, 3] in
+
+let lineorderProb0_1Norm = normalize lineorderProb0_1 [] in
+let ms0 = outer lo_extendedprice_m lo_discount_m in
+let exp_lo_extendedprice_lo_discount = expectation [] lineorderProb0_1Norm ms0 [0, 1] in
+
+let lineorderProb0_1_um = unitMat lineorderProb0_1 in
+let lineorderProb0_1_count = expectation [] lineorderProb0_1 lineorderProb0_1_um [0, 1] in
+let count_lo_extendedprice_lo_discount = nrows * lineorderProb0_1_count in
+let sum_lo_extendedprice_lo_discount = exp_lo_extendedprice_lo_discount * count_lo_extendedprice_lo_discount in
+
+sum_lo_extendedprice_lo_discount

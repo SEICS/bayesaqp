@@ -1,0 +1,9 @@
+let year = tensor(1, [2], [0.55, 0.45]) in 
+let distance = tensor(2, [2, 3], [0.18, 0.55, 0.27,
+    0.56, 0.22, 0.22]) in
+let carrier = tensor(2, [3, 2], 
+  [0.86, 0.14, 
+  0.25, 0.75, 
+  0.8, 0.2]) in
+let prob = contract('cd,dy,y->yd', carrier, distance, year) in
+prob

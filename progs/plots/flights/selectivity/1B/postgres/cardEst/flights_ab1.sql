@@ -1,0 +1,12 @@
+\copy (SELECT COUNT(*) FROM flights WHERE origin='ATL') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q0.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE unique_carrier='TW') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q1.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE origin_state_abr='LA') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q2.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE origin_state_abr='LA' AND  dest_state_abr='CA') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q3.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE origin_state_abr='LA' AND dest='JFK') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q4.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE unique_carrier='9E') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q5.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE dest='HPN') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q6.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE year_date=2005 AND origin='PHX') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q7.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE distance>2500) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q8.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE air_time>1000 AND dep_delay>1500) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q9.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE origin_state_abr = 'CA' AND dest_state_abr = 'HI') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q10.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights WHERE unique_carrier = 'UA' AND origin = 'ATL') To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/cardEst/psql_q11.csv' With CSV DELIMITER ',' HEADER

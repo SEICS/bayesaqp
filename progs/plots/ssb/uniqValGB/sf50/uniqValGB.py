@@ -1,0 +1,96 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt 
+
+import matplotlib
+
+FONTSIZE = 14
+matplotlib.rc('font', size=FONTSIZE)
+matplotlib.rc('axes', titlesize=FONTSIZE)
+# plt.rcParams["font.family"] = "cursive"
+
+# # # SSB - 5gb
+# X = ["S2.1", "S2.2", "S2.3", "S3.1", "S3.2", "S3.3", "S3.4", "S4.1", "S4.2", "S4.3"]
+# X = [1000,8372] #[5,25,150,1000]
+
+# # SSB-SF50
+X = ["1k", "2k", "3k", "4k", "5k", "6k", "7k", "8k"] #[5,25,150,1000]
+X_axis = np.arange(len(X)) 
+
+# bayesaqp_ssb_latency = [23.274,42.124,76.836,315.276] # p_mfgr, p_categorty, p_type, p_brand1, p_name
+# deepdb_ssb_latency = [3.547,3.542,4.633,18.268]
+
+bayesaqp_ssb_numpy_latency = [66.46740820724517, 67.29318322613835, 68.738008197397,
+                                69.91482498124242, 71.06670020148158, 72.85699183121324,
+                                74.10914998035878, 75.20444998517632] # 74.89827498793602
+bayesaqp_ssb_torch_latency = [33.96268361248076,33.52811641525477,35.9076748136431,
+                                39.26915819756687, 40.40913339704275, 39.6605916088447,
+                                41.209674812853336, 41.42360838595778] #42.02754981815815
+deepdb_ssb_latency = [10.390966600000000, 15.286891600000000, 22.468283400000000,
+                        30.428050000000000, 44.575941800000000, 51.4914166,
+                        59.314025200000000, 68.08642500000000]
+
+fig2, axs2 = plt.subplots(figsize=(8,4))
+# fig2.suptitle('Average Relative Error and Inference Latencies for the SSB (sf=5) dataset.')
+
+# bfe_s = axs2[0].bar(X_axis, bayesaqp_ssb_error, 0.2, color='#ff7f00') 
+
+# axs2[0].set_ylabel("Relative Error (%)") 
+# axs2[0].set_yscale("log")
+# axs2[0].legend(loc='upper left')
+
+# count = 0 # annotate doesn't work with log scale
+# for bar in axs2[0].patches:
+#     height = bar.get_height()
+#     # print(f"height == 0: {height == 0}")
+#     x = bar.get_x() + bar.get_width() / 2.0
+#     if height == 0:
+#         # print(f"count: {count}")
+#         if count == 0:
+#             axs2[0].text(x, height+1, f'Timeout', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+#         else: 
+#             axs2[0].text(x, height+1, f'No result', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+#         count += 1
+#     else:
+#         if height < 2:
+#             axs2[0].text(x, height, f'{height:.1f}%', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+    
+# inference latency
+width = 0.2
+dfl_s = axs2.bar(X_axis - width, deepdb_ssb_latency, width, label="DeepDB", color='#377eb8')
+bfln_s = axs2.bar(X_axis, bayesaqp_ssb_numpy_latency, width, label="BayesAQP-CPU", color='#ff7f00')
+bflt_s = axs2.bar(X_axis + width, bayesaqp_ssb_torch_latency, width, label="BayesAQP-GPU", color='#dede00')
+
+axs2.set_ylabel("Inference Latency (ms)") 
+# axs2.set_yscale("log")
+# axs2[1].legend(loc='upper left')
+# axs2[0].legend(ncol=3, loc="lower left", bbox_to_anchor=(0,1.02,1,0.08), borderaxespad=0, mode="expand")
+# count = 0 # annotate doesn't work with log scale
+# for bar in axs2[1].patches:
+#     height = bar.get_height()
+#     # print(f"height == 0: {height == 0}")
+#     x = bar.get_x() + bar.get_width() / 2.0
+#     if height == 0:
+#         # print(f"count: {count}")
+#         if count == 0:
+#             axs2[1].text(x, height+17, f'Timeout', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+#         else: 
+#             axs2[1].text(x, height+17, f'No result', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+#         count += 1
+#     else:
+#         if height < 3:
+#             axs2[1].text(x, height, f'{height:.1f}%', fontsize=16, weight='bold',
+#                 ha='center', va='bottom', rotation=90)
+
+plt.xticks(X_axis, X) 
+axs2.legend(ncol=3, loc="upper left", bbox_to_anchor=(0,1.02,1,0.18), borderaxespad=0, mode="expand")
+axs2.yaxis.grid(linestyle='--')
+axs2.set_xlabel("Domain size of p_name")
+plt.tight_layout()
+# plt.show() 
+fig2.savefig("progs/plots/ssb/uniqValGB/sf50/ssb50gb_sigmod_uniqValGB.pdf")

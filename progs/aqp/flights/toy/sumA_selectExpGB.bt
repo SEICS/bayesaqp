@@ -1,0 +1,24 @@
+let year = discrete [0.55, 0.45] in	
+let dest = match year with {		
+	  0 -> discrete [0.82, 0.18]
+	| 1 -> discrete [1.0, 0.0]
+} in
+let distance = match year with {	
+	  0 -> discrete [0.18, 0.55, 0.27]
+	| 1 -> discrete [0.56, 0.22, 0.22]
+} in
+let carrier = match distance with {
+	  0 -> discrete [0.86, 0.14]	
+	| 1 -> discrete [0.25, 0.75]
+	| 2 -> discrete [0.8, 0.2]
+} in
+let filter1 = select distance [0,1,2] in	
+let filter2 = select dest [1] in
+let expProb = query [distance] [filter1, filter2] [] in
+let distance_m = vector [1823.5, 2258.4, 4055.1] in
+let expProbNorm = normalize expProb [] in
+let avg = expectation [] expProbNorm distance_m in
+let prob = query [] [filter1, filter2] [] in
+let nrows = 1000271700 in 
+let count = nrows * prob in
+avg * count

@@ -1,0 +1,9 @@
+let year_date = load('year', [], [22]) in	
+let distance = load('distance', [year], [22,3000]) in
+let unique_carrier = load('unique_carrier', [distance], [3000, 26]) in
+let filter = select unique_carrier [0] in
+let prob = query [distance] [filter] [] in
+let probNorm = normalize prob [] in
+let distance_m = vector [1823.5, 2258.4, 4055.1] in
+let avg = expectation [] probNorm distance_m in
+avg

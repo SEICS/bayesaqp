@@ -1,0 +1,19 @@
+let year_date = loadDiscrete('year_date', [], [22]) in
+let distance = loadDiscrete('distance', [year_date], [2000, 22]) in
+let air_time = loadDiscrete('air_time', [distance], [1574, 2000]) in
+let arr_delay = loadDiscrete('arr_delay', [distance], [815, 2000]) in
+let taxi_out = loadDiscrete('taxi_out', [distance], [381, 2000]) in
+let taxi_in = loadDiscrete('taxi_in', [distance], [226, 2000]) in
+let dest = loadDiscrete('dest', [distance], [362, 2000]) in
+let origin = loadDiscrete('origin', [distance], [361, 2000]) in
+let unique_carrier = loadDiscrete('unique_carrier', [distance], [26, 2000]) in
+let dep_delay = loadDiscrete('dep_delay', [arr_delay], [617, 815]) in
+let dest_state_abr = loadDiscrete('dest_state_abr', [dest], [53, 362]) in
+let origin_state_abr = loadDiscrete('origin_state_abr', [origin], [53, 361]) in
+
+let origin_ = select origin [0] in
+let flights_prob0 = query [dep_delay] [origin_] [] [] in
+let flights_prob0Norm = normalize flights_prob0 [] in
+let dep_delay_m = loadTensor('dep_delay_m', [617]) in
+let res = expectation [] flights_prob0Norm dep_delay_m [0] in
+res

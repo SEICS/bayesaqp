@@ -1,0 +1,10 @@
+let x  = discrete [0.4, 0.6] in
+let y  = discrete [0.7, 0.3] in
+let z  = match (x,y) with {
+    (0,0) -> discrete [1, 0]
+  | (0,1) -> discrete [0, 1]
+  | (1,0) -> discrete [0, 1]
+  | (1,1) -> discrete [0, 1]
+} in
+let zs = select z [0]
+query [z] [zs] []

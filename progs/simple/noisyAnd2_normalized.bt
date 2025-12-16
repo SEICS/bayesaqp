@@ -1,0 +1,9 @@
+let x1 = discrete [0.7, 0.3] in
+let x2 = discrete [0.2, 0.8] in
+let z  = match (x1,x2) with {
+    (0,0) -> discrete [1, 0]
+  | (0,1) -> discrete [1, 0]
+  | (1,0) -> discrete [1, 0]
+  | (1,1) -> discrete [0, 1]
+} in
+z

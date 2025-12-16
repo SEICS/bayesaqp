@@ -1,0 +1,65 @@
+let year = discrete [0.55, 0.45] in	
+let dep_delay = match year with {
+      0 -> discrete [0.46, 0.36, 0.18]
+    | 1 -> discrete [0.89, 0, 0.1]
+} in
+
+let taxi_out = match dep_delay with {
+      0 -> discrete [0.77, 0.23, 0]
+    | 1 -> discrete [0.25, 0.5, 0.25]
+    | 2 -> discrete [0.33, 0.33, 0.34]
+} in
+
+let dest_state_abr = match dep_delay with {
+      0 -> discrete [0.69, 0.31]
+    | 1 -> discrete [0.75, 0.25]
+    | 2 -> discrete [0.0, 1.0]
+} in
+
+let distance = match dep_delay with {
+      0 -> discrete [0.62, 0.23, 0.15]
+    | 1 -> discrete [0.25, 0.25, 0.5]
+    | 2 -> discrete [0.33, 0.33, 0.34]
+} in
+
+let carrier = match taxi_out with {
+      0 -> discrete [0.67, 0.33]
+    | 1 -> discrete [0.83, 0.17]
+    | 2 -> discrete [0.0, 1.0]
+} in
+
+let origin_state_abr = match distance with {
+      0 -> discrete [0.8, 0.2]
+    | 1 -> discrete [0.4, 0.6]
+    | 2 -> discrete [0.6, 0.4]
+} in
+
+let air_time = match carrier with {
+      0 -> discrete [0.31, 0.0, 0.69]
+    | 1 -> discrete [0.14, 0.72, 0.14]
+} in
+
+let taxi_in = match air_time with {
+      0 -> discrete [0.8, 0.2, 0.0]
+    | 1 -> discrete [0.8, 0.0, 0.2]
+    | 2 -> discrete [0.2, 0.4, 0.4]
+} in
+
+let arr_delay = match taxi_in with {
+      0 -> discrete [0.4, 0.2, 0.4]
+    | 1 -> discrete [0.6, 0.4, 0.0]
+    | 2 -> discrete [0.4, 0.4, 0.2]
+} in
+
+let filter1 = select origin_state_abr [0] in
+let filter2 = select dest_state_abr [0] in 
+let expProb1 = query [ taxi_in, year] [filter1, filter2] [] in
+let expProb1Norm = normalize expProb1 [1] in
+let taxi_in_m = vector [298.8, 1061.3, 1434.7] in
+let avg1 = expectation [year] expProb1Norm taxi_in_m in
+let identity_m = vector [1,1,1] in
+let prob1 = expectation [year] expProb1 identity_m in 
+let nrows = 1000271700 in
+let count1 = nrows * prob1 in
+let sum1 = count1 * avg1 in
+sum1

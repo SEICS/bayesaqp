@@ -1,0 +1,19 @@
+// http://webppl.org/
+var prog = function() {
+  var evidence = flip(0.5);
+  var coin = flip(0.5);
+  condition(!evidence || coin);
+  /*if(evidence) {
+    return evidence;
+  } else {
+    return evidence;
+  }*/
+  return evidence;
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  prog);
+
+print(dist);
+// {"probs":[0.33333333333333337,0.6666666666666666],"support":[true,false]}

@@ -1,0 +1,34 @@
+let d_datekey = load('d_datekey', [], [147])
+let d_yearmonth = load('d_yearmonth', [d_datekey], [80,147])
+let d_yearmonthnum = load('d_yearmonthnum', [d_yearmonth], [77,80])
+let d_year = select(load('d_year', [d_yearmonthnum], [7,77]), [2], 0)
+let res2 = contract('a,ba,cb,dc->ad', d_datekey, d_yearmonth, d_yearmonthnum, d_year)
+let dwdateProb = res2
+let lineorder_nrows = tensor(0, [], [26662.0])
+let dwdate_nrows = tensor(0, [], [2556.0])
+let nrows = contract(',->', dwdate_nrows, lineorder_nrows)
+let lo_orderkey = load('lo_orderkey', [], [150])
+let lo_supplycost = load('lo_supplycost', [lo_orderkey], [200,150])
+let lo_extendedprice = load('lo_extendedprice', [lo_supplycost], [200,200])
+let lo_revenue = load('lo_revenue', [lo_extendedprice], [200,200])
+let lo_ordertotalprice = load('lo_ordertotalprice', [lo_revenue], [200,200])
+let lo_orderdate = load('lo_orderdate', [lo_ordertotalprice], [148,200])
+let lo_discount = select(load('lo_discount', [lo_revenue], [10,200]), [0, 1, 2], 0)
+let lo_quantity = select(load('lo_quantity', [lo_extendedprice], [50,200]), [0, 2, 4, 9, 10, 11, 13, 14, 15, 16, 17, 18, 20, 25, 26, 27, 29, 32, 35, 36, 40, 42, 45, 49], 0)
+let lo_discount_weight = select(tensor(1, [10], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), [0, 1, 2], 0)
+
+let lo_extendedprice_m = load('lo_extendedprice_m', [], [200])
+let lo_discount_m = load('lo_discount_m', [], [10])
+let lo_discount_m = select(lo_discount_m, [0, 1, 2], 0)
+let lo_orderdate_d_datekey = load('lo_orderdate_d_datekey', [], [148,147])
+
+let dwdate_d_year = select(load('dwdate_d_year', [], [7,7]), [2], 0)
+
+let res4 = contract('e,fe,gf,hg,ih,ji,kh,k,lg,ad,ja,dt,g,k->t', lo_orderkey, lo_supplycost, lo_extendedprice, lo_revenue, lo_ordertotalprice, lo_orderdate, lo_discount, lo_discount_weight, lo_quantity, dwdateProb, lo_orderdate_d_datekey, dwdate_d_year, lo_extendedprice_m, lo_discount_m)
+let lineorderProb1 = res4
+
+let res5 = contract('e,fe,gf,hg,ih,ji,kh,k,lg,ad,ja,dt->t', lo_orderkey, lo_supplycost, lo_extendedprice, lo_revenue, lo_ordertotalprice, lo_orderdate, lo_discount, lo_discount_weight, lo_quantity, dwdateProb, lo_orderdate_d_datekey, dwdate_d_year)
+let lineorderProb2 = res5
+
+let exp_lo_extendedprice_lo_discount = lineorderProb1 / lineorderProb2
+exp_lo_extendedprice_lo_discount

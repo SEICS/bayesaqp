@@ -1,0 +1,85 @@
+*.class
+*.log
+
+# sbt specific
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+.bsp/*
+
+*.npy
+*.pyc
+
+server/load_sample.py
+
+.metals/*
+.vscode/*
+
+.DS_Store
+
+# big btl files for benchmark
+progs/aqp/flights/codegen/*.bt
+
+# big pickle files of models
+progs/aqp/flights/models/*
+
+# big .npz files of mega info of models (tensors stored inside)
+progs/aqp/flights/*.npz
+progs/aqp/ssb/*.npz
+progs/aqp/ssb/cpds/*
+progs/aqp/ssb/cpds/sf50/*.pkl
+progs/aqp/ssb/cpds/sf50/*.npz
+progs/aqp/ssb/cpds/sf50/bin1000_sparse.pkl
+*.npz
+*.pkl
+
+# setar files for converting setar back to TIL
+progs/setar/toTIL/
+
+# VerdictDB setup
+benchmarks/verdictdb/spark-3.5.2-bin-hadoop3
+benchmarks/verdictdb/tpch/1gb
+
+progs/aqp/ssb/finch/data/*
+
+progs/plots/flights/selectivity/1B/postgres/cardEst/*.csv
+progs/plots/flights/selectivity/1B/postgres/groupby/sel/*.csv
+progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/*.csv
+
+progs/plots/ssb/selectivity/sf50/postgres/cardEst/*.csv
+progs/plots/ssb/selectivity/sf50/postgres/groupby/sel/*.csv
+progs/plots/ssb/selectivity/sf50/postgres/groupby/no_sel/*.csv
+
+progs/plots/ssb/uniqValGB/sf50/codegen/data/*
+progs/plots/ssb/uniqValGB/sf50/postgres/*.csv
+progs/plots/ssb/opt_phases/sf5/sql/no_join/postgres/*.csv
+progs/plots/ssb/opt_phases/sf5/sql/join/postgres/*.csv
+
+progs/plots/ssb/selectivity/sf50/postgres/groupby/no_sel/*.csv
+progs/plots/ssb/selectivity/sf50/postgres/groupby/sel/*.csv
+progs/plots/ssb/selectivity/sf50/postgres/cardEst/*.csv
+progs/plots/ssb/opt_phases/sf50/sql/no_join/*.csv
+progs/plots/ssb/opt_phases/sf50/sql/join/*.csv
+
+progs/plots/ssb/uniqValGB/sf5/postgres/*.csv
+progs/plots/ssb/opt_phases/sf50/no_join/postgres/*.csv
+
+progs/plots/ssb/opt_phases/sf5/no_join/postgres/*.csv
+progs/plots/ssb/opt_phases/sf5/join/postgres/*.csv
+
+progs/plots/ssb/numOfGB/sf50/postges/*.csv
+progs/plots/ssb/uniqValGB/sf50/data/*
+# progs/plots/ssb/uniqValGB/sf50/codegen/8k/*
+
+Benchmarks/ssb/sf50/sampled/*

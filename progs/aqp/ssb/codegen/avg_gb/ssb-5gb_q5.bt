@@ -1,0 +1,94 @@
+let p_partkey = loadDiscrete('p_partkey', [], [150]) in
+let p_name = loadDiscrete('p_name', [p_partkey], [150, 150]) in
+let p_brand1 = loadDiscrete('p_brand1', [p_name], [145, 150]) in
+let p_color = loadDiscrete('p_color', [p_name], [81, 150]) in
+let p_type = loadDiscrete('p_type', [p_name], [116, 150]) in
+let p_size = loadDiscrete('p_size', [p_name], [50, 150]) in
+let p_container = loadDiscrete('p_container', [p_name], [40, 150]) in
+let p_category = loadDiscrete('p_category', [p_brand1], [25, 145]) in
+let p_mfgr = loadDiscrete('p_mfgr', [p_category], [5, 25]) in
+let s_suppkey = loadDiscrete('s_suppkey', [], [150]) in
+let s_name = loadDiscrete('s_name', [s_suppkey], [150, 150]) in
+let s_city = loadDiscrete('s_city', [s_suppkey], [131, 150]) in
+let s_nation = loadDiscrete('s_nation', [s_city], [25, 131]) in
+let s_address = loadDiscrete('s_address', [s_city], [150, 131]) in
+let s_phone = loadDiscrete('s_phone', [s_nation], [150, 25]) in
+let s_region = loadDiscrete('s_region', [s_nation], [5, 25]) in
+let lo_orderkey = loadDiscrete('lo_orderkey', [], [150]) in
+let lo_supplycost = loadDiscrete('lo_supplycost', [lo_orderkey], [200, 150]) in
+let lo_extendedprice = loadDiscrete('lo_extendedprice', [lo_supplycost], [200, 200]) in
+let lo_partkey = loadDiscrete('lo_partkey', [lo_supplycost], [150, 200]) in
+let lo_suppkey = loadDiscrete('lo_suppkey', [lo_supplycost], [150, 200]) in
+let lo_tax = loadDiscrete('lo_tax', [lo_supplycost], [9, 200]) in
+let lo_shipmode = loadDiscrete('lo_shipmode', [lo_supplycost], [7, 200]) in
+let lo_revenue = loadDiscrete('lo_revenue', [lo_extendedprice], [200, 200]) in
+let lo_quantity = loadDiscrete('lo_quantity', [lo_extendedprice], [50, 200]) in
+let lo_ordertotalprice = loadDiscrete('lo_ordertotalprice', [lo_revenue], [200, 200]) in
+let lo_custkey = loadDiscrete('lo_custkey', [lo_revenue], [150, 200]) in
+let lo_discount = loadDiscrete('lo_discount', [lo_revenue], [10, 200]) in
+let lo_orderpriority = loadDiscrete('lo_orderpriority', [lo_revenue], [5, 200]) in
+let lo_orderdate = loadDiscrete('lo_orderdate', [lo_ordertotalprice], [148, 200]) in
+let lo_linenumber = loadDiscrete('lo_linenumber', [lo_ordertotalprice], [7, 200]) in
+let lo_commitdate = loadDiscrete('lo_commitdate', [lo_orderdate], [149, 148]) in
+let d_datekey = loadDiscrete('d_datekey', [], [147]) in
+let d_yearmonth = loadDiscrete('d_yearmonth', [d_datekey], [80, 147]) in
+let d_daynuminyear = loadDiscrete('d_daynuminyear', [d_datekey], [129, 147]) in
+let d_yearmonthnum = loadDiscrete('d_yearmonthnum', [d_yearmonth], [77, 80]) in
+let d_monthnuminyear = loadDiscrete('d_monthnuminyear', [d_yearmonth], [12, 80]) in
+let d_year = loadDiscrete('d_year', [d_yearmonthnum], [7, 77]) in
+let d_month = loadDiscrete('d_month', [d_monthnuminyear], [12, 12]) in
+let d_sellingseason = loadDiscrete('d_sellingseason', [d_month], [5, 12]) in
+let d_date = loadDiscrete('d_date', [d_daynuminyear], [147, 129]) in
+let d_weeknuminyear = loadDiscrete('d_weeknuminyear', [d_daynuminyear], [53, 129]) in
+let d_daynuminmonth = loadDiscrete('d_daynuminmonth', [d_daynuminyear], [31, 129]) in
+let d_dayofweek = loadDiscrete('d_dayofweek', [d_date], [7, 147]) in
+let d_daynuminweek = loadDiscrete('d_daynuminweek', [d_dayofweek], [7, 7]) in
+let d_weekdayfl = loadDiscrete('d_weekdayfl', [d_dayofweek], [2, 7]) in
+let d_lastdayinweekfl = loadDiscrete('d_lastdayinweekfl', [d_dayofweek], [2, 7]) in
+let d_lastdayinmonthfl = loadDiscrete('d_lastdayinmonthfl', [d_daynuminmonth], [2, 31]) in
+let d_holidayfl = loadDiscrete('d_holidayfl', [d_daynuminmonth], [2, 31]) in
+
+let p_brand1_weight = vector [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 0.30000000000000004, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+let p_brand1_weight_ = weight p_brand1 p_brand1_weight in
+
+let p_brand1_ = select p_brand1 [74] in
+let partProb = query [p_partkey,p_brand1] [p_brand1_] [] [p_brand1_weight_] in
+let lineorder_nrows = 26662 in
+let supplier_nrows = 10000 in
+let dwdate_nrows = 2556 in
+let part_nrows = 600000 in
+let supplier_nrows = supplier_nrows * lineorder_nrows in
+let dwdate_nrows = dwdate_nrows * supplier_nrows in
+let nrows = part_nrows * dwdate_nrows in
+let s_region_ = select s_region [3] in
+let supplierProb = query [s_suppkey] [s_region_] [] [] in
+let lineorderProb = query [lo_orderdate,lo_suppkey,lo_partkey,lo_revenue] [] [] [] in
+
+let lo_revenue_m = loadTensor('lo_revenue_m', [200]) in
+let dwdateProb = query [d_datekey,d_year] [] [] [] in
+
+let dwdate_d_year = loadTensor('dwdate_d_year', [7,7])
+let part_p_brand1 = loadTensor('part_p_brand1', [145, 1000])
+let part_p_brand1 = filter part_p_brand1 [74]
+
+let m3_lineorder_part = loadTensor('lo_partkey_p_partkey', [150, 150]) in
+let m3_lineorder_supplier = loadTensor('lo_suppkey_s_suppkey', [150, 150]) in
+let m3_lineorder_dwdate = loadTensor('lo_orderdate_d_datekey', [148, 147]) in
+let lineorderPr_0 = outer lineorderProb partProb in
+let lineorderPr_1 = expectation [lo_revenue,lo_orderdate,lo_suppkey,p_brand1] lineorderPr_0 m3_lineorder_part [2, 4] in
+let lineorderPr_1 = outer lineorderPr_1 supplierProb in
+let lineorderPr_2 = expectation [lo_revenue,lo_orderdate,p_brand1] lineorderPr_1 m3_lineorder_supplier [2, 4] in
+let lineorderPr_2 = outer lineorderPr_2 dwdateProb in
+let lineorderPr_3 = expectation [lo_revenue,d_year,p_brand1] lineorderPr_2 m3_lineorder_dwdate [1, 3] in
+
+let lineorderPr_3Norm = normalize lineorderPr_3 [1,2] in
+let exp_lo_revenue = expectation [d_year,p_brand1] lineorderPr_3Norm lo_revenue_m [0] in
+
+let exp_lo_revenue_2 = decompress exp_lo_revenue part_p_brand1 [p_brand1] in
+let exp_lo_revenue_3 = decompress exp_lo_revenue_2 dwdate_d_year [d_year] in
+
+let dwdate_d_year_b2v = loadDictionary('dwdate_d_year_b2v', [7,7]) in
+let part_p_brand1_b2v = loadDictionary('part_p_brand1_b2v', [145, 1000]) in
+let exp_lo_revenue_map = map exp_lo_revenue_3 [dwdate_d_year_b2v, part_p_brand1_b2v] in
+let exp_lo_revenue_map_lift = lift exp_lo_revenue_map in 
+exp_lo_revenue_map_lift

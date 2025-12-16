@@ -1,0 +1,39 @@
+var earthquake = function() {
+  return flip(.0001)
+}
+
+var burglary = function() {
+  return flip(.001)
+}
+
+var alarm = function() {
+  earthquake() || burglary()
+}
+
+var phoneWorking = function() {
+  if(earthquake())
+    return flip(0.7);
+  else
+    return flip(0.99);
+}
+
+var maryWakes = function() {
+  if(alarm()) {
+    if(earthquake())
+      return flip(0.8);
+    else
+      return flip(0.6);
+  } else {
+    return flip(0.2);
+  }
+}
+
+var called = function() {
+  maryWakes() && phoneWorking()
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  called);
+
+print(dist);

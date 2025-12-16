@@ -1,0 +1,31 @@
+let c_custkey = discrete(0.25, 0.25, 0.25, 0.25) in
+let c_city = match c_custkey with {
+    0 -> discrete [0.01, 0.01, 0.98]
+  | 1 -> discrete [0.33, 0.33, 0.34]
+  | 2 -> discrete [0.33, 0.33, 0.34]
+  | 3 -> discrete [0.03, 0.63, 0.34]
+} in
+let c_nation = match c_city with {
+    0 -> discrete [0.01, 0.99]
+  | 1 -> discrete [0.33, 0.67]
+  | 2 -> discrete [0.67, 0.33]
+} in
+let c_region = match c_nation with {
+    0 -> discrete [0.01, 0.99]
+  | 1 -> discrete [0.33, 0.67]
+} in
+let q1 = query [c_custkey] [] [] in
+let l_orderkey = discrete(0.125, 0.125, 0.125, 0.125, 
+                          0.125, 0.125, 0.125, 0.125) in
+let l_custkey = match l_orderkey with {
+    0 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 1 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 2 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 3 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 4 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 5 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 6 -> discrete (0.125, 0.125, 0.25, 0.5)
+  | 7 -> discrete (0.125, 0.125, 0.25, 0.5)
+} in
+let q2 = query [l_custkey] [] [] in
+q2

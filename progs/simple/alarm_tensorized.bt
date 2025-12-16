@@ -1,0 +1,26 @@
+let earthquake  = discrete [0.9999, 0.0001] in
+let burglary  = discrete [0.999, 0.001] in
+let alarm  = match earthquake with {
+    0 -> burglary
+  | 1 -> discrete [0, 1]
+} in
+let phoneWorking  = match earthquake with {
+    0 -> discrete [0.01, 0.99]
+  | 1 -> discrete [0.3, 0.7]
+} in
+let maryWakes  = match alarm with {
+    0 -> match earthquake with {
+      0 -> discrete [0.8, 0.2]
+    | 1 -> discrete [0.8, 0.2]
+  }
+  | 1 -> match earthquake with {
+      0 -> discrete [0.4, 0.6]
+    | 1 -> discrete [0.2, 0.8]
+  }
+} in
+let called  = match maryWakes with {
+    0 -> discrete [1, 0]
+  | 1 -> phoneWorking
+} in
+let tmp = observe called [1] in
+burglary

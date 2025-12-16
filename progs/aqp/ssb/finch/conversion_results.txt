@@ -1,0 +1,1799 @@
+Keys in NPZ: ["d_datekey", "d_date", "d_yearmonthnum", "d_daynuminyear", "d_daynuminmonth", "d_dayofweek", "d_lastdayinmonthfl", "d_holidayfl", "d_yearmonth", "d_month", "d_year", "d_sellingseason", "d_weeknuminyear", "d_daynuminweek", "d_weekdayfl", "d_lastdayinweekfl", "d_monthnuminyear", "d_datekey_m", "d_date_m", "d_dayofweek_m", "d_month_m", "d_year_m", "d_yearmonthnum_m", "d_yearmonth_m", "d_daynuminweek_m", "d_daynuminmonth_m", "d_daynuminyear_m", "d_monthnuminyear_m", "d_weeknuminyear_m", "d_sellingseason_m", "d_lastdayinweekfl_m", "d_lastdayinmonthfl_m", "d_holidayfl_m", "d_weekdayfl_m", "dwdate_d_datekey_b2v", "dwdate_d_date_b2v", "dwdate_d_dayofweek_b2v", "dwdate_d_month_b2v", "dwdate_d_year_b2v", "dwdate_d_yearmonthnum_b2v", "dwdate_d_yearmonth_b2v", "dwdate_d_daynuminweek_b2v", "dwdate_d_daynuminmonth_b2v", "dwdate_d_daynuminyear_b2v", "dwdate_d_monthnuminyear_b2v", "dwdate_d_weeknuminyear_b2v", "dwdate_d_sellingseason_b2v", "dwdate_d_lastdayinweekfl_b2v", "dwdate_d_lastdayinmonthfl_b2v", "dwdate_d_holidayfl_b2v", "dwdate_d_weekdayfl_b2v", "c_custkey", "c_name", "c_phone", "c_city", "c_address", "c_nation", "c_region", "c_mktsegment", "c_custkey_m", "c_name_m", "c_address_m", "c_city_m", "c_nation_m", "c_region_m", "c_phone_m", "c_mktsegment_m", "customer_c_custkey_b2v", "customer_c_name_b2v", "customer_c_address_b2v", "customer_c_city_b2v", "customer_c_nation_b2v", "customer_c_region_b2v", "customer_c_phone_b2v", "customer_c_mktsegment_b2v", "p_partkey", "p_name", "p_brand1", "p_type", "p_color", "p_size", "p_container", "p_category", "p_mfgr", "p_partkey_m", "p_name_m", "p_mfgr_m", "p_category_m", "p_brand1_m", "p_color_m", "p_type_m", "p_size_m", "p_container_m", "part_p_partkey_b2v", "part_p_name_b2v", "part_p_mfgr_b2v", "part_p_category_b2v", "part_p_brand1_b2v", "part_p_color_b2v", "part_p_type_b2v", "part_p_size_b2v", "part_p_container_b2v", "s_suppkey", "s_name", "s_phone", "s_city", "s_address", "s_nation", "s_region", "s_suppkey_m", "s_name_m", "s_address_m", "s_city_m", "s_nation_m", "s_region_m", "s_phone_m", "supplier_s_suppkey_b2v", "supplier_s_name_b2v", "supplier_s_address_b2v", "supplier_s_city_b2v", "supplier_s_nation_b2v", "supplier_s_region_b2v", "supplier_s_phone_b2v", "lo_orderkey", "lo_ordertotalprice", "lo_revenue", "lo_orderdate", "lo_suppkey", "lo_custkey", "lo_linenumber", "lo_shipmode", "lo_orderpriority", "lo_extendedprice", "lo_discount", "lo_supplycost", "lo_quantity", "lo_partkey", "lo_tax", "lo_orderkey_m", "lo_linenumber_m", "lo_custkey_m", "lo_partkey_m", "lo_suppkey_m", "lo_orderdate_m", "lo_orderpriority_m", "lo_shippriority_m", "lo_quantity_m", "lo_extendedprice_m", "lo_ordertotalprice_m", "lo_discount_m", "lo_revenue_m", "lo_supplycost_m", "lo_tax_m", "lo_shipmode_m", "lineorder_lo_orderkey_b2v", "lineorder_lo_linenumber_b2v", "lineorder_lo_custkey_b2v", "lineorder_lo_partkey_b2v", "lineorder_lo_suppkey_b2v", "lineorder_lo_orderdate_b2v", "lineorder_lo_orderpriority_b2v", "lineorder_lo_shippriority_b2v", "lineorder_lo_quantity_b2v", "lineorder_lo_extendedprice_b2v", "lineorder_lo_ordertotalprice_b2v", "lineorder_lo_discount_b2v", "lineorder_lo_revenue_b2v", "lineorder_lo_supplycost_b2v", "lineorder_lo_tax_b2v", "lineorder_lo_shipmode_b2v"]
+Number of tensors: 170
+
+[1/170] Processing: d_datekey
+  Shape: (1186,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[2/170] Processing: d_date
+  Shape: (1186, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[3/170] Processing: d_yearmonthnum
+  Shape: (84, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[4/170] Processing: d_daynuminyear
+  Shape: (366, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[5/170] Processing: d_daynuminmonth
+  Shape: (31, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[6/170] Processing: d_dayofweek
+  Shape: (7, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[7/170] Processing: d_lastdayinmonthfl
+  Shape: (2, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[8/170] Processing: d_holidayfl
+  Shape: (2, 1186)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[9/170] Processing: d_yearmonth
+  Shape: (84, 84)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[10/170] Processing: d_month
+  Shape: (12, 84)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[11/170] Processing: d_year
+  Shape: (7, 84)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[12/170] Processing: d_sellingseason
+  Shape: (5, 84)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[13/170] Processing: d_weeknuminyear
+  Shape: (53, 366)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[14/170] Processing: d_daynuminweek
+  Shape: (7, 7)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[15/170] Processing: d_weekdayfl
+  Shape: (2, 7)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[16/170] Processing: d_lastdayinweekfl
+  Shape: (2, 7)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[17/170] Processing: d_monthnuminyear
+  Shape: (12, 12)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[18/170] Processing: d_datekey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[19/170] Processing: d_date_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[20/170] Processing: d_dayofweek_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[21/170] Processing: d_month_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[22/170] Processing: d_year_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[23/170] Processing: d_yearmonthnum_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[24/170] Processing: d_yearmonth_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[25/170] Processing: d_daynuminweek_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[26/170] Processing: d_daynuminmonth_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[27/170] Processing: d_daynuminyear_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[28/170] Processing: d_monthnuminyear_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[29/170] Processing: d_weeknuminyear_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[30/170] Processing: d_sellingseason_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[31/170] Processing: d_lastdayinweekfl_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[32/170] Processing: d_lastdayinmonthfl_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[33/170] Processing: d_holidayfl_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[34/170] Processing: d_weekdayfl_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[35/170] Processing: dwdate_d_datekey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1186 keys
+  → Sample key-value pairs:
+    0 => [19920101]
+    1 => [19960903]
+    2 => [19960827]
+    3 => [19960828]
+    4 => [19960829]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1186,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[36/170] Processing: dwdate_d_date_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1186 keys
+  → Sample key-value pairs:
+    0 => ["January 1, 1992"]
+    1 => ["September 3, 1996"]
+    2 => ["Augest 27, 1996"]
+    3 => ["Augest 28, 1996"]
+    4 => ["Augest 29, 1996"]
+  → Integer conversion failed: MethodError(convert, (Int64, "January 1, 1992"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "January 1, 1992"), 0x000000000000689a)
+  → Creating index array 1:1186
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1186,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[37/170] Processing: dwdate_d_dayofweek_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 7 keys
+  → Sample key-value pairs:
+    0 => ["Thursday"]
+    1 => ["Friday"]
+    2 => ["Saturday"]
+    3 => ["Sunday"]
+    4 => ["Monday"]
+  → Integer conversion failed: MethodError(convert, (Int64, "Thursday"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "Thursday"), 0x000000000000689a)
+  → Creating index array 1:7
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (7,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[38/170] Processing: dwdate_d_month_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 12 keys
+  → Sample key-value pairs:
+    0 => ["January"]
+    1 => ["March"]
+    2 => ["May"]
+    3 => ["July"]
+    4 => ["Augest"]
+  → Integer conversion failed: MethodError(convert, (Int64, "January"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "January"), 0x000000000000689a)
+  → Creating index array 1:12
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (12,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[39/170] Processing: dwdate_d_year_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 7 keys
+  → Sample key-value pairs:
+    0 => [1992]
+    1 => [1996]
+    2 => [1993]
+    3 => [1994]
+    4 => [1995]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (7,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[40/170] Processing: dwdate_d_yearmonthnum_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 84 keys
+  → Sample key-value pairs:
+    0 => [199201]
+    1 => [199805]
+    2 => [199808]
+    3 => [199810]
+    4 => [199410]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (84,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[41/170] Processing: dwdate_d_yearmonth_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 84 keys
+  → Sample key-value pairs:
+    0 => ["Jan1992"]
+    1 => ["May1998"]
+    2 => ["Aug1998"]
+    3 => ["Oct1998"]
+    4 => ["Oct1994"]
+  → Integer conversion failed: MethodError(convert, (Int64, "Jan1992"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "Jan1992"), 0x000000000000689a)
+  → Creating index array 1:84
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (84,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[42/170] Processing: dwdate_d_daynuminweek_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 7 keys
+  → Sample key-value pairs:
+    0 => [5]
+    1 => [6]
+    2 => [7]
+    3 => [1]
+    4 => [2]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (7,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[43/170] Processing: dwdate_d_daynuminmonth_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 31 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [2]
+    2 => [3]
+    3 => [4]
+    4 => [5]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (31,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[44/170] Processing: dwdate_d_daynuminyear_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 366 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [24]
+    2 => [3]
+    3 => [4]
+    4 => [5]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (366,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[45/170] Processing: dwdate_d_monthnuminyear_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 12 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [3]
+    2 => [5]
+    3 => [7]
+    4 => [8]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (12,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[46/170] Processing: dwdate_d_weeknuminyear_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 53 keys
+  → Sample key-value pairs:
+    0 => [27]
+    1 => [39]
+    2 => [3]
+    3 => [4]
+    4 => [5]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (53,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[47/170] Processing: dwdate_d_sellingseason_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["Summer"]
+    1 => ["Winter"]
+    2 => ["Fall"]
+    3 => ["Christmas"]
+    4 => ["Spring"]
+  → Integer conversion failed: MethodError(convert, (Int64, "Summer"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "Summer"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[48/170] Processing: dwdate_d_lastdayinweekfl_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2 keys
+  → Sample key-value pairs:
+    0 => [0]
+    1 => [1]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[49/170] Processing: dwdate_d_lastdayinmonthfl_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [0]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[50/170] Processing: dwdate_d_holidayfl_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2 keys
+  → Sample key-value pairs:
+    0 => [0]
+    1 => [1]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[51/170] Processing: dwdate_d_weekdayfl_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [0]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[52/170] Processing: c_custkey
+  Shape: (1500,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[53/170] Processing: c_name
+  Shape: (1500, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[54/170] Processing: c_phone
+  Shape: (1500, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[55/170] Processing: c_city
+  Shape: (250, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[56/170] Processing: c_address
+  Shape: (1500, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[57/170] Processing: c_nation
+  Shape: (25, 250)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[58/170] Processing: c_region
+  Shape: (5, 250)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[59/170] Processing: c_mktsegment
+  Shape: (5, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[60/170] Processing: c_custkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[61/170] Processing: c_name_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[62/170] Processing: c_address_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[63/170] Processing: c_city_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[64/170] Processing: c_nation_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[65/170] Processing: c_region_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[66/170] Processing: c_phone_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[67/170] Processing: c_mktsegment_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[68/170] Processing: customer_c_custkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [1000008]
+    2 => [1000006]
+    3 => [1000005]
+    4 => [1000004]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[69/170] Processing: customer_c_name_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => ["Customer#000000001"]
+    1 => ["Customer#001000008"]
+    2 => ["Customer#001000006"]
+    3 => ["Customer#001000005"]
+    4 => ["Customer#001000004"]
+  → Integer conversion failed: MethodError(convert, (Int64, "Customer#000000001"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "Customer#000000001"), 0x000000000000689a)
+  → Creating index array 1:1500
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[70/170] Processing: customer_c_address_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => ["j5JsirBM9P"]
+    1 => ["trDKdST1y"]
+    2 => ["h5ogGqfi"]
+    3 => ["iE,eLWoOGMTjn4ByDC5"]
+    4 => ["hc9,P4MQ6NfTDh"]
+  → Integer conversion failed: MethodError(convert, (Int64, "j5JsirBM9P"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "j5JsirBM9P"), 0x000000000000689a)
+  → Creating index array 1:1500
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[71/170] Processing: customer_c_city_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 250 keys
+  → Sample key-value pairs:
+    0 => ["GERMANY  2"]
+    1 => ["UNITED KI4"]
+    2 => ["UNITED ST3"]
+    3 => ["SAUDI ARA0"]
+    4 => ["BRAZIL   8"]
+  → Integer conversion failed: MethodError(convert, (Int64, "GERMANY  2"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "GERMANY  2"), 0x000000000000689a)
+  → Creating index array 1:250
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (250,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[72/170] Processing: customer_c_nation_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 25 keys
+  → Sample key-value pairs:
+    0 => ["ETHIOPIA"]
+    1 => ["UNITED KINGDOM"]
+    2 => ["FRANCE"]
+    3 => ["INDONESIA"]
+    4 => ["INDIA"]
+  → Integer conversion failed: MethodError(convert, (Int64, "ETHIOPIA"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "ETHIOPIA"), 0x000000000000689a)
+  → Creating index array 1:25
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (25,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[73/170] Processing: customer_c_region_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["EUROPE"]
+    1 => ["ASIA"]
+    2 => ["MIDDLE EAST"]
+    3 => ["AFRICA"]
+    4 => ["AMERICA"]
+  → Integer conversion failed: MethodError(convert, (Int64, "EUROPE"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "EUROPE"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[74/170] Processing: customer_c_phone_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => ["27-626-212-8000"]
+    1 => ["22-827-643-3764"]
+    2 => ["32-265-910-3924"]
+    3 => ["31-606-965-4090"]
+    4 => ["22-377-295-4976"]
+  → Integer conversion failed: MethodError(convert, (Int64, "27-626-212-8000"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "27-626-212-8000"), 0x000000000000689a)
+  → Creating index array 1:1500
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[75/170] Processing: customer_c_mktsegment_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["MACHINERY"]
+    1 => ["BUILDING"]
+    2 => ["AUTOMOBILE"]
+    3 => ["HOUSEHOLD"]
+    4 => ["FURNITURE"]
+  → Integer conversion failed: MethodError(convert, (Int64, "MACHINERY"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "MACHINERY"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[76/170] Processing: p_partkey
+  Shape: (1500,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[77/170] Processing: p_name
+  Shape: (1437, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[78/170] Processing: p_brand1
+  Shape: (841, 1437)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[79/170] Processing: p_type
+  Shape: (150, 1437)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[80/170] Processing: p_color
+  Shape: (92, 1437)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[81/170] Processing: p_size
+  Shape: (50, 1437)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[82/170] Processing: p_container
+  Shape: (40, 1437)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[83/170] Processing: p_category
+  Shape: (25, 841)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[84/170] Processing: p_mfgr
+  Shape: (5, 25)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[85/170] Processing: p_partkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[86/170] Processing: p_name_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[87/170] Processing: p_mfgr_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[88/170] Processing: p_category_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[89/170] Processing: p_brand1_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[90/170] Processing: p_color_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[91/170] Processing: p_type_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[92/170] Processing: p_size_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[93/170] Processing: p_container_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[94/170] Processing: part_p_partkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [799989]
+    2 => [800005]
+    3 => [800004]
+    4 => [800003]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[95/170] Processing: part_p_name_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1437 keys
+  → Sample key-value pairs:
+    0 => ["aquamarine beige"]
+    1 => ["aquamarine blush"]
+    2 => ["azure blanched"]
+    3 => ["aquamarine bisque"]
+    4 => ["aquamarine burnished"]
+  → Integer conversion failed: MethodError(convert, (Int64, "aquamarine beige"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "aquamarine beige"), 0x000000000000689a)
+  → Creating index array 1:1437
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1437,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[96/170] Processing: part_p_mfgr_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["MFGR#3"]
+    1 => ["MFGR#5"]
+    2 => ["MFGR#1"]
+    3 => ["MFGR#4"]
+    4 => ["MFGR#2"]
+  → Integer conversion failed: MethodError(convert, (Int64, "MFGR#3"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "MFGR#3"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[97/170] Processing: part_p_category_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 25 keys
+  → Sample key-value pairs:
+    0 => ["MFGR#35"]
+    1 => ["MFGR#53"]
+    2 => ["MFGR#13"]
+    3 => ["MFGR#23"]
+    4 => ["MFGR#15"]
+  → Integer conversion failed: MethodError(convert, (Int64, "MFGR#35"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "MFGR#35"), 0x000000000000689a)
+  → Creating index array 1:25
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (25,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[98/170] Processing: part_p_brand1_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 841 keys
+  → Sample key-value pairs:
+    0 => ["MFGR#1313"]
+    1 => ["MFGR#1316"]
+    2 => ["MFGR#2328"]
+    3 => ["MFGR#2122"]
+    4 => ["MFGR#133"]
+  → Integer conversion failed: MethodError(convert, (Int64, "MFGR#1313"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "MFGR#1313"), 0x000000000000689a)
+  → Creating index array 1:841
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (841,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[99/170] Processing: part_p_color_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 92 keys
+  → Sample key-value pairs:
+    0 => ["azure"]
+    1 => ["aquamarine"]
+    2 => ["beige"]
+    3 => ["antique"]
+    4 => ["bisque"]
+  → Integer conversion failed: MethodError(convert, (Int64, "azure"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "azure"), 0x000000000000689a)
+  → Creating index array 1:92
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (92,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[100/170] Processing: part_p_type_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 150 keys
+  → Sample key-value pairs:
+    0 => ["ECONOMY PLATED STEEL"]
+    1 => ["MEDIUM ANODIZED TIN"]
+    2 => ["ECONOMY ANODIZED STEEL"]
+    3 => ["PROMO POLISHED BRASS"]
+    4 => ["ECONOMY ANODIZED COPPER"]
+  → Integer conversion failed: MethodError(convert, (Int64, "ECONOMY PLATED STEEL"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "ECONOMY PLATED STEEL"), 0x000000000000689a)
+  → Creating index array 1:150
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (150,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[101/170] Processing: part_p_size_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 50 keys
+  → Sample key-value pairs:
+    0 => [48]
+    1 => [35]
+    2 => [24]
+    3 => [38]
+    4 => [16]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (50,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[102/170] Processing: part_p_container_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 40 keys
+  → Sample key-value pairs:
+    0 => ["SM DRUM"]
+    1 => ["WRAP BOX"]
+    2 => ["LG PACK"]
+    3 => ["JUMBO CAN"]
+    4 => ["MED BOX"]
+  → Integer conversion failed: MethodError(convert, (Int64, "SM DRUM"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "SM DRUM"), 0x000000000000689a)
+  → Creating index array 1:40
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (40,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[103/170] Processing: s_suppkey
+  Shape: (1495,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[104/170] Processing: s_name
+  Shape: (1495, 1495)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[105/170] Processing: s_phone
+  Shape: (1495, 1495)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[106/170] Processing: s_city
+  Shape: (250, 1495)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[107/170] Processing: s_address
+  Shape: (1495, 1495)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[108/170] Processing: s_nation
+  Shape: (25, 250)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[109/170] Processing: s_region
+  Shape: (5, 250)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[110/170] Processing: s_suppkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[111/170] Processing: s_name_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[112/170] Processing: s_address_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[113/170] Processing: s_city_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[114/170] Processing: s_nation_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[115/170] Processing: s_region_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[116/170] Processing: s_phone_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[117/170] Processing: supplier_s_suppkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1495 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [66651]
+    2 => [66673]
+    3 => [66672]
+    4 => [66671]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1495,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[118/170] Processing: supplier_s_name_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1495 keys
+  → Sample key-value pairs:
+    0 => ["Supplier#000000001"]
+    1 => ["Supplier#000066651"]
+    2 => ["Supplier#000066673"]
+    3 => ["Supplier#000066672"]
+    4 => ["Supplier#000066671"]
+  → Integer conversion failed: MethodError(convert, (Int64, "Supplier#000000001"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "Supplier#000000001"), 0x000000000000689a)
+  → Creating index array 1:1495
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1495,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[119/170] Processing: supplier_s_address_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1495 keys
+  → Sample key-value pairs:
+    0 => ["sdrGnXCDRcfriBvY0KL,i"]
+    1 => ["p2rJ01"]
+    2 => ["C II4K"]
+    3 => ["tISjz7z2bStPjaPGmQq,"]
+    4 => ["72kN9lgRFWxTYdM576Ra"]
+  → Integer conversion failed: MethodError(convert, (Int64, "sdrGnXCDRcfriBvY0KL,i"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "sdrGnXCDRcfriBvY0KL,i"), 0x000000000000689a)
+  → Creating index array 1:1495
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1495,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[120/170] Processing: supplier_s_city_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 250 keys
+  → Sample key-value pairs:
+    0 => ["UNITED KI2"]
+    1 => ["ARGENTINA3"]
+    2 => ["MOROCCO  8"]
+    3 => ["CHINA    8"]
+    4 => ["EGYPT    7"]
+  → Integer conversion failed: MethodError(convert, (Int64, "UNITED KI2"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "UNITED KI2"), 0x000000000000689a)
+  → Creating index array 1:250
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (250,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[121/170] Processing: supplier_s_nation_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 25 keys
+  → Sample key-value pairs:
+    0 => ["IRAQ"]
+    1 => ["INDIA"]
+    2 => ["CANADA"]
+    3 => ["GERMANY"]
+    4 => ["KENYA"]
+  → Integer conversion failed: MethodError(convert, (Int64, "IRAQ"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "IRAQ"), 0x000000000000689a)
+  → Creating index array 1:25
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (25,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[122/170] Processing: supplier_s_region_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["AMERICA"]
+    1 => ["MIDDLE EAST"]
+    2 => ["ASIA"]
+    3 => ["EUROPE"]
+    4 => ["AFRICA"]
+  → Integer conversion failed: MethodError(convert, (Int64, "AMERICA"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "AMERICA"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[123/170] Processing: supplier_s_phone_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1495 keys
+  → Sample key-value pairs:
+    0 => ["27-989-741-2988"]
+    1 => ["29-714-876-6898"]
+    2 => ["30-208-446-7262"]
+    3 => ["34-537-761-5743"]
+    4 => ["25-391-706-2932"]
+  → Integer conversion failed: MethodError(convert, (Int64, "27-989-741-2988"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "27-989-741-2988"), 0x000000000000689a)
+  → Creating index array 1:1495
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1495,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[124/170] Processing: lo_orderkey
+  Shape: (1500,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[125/170] Processing: lo_ordertotalprice
+  Shape: (2000, 1500)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[126/170] Processing: lo_revenue
+  Shape: (2000, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[127/170] Processing: lo_orderdate
+  Shape: (1414, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[128/170] Processing: lo_suppkey
+  Shape: (1495, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[129/170] Processing: lo_custkey
+  Shape: (1499, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[130/170] Processing: lo_linenumber
+  Shape: (7, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[131/170] Processing: lo_shipmode
+  Shape: (7, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[132/170] Processing: lo_orderpriority
+  Shape: (5, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[133/170] Processing: lo_extendedprice
+  Shape: (2000, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[134/170] Processing: lo_discount
+  Shape: (10, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[135/170] Processing: lo_supplycost
+  Shape: (2000, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[136/170] Processing: lo_quantity
+  Shape: (50, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[137/170] Processing: lo_partkey
+  Shape: (1499, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[138/170] Processing: lo_tax
+  Shape: (9, 2000)
+  Type: Matrix{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}}
+
+[139/170] Processing: lo_orderkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[140/170] Processing: lo_linenumber_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[141/170] Processing: lo_custkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[142/170] Processing: lo_partkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[143/170] Processing: lo_suppkey_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[144/170] Processing: lo_orderdate_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[145/170] Processing: lo_orderpriority_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[146/170] Processing: lo_shippriority_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[147/170] Processing: lo_quantity_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[148/170] Processing: lo_extendedprice_m
+  Shape: (2000,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[149/170] Processing: lo_ordertotalprice_m
+  Shape: (2000,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[150/170] Processing: lo_discount_m
+  Shape: (10,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[151/170] Processing: lo_revenue_m
+  Shape: (2000,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[152/170] Processing: lo_supplycost_m
+  Shape: (2000,)
+  Type: Vector{Float64}
+  ✓ Successfully converted to Finch.Tensor
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0.0, Float64, Int64, Vector{Float64}}}}
+
+[153/170] Processing: lo_tax_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[154/170] Processing: lo_shipmode_m
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'NoneType'>
+  → Skipping None/null value
+  ✗ Could not convert Python object
+
+[155/170] Processing: lineorder_lo_orderkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1500 keys
+  → Sample key-value pairs:
+    0 => [123169858]
+    1 => [80748901]
+    2 => [31023201]
+    3 => [62409510]
+    4 => [154020704]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1500,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[156/170] Processing: lineorder_lo_linenumber_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 7 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [2]
+    2 => [3]
+    3 => [4]
+    4 => [5]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (7,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[157/170] Processing: lineorder_lo_custkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1499 keys
+  → Sample key-value pairs:
+    0 => [1183729]
+    1 => [934399]
+    2 => [1305250]
+    3 => [1237057]
+    4 => [1358326]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1499,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[158/170] Processing: lineorder_lo_partkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1499 keys
+  → Sample key-value pairs:
+    0 => [262346]
+    1 => [493151]
+    2 => [660619]
+    3 => [382824]
+    4 => [502048]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1499,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[159/170] Processing: lineorder_lo_suppkey_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1495 keys
+  → Sample key-value pairs:
+    0 => [89355]
+    1 => [41682]
+    2 => [1855]
+    3 => [93104]
+    4 => [22845]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1495,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[160/170] Processing: lineorder_lo_orderdate_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1414 keys
+  → Sample key-value pairs:
+    0 => [19920523]
+    1 => [19950531]
+    2 => [19970310]
+    3 => [19980520]
+    4 => [19920820]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1414,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[161/170] Processing: lineorder_lo_orderpriority_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 5 keys
+  → Sample key-value pairs:
+    0 => ["3-MEDIUM"]
+    1 => ["1-URGENT"]
+    2 => ["5-LOW"]
+    3 => ["4-NOT SPECIFIED"]
+    4 => ["2-HIGH"]
+  → Integer conversion failed: MethodError(convert, (Int64, "3-MEDIUM"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "3-MEDIUM"), 0x000000000000689a)
+  → Creating index array 1:5
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (5,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[162/170] Processing: lineorder_lo_shippriority_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 1 keys
+  → Sample key-value pairs:
+    0 => [0]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (1,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[163/170] Processing: lineorder_lo_quantity_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 50 keys
+  → Sample key-value pairs:
+    0 => [21]
+    1 => [44]
+    2 => [12]
+    3 => [38]
+    4 => [25]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (50,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[164/170] Processing: lineorder_lo_extendedprice_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2000 keys
+  → Sample key-value pairs:
+    0 => [95800, 97200, 99107, 92000, 96200, 94900, 99899, 95604, 92498, 98304, 99001, 98004, 96403, 97700, 99206, 98798, 95198, 97001, 96204, 90298, 93500, 93897, 94101, 92299, 99907, 95205, 94799, 95204, 98908, 97502, 91898, 97800, 92501, 98403, 99406, 100006, 98407, 99902, 97505, 97199, 100003, 94703, 98807, 95099, 94398, 98805, 95298, 99205, 95999, 95803, 97299, 90700, 97501, 92101, 99502, 97301, 96203, 99300, 99705, 99898, 93200, 95499, 97803, 97804, 98006, 99398, 96199, 97802, 93502, 96902, 95500, 95501, 99108, 99801, 93697, 99699, 97998, 100007, 96404, 93299, 95300, 94701, 95798, 92099, 95398, 95002, 99707, 93499, 99803, 96003, 91799, 95699, 98104, 97401, 99602, 97204, 95502, 94501, 92400, 94697, 97606, 93603, 98601, 96398, 98305, 99708, 99004, 96000, 95599, 99407, 98801, 98400, 99101, 96305, 99400, 90898, 98901, 98097, 99807, 95801, 97903, 94800, 99403, 97899, 97205, 98803, 90598, 93300, 95102, 96601, 99805, 96702, 96599, 96899, 92199, 93400, 99208, 98599, 98306, 96104, 96800, 98204, 98202, 96801, 96205, 99605, 96102, 99600, 99506, 97601, 98499, 97901, 93398, 99304, 99105, 94499, 99505, 96099, 97801, 97701, 92298, 91800, 97003, 99901, 95299, 94403, 94198, 98001, 98602, 92399, 97407, 94399, 98300, 96500, 99606, 97197, 98800, 92598, 93700, 92397, 99298, 98707, 99404, 99099, 96401, 97002, 98197, 99106, 97404, 96503, 98899, 96901, 99405, 94201, 98399, 95098, 95904, 97799, 96603, 99202, 99999, 98002, 94202, 93102, 95802, 95200, 99703, 98406, 97000, 91300, 91998, 100000, 97402, 97305, 99603, 92500, 98706, 99399, 99207, 99100, 98298, 90398, 94199, 99306, 98704, 98404, 98102, 90698, 94902, 97806, 95902, 99700, 97707, 95900, 98904, 97304, 99002, 93602, 92499, 96600, 99199, 98902, 95001, 96501, 99204, 99704, 96799, 92701, 96703, 91699, 94903, 94502, 96604, 98005, 96998, 96903, 92699, 97497, 94102, 92098, 94300]
+    1 => [102709, 100205, 103211, 102500, 103806, 103803, 102302, 100199, 103202, 103711, 102705, 100902, 101399, 103601, 102203, 102707, 101602, 100601, 101001, 102106, 103709, 101202, 103203, 103200, 103505, 101999, 101601, 102506, 101199, 103108, 100705, 103804, 102704, 100602, 102199, 100401, 103110, 102502, 100306, 101203, 101503, 100907, 102005, 101508, 102405, 103209, 102510, 100508, 100008, 103597, 100607, 103010, 102702, 100708, 101708, 103610, 101502, 101309, 103606, 103402, 102599, 101100, 100107, 103102, 102999, 103910, 103906, 101107, 103311, 103104, 100901, 103206, 102403, 102503, 101810, 102008, 100908, 101803, 103406, 103604, 101099, 100904, 103112, 102611, 103310, 102903, 103303, 100098, 102710, 102800, 102905, 100701, 103608, 101204, 101801, 102299, 101500, 101903, 101008, 101711, 102908, 101505, 101299, 101908, 102004, 101103, 103399, 101200, 103609, 102103, 103500, 101901, 102401, 101108, 101700, 101407, 101308, 102706, 103098, 103499, 100808, 102602, 100302, 103807, 103798, 102700, 102110, 100797, 102601, 103003, 101002, 101501, 100505, 101006, 103704, 100801, 102204, 101106, 102111, 100805, 100504, 101499, 101101, 100899, 101705, 103908, 103710, 103210, 101997, 103308, 103306, 100303, 101610, 101509, 102701, 103701, 102003, 103199, 103409, 103400, 103008, 102300, 102310, 101104, 103902, 102411, 101004, 101305, 100806, 100203, 102407, 102900, 102108, 100501, 103602, 102000, 102098, 102909, 100208, 102904, 101302, 102409, 100300, 101404, 101003, 101208, 100909, 100099, 103502, 102107, 102309, 100700, 103603, 103801, 103405, 101710, 102404, 103304, 102100, 102802, 101506, 100103, 101998, 100800, 103712, 103103, 102607, 104002, 103999, 104001, 103101, 103707, 101899, 102610, 103600, 101605, 101198, 100409, 103909, 101805, 103811, 101403, 102211, 100200, 102897, 101707, 102306, 100604, 103599, 100097, 103903, 103006, 101806, 100600, 100804, 103899, 102304, 103011, 103508, 100202, 103205, 103911, 101307, 102803, 103302, 103904, 103510, 104004, 100400, 103105, 103802, 103002, 101400, 103208, 101304, 103503]
+    2 => [104311, 104810, 106109, 106699, 105410, 107007, 106706, 105305, 105300, 105804, 104310, 104109, 104107, 104701, 107011, 104801, 105298, 105603, 106705, 106913, 104406, 105504, 104906, 106401, 105901, 104811, 105611, 106999, 106098, 105702, 106308, 106614, 106000, 106704, 104808, 106305, 105102, 104812, 105405, 104610, 105111, 105509, 105908, 104510, 105009, 105814, 105705, 104304, 107008, 104899, 107016, 106908, 105311, 104508, 105203, 107102, 105898, 106307, 104403, 106507, 106406, 104503, 105200, 105201, 105303, 104306, 106611, 104907, 106104, 105602, 106204, 105108, 104905, 106303, 106398, 105907, 104400, 105906, 106806, 106809, 105107, 106213, 105210, 104100, 104603, 106404, 106915, 104505, 106001, 104806, 105012, 106615, 105098, 104609, 105903, 104307, 107100, 106814, 104802, 105199, 104709, 105411, 106405, 104800, 104901, 106904, 105099, 106612, 105498, 106411, 104805, 106707, 105798, 106800, 105805, 106004, 106400, 106900, 104405, 106607, 105006, 104099, 104710, 106511, 104703, 106011, 105608, 104699, 105208, 106508, 105911, 105309, 105909, 106412, 106106, 106504, 105713, 105700, 105105, 104909, 106914, 105400, 105910, 104607, 105007, 106306, 104204, 104912, 104504, 105815, 104103, 106902, 106603, 104706, 106808, 107099, 105402, 106905, 106211, 106514, 106403, 105807, 107006, 105008, 106302, 105109, 106402, 104506, 105207, 106710, 104007, 106712, 104512, 106608, 105599, 107003, 106310, 104308, 104010, 106604, 105407, 104202, 106506, 105502, 105811, 105710, 105000, 105101, 106515, 105312, 105902, 104611, 106409, 106899, 106208, 104407, 106209, 106802, 104900, 106906, 105403, 106416, 104700, 106408, 106102, 104303, 105112, 104803, 106114, 104908, 107002, 106509, 106702, 105198, 106311, 104804, 106609, 106811, 105011, 107001, 105501, 104613, 107004, 104298, 106201, 104605, 105500, 105709, 104902, 106801, 106212, 104404, 104108, 105998, 104206, 104006, 105510, 106898, 106203, 105306, 105800, 104399, 105704, 104110, 105703, 104702]
+    3 => [108814, 107708, 107306, 108599, 109117, 109417, 107703, 107712, 109502, 107914, 108917, 109301, 109102, 108207, 109106, 107810, 108112, 108615, 109103, 108910, 107811, 109204, 108706, 107310, 107506, 108400, 108804, 108503, 108509, 107512, 108702, 107505, 108298, 107106, 108710, 109200, 108407, 108413, 108517, 108306, 108902, 109415, 107797, 108317, 107606, 109302, 108206, 107204, 108103, 107900, 107514, 107198, 109108, 109500, 108203, 107510, 108817, 109012, 108508, 108602, 108608, 107798, 107998, 108300, 107800, 108003, 107910, 108010, 107816, 108603, 109215, 108904, 107107, 108309, 109013, 108701, 107410, 107705, 107400, 109309, 107511, 108609, 108201, 107598, 109414, 108900, 107799, 107714, 109007, 108008, 108500, 108510, 108498, 107815, 108100, 107808, 107211, 107297, 107508, 109307, 107713, 108412, 107699, 109499, 108704, 109111, 108803, 109104, 107309, 108104, 108197, 109003, 107409, 108411, 109107, 108806, 108314, 107108, 108305, 109306, 107213, 107113, 107901, 109002, 109311, 107412, 107501, 107711, 107210, 109412, 107104, 107807, 109201, 108312, 108802, 108109, 107801, 109199, 109317, 108211, 107904, 107609, 108505, 108313, 109305, 107413, 109205, 108111, 108901, 108913, 107403, 107502, 108605, 107707, 107704, 109105, 107110, 107513, 109209, 109101, 108416, 107905, 107802, 108812, 109399, 108001, 107300, 108311, 109409, 109113, 109207, 108515, 108501, 109210, 108106, 109015, 109315, 109406, 109099, 108601, 107312, 108297, 108810, 108308, 107604, 108908, 107313, 107515, 107814, 107315, 107709, 108511, 109017, 108705, 109310, 108417, 107504, 108209, 107813, 108916, 107912, 107607, 107600, 107902, 107702, 107909, 107407, 108712, 109202, 108907, 108915, 108017, 107804, 108110, 107611, 107806, 107610, 107602, 109402, 108513, 107408, 108202, 107404, 108204, 108013, 108007, 109312, 109405, 108613, 107111, 109011, 108999, 108011, 109110, 108899]
+    4 => [111306, 109616, 110301, 110417, 110715, 110110, 110907, 111415, 110100, 110405, 109600, 110215, 109506, 109912, 110105, 110611, 109916, 110311, 110211, 111801, 111208, 110411, 109911, 110504, 110798, 111311, 111613, 110310, 110801, 110705, 111513, 110802, 109705, 111618, 110913, 110601, 109814, 109809, 109905, 111716, 111800, 111215, 110602, 111515, 110101, 110918, 109606, 111102, 110609, 111712, 110615, 110701, 110016, 110017, 109601, 109913, 109615, 109712, 109508, 109505, 110717, 109711, 110114, 111717, 111403, 110510, 109813, 110102, 110619, 111117, 110308, 110318, 109808, 111010, 110712, 110804, 109518, 109709, 109707, 111209, 110512, 109798, 110917, 111503, 110299, 111419, 111198, 111418, 111318, 110803, 111203, 111408, 110909, 111217, 111501, 110511, 110015, 110306, 110199, 110305, 111201, 110503, 111713, 110700, 109618, 111101, 109897, 110710, 111120, 110203, 109602, 110303, 110011, 110408, 111207, 110312, 109815, 110013, 111014, 109609, 110808, 111017, 110202, 111106, 109703, 110111, 110119, 111218, 110413, 109804, 109516, 109801, 110612, 109906, 110515, 109610, 111204, 110402, 111601, 110513, 109806, 110599, 110414, 110603, 110401, 110600, 110403, 109702, 110507, 110210, 111114, 111402, 111509, 111118, 111108, 110000, 111416, 111310, 111400, 111505, 111411, 109512, 109706, 109917, 110004, 111305, 111710, 111714, 110517, 111200, 110713, 111309, 109614, 110708, 111702, 111705, 110914, 109604, 111703, 111706, 110209, 111404, 111619, 110201, 110007, 110002, 111614, 111398, 109910, 110815, 109503, 109718, 111212, 110006, 109901, 110399, 110919, 109999, 111606, 111299, 109699, 110704, 109612, 110916, 110509, 110298, 111715, 110516, 109803, 111711, 111620, 111316, 110812, 111302, 110115, 109510, 110407, 110711, 109701, 110412, 110800, 111412, 109907, 111304, 111609, 110514, 109800, 111602, 110809, 111001, 110216, 111612, 110915, 111103, 109717, 111604, 111514, 110313, 110720, 109811, 109511, 110814]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2000,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[165/170] Processing: lineorder_lo_ordertotalprice_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2000 keys
+  → Sample key-value pairs:
+    0 => [141522, 150071, 166344, 133422, 103054, 172206, 112390, 139408, 170463, 95322, 132982, 168338, 156408, 162982, 148444, 138099, 136336, 153787, 149363, 127325, 115229, 143700, 172323, 122410, 143634, 136830, 157492, 163557, 125551, 114969, 122313, 165777, 124916, 129956, 119938, 154815, 143300, 102215, 120901, 172128, 117578, 148989, 157566, 145087, 171152, 161668, 120869, 133990, 122562, 149269, 108133, 145614, 154797, 135852, 143419, 126218, 153977, 138879, 148257, 98228, 172458, 120377, 132587, 163147, 164312, 142312, 119483, 151969, 159388, 160105, 100636, 133430, 155455, 127230, 130760, 104271, 160273, 124926, 113314, 153110, 149572, 155250, 103848, 103104, 164286, 123291, 125165, 159914, 156343, 167749, 132843, 160116, 151062, 135988, 156130, 97638, 142479, 130993, 145101, 133613, 138551, 156395, 127989, 131378, 142899, 106685, 128760, 100651, 111433, 110749, 118102, 150083, 136492, 101515, 147754, 114071, 163047, 120694, 156299, 171530, 137597, 121007, 135394, 171154, 103334, 121840, 137889, 156444, 138201, 133189, 137533, 169759, 161753, 116145, 98102, 158459, 165260, 167321, 148307, 153074, 110667, 101809, 144949, 135168, 156727, 118721, 130835, 98948, 118003, 133290, 134337, 120381, 150901, 106500, 168709, 149187, 131109, 135848, 128812, 114033, 138637, 127093, 146673, 148790, 120779, 103047, 140331, 107052, 125004, 88954, 143232, 111748, 141997, 151053, 167599, 128184, 140086, 150241, 171676, 142526, 124515, 169900, 121769, 138228, 151737, 156225, 158657, 111897, 121944, 103836, 163351, 118374, 90555, 130024, 168623, 159316, 110888, 122097, 118195, 128612, 122568, 100484, 165560, 140342, 94195, 141365, 100530, 89866, 127551, 157945, 97721, 158918, 151123, 132434, 151942, 148370, 154813, 104827, 119505, 133512, 127804, 140731, 155312, 122521, 133139, 112526, 165461, 90820, 106508, 153676, 163011, 118206, 137355, 135601, 157173, 137711, 172933, 167125, 109305, 140475, 128717, 157965, 127950, 106009, 170352, 161756, 163889, 127886, 167361, 168533, 113271, 114630, 114519, 128472, 113581, 143406, 116418, 147498, 130636, 112329, 108689, 156889, 111521, 108404, 122667, 142619, 130797, 159522, 148302, 119355, 109991, 144199, 137776, 132438, 165573, 114995, 113907, 117515, 133131, 107111, 107964, 142625, 114283, 169457, 167854, 172325, 167218, 147629, 158187, 133786, 162202, 169842, 105081, 143038, 153656, 147914, 105566, 101856, 126923, 116975, 166191, 121956, 125888, 137815, 106719, 151950, 93801, 114484, 123382, 99231, 104619, 126590, 121728, 148954, 169180, 109625, 112643, 103314, 169404, 107535, 143351, 142474, 108327, 156576, 148209, 111623, 105224, 123658, 132197, 156703, 142721, 165044, 111173, 121785]
+    1 => [257840, 266443, 181470, 182383, 221364, 280936, 197216, 221026, 277763, 178990, 185084, 239002, 274010, 211524, 264961, 210769, 252820, 175498, 190499, 215551, 257438, 271788, 275759, 218257, 279007, 249184, 210385, 230663, 176116, 192570, 257056, 224273, 174126, 234948, 180333, 257433, 223434, 280810, 185859, 261686, 286476, 248634, 178154, 276052, 195626, 173188, 283056, 245088, 234086, 278166, 209036, 224883, 231689, 241619, 266444, 243882, 187381, 226611, 225060, 187696, 199848, 189181, 216324, 186949, 194445, 231169, 245440, 199023, 185214, 201275, 240596, 173705, 248782, 183844, 185372, 261716, 203068, 202696, 288354, 219895, 178091, 286902, 189321, 286589, 290063, 204998, 256091, 249702, 187789, 182748, 264523, 235810, 242132, 240415, 215668, 227241, 240227, 201362, 283395, 199906, 286349, 184665, 185917, 258696, 231978, 177523, 188601, 177720, 194997, 183776, 175607, 191316, 275846, 247523, 180707, 270892, 290631, 210063, 253596, 243084, 176708, 239548, 176277, 180652, 187146, 200090, 175814, 227160, 234178, 287182, 181983, 207281, 289250, 194040, 192286, 196358, 220917, 275873, 288412, 198660, 176229, 208589, 194393, 267220, 174999, 290748, 291302, 190790, 203261, 237258, 180500, 234092, 246244, 266032, 175174, 179500, 273930, 198911, 241660, 180761, 190237, 203604, 218087, 217958, 187157, 285711, 283392, 223005, 226058, 271285, 185068, 232778, 175660, 214396, 228470, 258065, 190262, 215246, 213825, 184727, 250134, 186533, 274796, 188461, 217465, 213145, 174172, 177858, 245683, 254195, 198630, 262823, 173475, 188771, 175007, 189669, 283871, 229558, 180434, 193185, 183200, 272063, 265380, 174727, 200685, 268374, 201288, 228573, 190205, 265805, 269040, 224125, 287336, 266528, 269912, 236244, 244163, 187921, 188958, 262003, 282571, 239004, 254114, 265731, 266751, 183599, 280908, 200746, 183192, 272913, 262660, 175698, 244723, 189049, 279010, 197507, 203626, 278190, 195047, 275019, 289706, 233904, 205940, 188134, 279091, 227589, 190766, 228816, 262114, 195635, 246491, 195091, 200542, 230341, 270735, 190782, 173245, 255187, 173506, 237331, 267313, 197685, 217575, 250971, 182999, 226237, 197194, 183472, 201791, 190202, 248884, 206377, 237892, 270399, 227422, 174538, 235063, 238123, 231374, 215520, 203526, 208699, 209732, 193284, 189500, 250284, 231623, 187624, 260388, 184067, 248544, 196863, 183807, 241116, 173872, 241591, 234326, 269690, 280481, 285236, 201957, 187819, 174590, 181137, 291156, 205516, 212113, 273835, 216425, 239203, 180095, 198802, 266646, 283221, 232137, 282242, 240815, 220171, 196326, 268447, 193394, 255775, 202271, 180442, 262825, 191712, 183443, 236268, 273639, 184632, 186098, 248470, 252203]
+    2 => [313264, 334669, 363091, 345856, 298827, 330831, 371110, 352998, 304776, 334292, 307470, 339214, 324905, 315763, 312492, 335664, 304789, 362929, 299531, 306334, 314351, 341402, 368081, 304486, 331421, 362699, 336548, 355419, 338457, 304341, 321197, 296023, 310001, 300069, 373337, 345690, 315310, 335772, 355286, 354491, 314999, 305862, 338272, 307288, 343544, 316665, 300140, 365226, 333468, 303079, 291641, 338988, 308588, 305484, 325060, 363665, 292060, 374161, 315208, 294246, 312406, 359271, 348289, 366567, 345152, 345165, 324151, 339892, 292471, 320618, 354406, 372804, 368698, 299395, 355548, 362188, 323342, 339011, 366324, 358344, 328204, 312158, 363640, 294822, 363021, 364409, 360708, 347631, 367041, 350820, 329382, 362470, 295362, 308733, 324376, 334544, 373227, 327755, 314511, 310128, 331183, 320130, 303987, 357736, 347688, 314660, 371937, 310245, 327118, 301823, 314519, 373267, 372055, 356174, 371374, 351448, 348916, 372162, 347133, 343375, 311102, 362518, 340469, 332521, 313466, 354264, 372833, 301785, 373883, 318464, 363074, 324881, 322038, 294784, 359623, 297817, 293242, 326625, 318577, 355930, 359453, 327149, 345234, 373863, 364826, 362712, 320351, 358476, 331761, 320112, 315142, 335567, 291588, 341105, 367462, 302493, 331169, 300261, 317213, 373078, 295800, 344318, 360329, 332984, 359967, 362118, 343304, 326972, 310726, 373186, 338349, 337137, 314852, 366142, 356404, 361626, 304941, 330865, 309763, 307804, 369885, 352955, 333299, 365279, 332199, 312414, 299366, 331381, 346589, 336402, 303721, 331467, 363206, 360999, 362608, 343403, 340103, 345761, 308444, 315384, 340094, 294186, 327098, 327300, 327708, 336794, 293491, 352850, 329676, 355584, 303832, 320829, 364563, 370610, 315745, 365561, 291570, 329564, 325369, 372249, 325258, 293852, 352424, 307461, 358823, 302239, 344755, 293732, 339123, 353731, 295281, 322755, 305232, 302323, 319813, 299492, 367264, 337628, 323871, 332866, 374472, 339427, 350949, 299543, 361039, 307109, 322134, 366450, 346383, 344704, 318885, 331481, 367311, 327478, 333548, 307383, 351883, 336816, 371750, 315785, 358317, 316143, 370256, 347866, 294584, 303523, 330450, 331575, 313246, 351728, 355970, 345974, 321535, 312589, 348215, 331772, 354657, 373761, 332697, 339539, 328850, 337168, 356896, 358189, 313614, 356532, 369518, 329970, 303484, 302118, 322775, 368688, 300973, 346005, 299932, 297948, 372570, 368634, 360129, 362812, 356991, 351767, 354002, 316910, 292876, 363839, 320161, 361613, 363039, 360017, 314341, 372820, 371614, 332803, 368523, 307851, 294233, 327288, 348527, 309810, 374543, 312721, 299756, 315316, 311642, 312424, 301172, 342863, 351704, 368150, 354832, 331588]
+    3 => [436025, 393648, 444976, 425599, 437239, 451752, 431505, 425323, 410622, 396595, 400515, 397853, 402780, 450392, 393318, 463789, 418729, 417302, 439154, 409418, 397764, 446312, 425331, 408958, 379757, 433046, 386662, 413735, 404062, 462091, 390637, 409999, 405497, 400927, 393047, 392150, 426446, 421687, 432876, 415507, 402791, 406969, 410724, 432090, 457568, 468520, 380139, 429036, 393777, 455753, 415555, 438459, 406390, 460715, 382421, 376253, 432942, 458025, 434851, 455882, 437467, 379656, 444687, 397360, 468968, 465745, 461656, 377547, 415490, 439762, 377359, 427520, 436239, 429927, 393289, 453652, 442625, 452474, 391122, 461913, 450460, 466180, 444657, 432964, 375635, 422534, 393369, 378584, 452539, 394388, 456699, 456471, 414215, 457254, 462231, 398184, 423556, 402899, 393572, 404465, 412003, 454699, 421333, 428746, 463232, 410334, 435930, 439530, 470068, 451417, 413472, 420978, 433756, 383925, 393006, 397377, 462061, 464071, 382908, 381807, 375774, 401958, 430382, 389595, 400782, 400150, 375231, 418551, 406980, 388800, 411445, 377067, 385297, 443496, 434278, 439302, 410823, 434137, 468226, 461088, 408596, 416245, 420231, 384955, 380578, 385024, 463136, 398648, 402850, 380416, 467915, 469839, 427459, 386176, 451058, 447799, 436265, 425755, 420260, 464490, 413272, 387936, 459661, 410190, 389124, 399276, 442469, 411043, 437716, 457068, 375790, 458850, 421552, 446466, 443292, 381295, 440152, 386837, 390486, 419278, 445845, 447884, 389882, 404716, 457259, 399056, 387662, 441168, 403156, 450948, 394560, 462654, 462380, 426733, 429128, 427467, 393063, 444951, 439229, 387685, 470165, 396630, 450641, 455120, 428608, 385629, 452701, 426756, 460365, 378887, 375725, 417817, 398771, 466183, 429250, 441738, 468770, 408859, 441906, 458192, 458866, 466906, 381420, 384786, 406291, 385231, 410198, 402164, 378650, 407954, 395824, 448604, 386773, 392039, 451545, 457699, 448303, 470065, 468229, 464147, 424839, 410116, 458892, 447832, 377253, 415602, 395629, 442613, 469290, 382917, 392851, 458140, 452916, 418037, 411763, 412160, 442703, 397248, 384960, 447343, 409622, 431691, 390339, 463649, 431036, 380451, 445454, 424616, 458012, 443342, 395589, 422099, 445835, 428673, 401673, 376754, 395921, 428894, 404967, 388341, 423708, 416647, 449783, 459150, 391084, 455496, 455756, 378291, 383908, 437072, 403300, 405450, 411148, 436050, 375806, 382223, 387810, 435022, 460323, 380458, 435299, 391175, 412327, 390105, 427284, 454377, 467512, 379477, 423254, 406069, 421778, 428832, 470186, 462230, 440501, 454702, 384000, 382947, 417755, 381701, 408809, 387123, 456813, 429839, 410545, 435440, 418943, 405492, 451625, 382228, 410093]
+    4 => [512766, 498941, 518724, 539632, 546626, 505747, 476933, 524801, 519203, 517608, 507504, 470383, 499287, 491164, 472746, 507743, 546270, 472895, 543868, 472838, 534585, 519874, 483738, 498096, 545198, 555643, 558114, 544546, 513648, 491249, 491158, 489282, 515888, 512796, 535460, 483256, 545758, 562910, 476592, 533047, 547020, 558743, 532596, 536690, 514528, 470708, 495932, 553331, 562033, 526304, 496863, 487695, 484458, 529902, 553660, 492649, 538330, 557149, 553004, 515021, 509523, 513509, 523759, 547836, 528853, 535562, 490625, 539830, 527463, 487580, 499300, 549203, 560430, 509589, 502780, 526604, 526017, 503498, 554593, 521782, 541133, 473820, 477143, 546891, 498729, 482291, 557628, 513671, 478281, 517946, 552115, 484151, 532583, 542336, 518870, 534139, 514893, 517166, 539470, 523909, 550225, 549321, 560071, 540198, 489205, 514740, 529141, 491326, 486809, 493250, 550897, 489915, 494145, 470214, 495303, 497059, 508261, 491447, 516468, 536534, 507479, 553573, 553389, 524678, 508612, 518784, 479321, 533143, 516845, 552437, 509998, 471465, 502552, 511407, 527913, 529521, 475008, 557929, 539063, 490232, 533839, 561860, 552672, 509553, 524710, 518417, 544974, 530539, 503046, 507047, 533600, 551187, 540012, 504298, 510827, 543064, 519516, 512713, 486174, 508958, 521322, 510578, 483645, 555933, 525189, 511903, 521269, 508012, 536994, 500996, 512984, 526959, 501696, 513410, 537216, 521166, 490717, 490332, 517281, 545834, 562208, 541052, 491064, 532015, 509913, 475668, 500841, 487401, 485015, 535750, 539873, 509277, 491157, 532148, 548286, 557884, 561131, 556625, 492866, 500241, 480714, 505190, 548171, 521173, 558532, 550951, 531755, 547368, 551284, 555753, 521995, 494012, 491452, 554663, 503023, 530457, 525069, 524050, 557817, 516804, 473929, 545184, 483462, 538823, 533888, 545229, 482403, 488925, 472429, 492573, 537506, 531781, 506083, 530318, 529726, 490445, 510435, 496011, 561731, 483611, 553295, 517154, 541935, 524366, 537728, 492922, 563026, 499279, 488491, 545280, 496210, 499980, 476395, 554290, 510795, 480389, 552790, 555142, 563272, 557239, 533445, 509908, 528490, 512458, 548895, 530269, 488018, 493537, 512254, 495445, 558213, 509653, 546066, 495819, 483600, 502041, 506332, 524622, 472927, 521964, 557402, 532560, 523565, 527848, 512923, 498925, 551507, 521970, 543444, 482741, 503180, 474207, 555760, 473589, 543060, 502455, 557516, 477187, 543585, 526669, 512633, 526089, 512158, 505015, 539176, 498954, 556784, 507717, 528062, 554905, 480455, 510738, 503590, 547758, 472512, 543126, 529299, 470826, 506741, 553392, 488065, 536851, 522435, 507204, 502348, 553330, 556466, 562703, 488527, 512830, 481300, 516211, 536048]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2000,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[166/170] Processing: lineorder_lo_discount_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 10 keys
+  → Sample key-value pairs:
+    0 => [1, 0]
+    1 => [2]
+    2 => [3]
+    3 => [4]
+    4 => [5]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (10,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[167/170] Processing: lineorder_lo_revenue_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2000 keys
+  → Sample key-value pairs:
+    0 => [86220, 90396, 84640, 92889, 90155, 93905, 88798, 93388, 94083, 92546, 93461, 89884, 92829, 92870, 87300, 93317, 88492, 85085, 92958, 93159, 92552, 90453, 90444, 92903, 91395, 93962, 93601, 84546, 88020, 83250, 91514, 92005, 88566, 91909, 92797, 87479, 89967, 88926, 86540, 90622, 91888, 87674, 88319, 90360, 90700, 89700, 82890, 92261, 92251, 94287, 91547, 91541, 91641, 91728, 87608, 91679, 92007, 91934, 89001, 89185, 94052, 89465, 89977, 93061, 90696, 88180, 92339, 90990, 86905, 91179, 90818, 86761, 90886, 93515, 93018, 91819, 88198, 92885, 93473, 94210, 94302, 93665, 88634, 92827, 85770, 93753, 91008, 85652, 90628, 92800, 89301, 90541, 87889, 91818, 89282, 85373, 92340, 91871, 89274, 92530, 89427, 92095, 86940, 84084, 89015, 92760, 90794, 91698, 93380, 88270, 92731, 92927, 93574, 88686, 92406, 91354, 91083, 90240, 87951, 92182, 91717, 91803, 91637, 93014, 89908, 94145, 90894, 88600, 92442, 91816, 89989, 92092, 90249, 92635, 91956, 92008, 90059, 93689, 90614, 91450, 93983, 92344, 90898, 88786, 89568, 91297, 93511, 90804, 90822, 88965, 86939, 90116, 83901, 84060, 90711, 93390, 93426, 89376, 93896, 94275, 86023, 92309, 91697, 90024, 87546, 90454, 94179, 89555, 90768, 91604, 89662, 94230, 85994, 91544, 89824, 92364, 93568, 90452, 94192, 87210, 87302, 92373, 89910, 91487, 92514, 93256, 90811, 92120, 89727, 87545, 91475, 88998, 91104, 87791, 88470, 93671, 88780, 90641, 92337, 90896, 87042, 94125, 93877, 89952, 89625, 92565, 90725, 89823, 94190, 92445, 87724, 87301, 87141, 93287, 93873, 93933, 94005, 83992, 87663, 91911, 94195, 91575, 93954, 90117, 84780, 90733, 91511, 91273, 93068, 86539, 92277, 93151, 92917, 91108, 89975, 92738, 93651, 93888, 87675, 92257, 91461, 91275, 94202, 92533, 87515, 85680, 93485, 92629, 87648, 91998, 90000, 89609, 91466, 89395, 91886, 88800, 92814, 91932, 89840, 93885, 90637, 93383, 91823, 93249, 85878, 85721, 93240, 92460, 91624, 93290, 88833, 90531, 90271, 90698, 93003, 91182, 90959, 86311, 93798, 90118, 93411, 92705, 92071, 90458, 88921, 91574, 93702, 91976, 93372, 91263, 90723, 93111, 91978, 85500, 89240, 89463, 89745, 92259, 90809, 89733, 84357, 90006, 93801, 93519, 93629, 90439, 84363, 92740, 90337, 88259, 92872, 93705, 90164, 91088, 84356, 94146, 90910, 90899, 91278, 93184, 82888, 88642]
+    1 => [94492, 94329, 96559, 95142, 96196, 95923, 96575, 95238, 96281, 94647, 95501, 94460, 95040, 97860, 98041, 94377, 98418, 95198, 96416, 95060, 96874, 98370, 98114, 96221, 97386, 97063, 95517, 97428, 94940, 97753, 96909, 98019, 97835, 96579, 95976, 98329, 97474, 96106, 96760, 97369, 95429, 97245, 97829, 95879, 96740, 97505, 97002, 94330, 97575, 96228, 95571, 97287, 97089, 96923, 94305, 94844, 95353, 96870, 95134, 97301, 96203, 97110, 95417, 95328, 96260, 97900, 97492, 95438, 94779, 95576, 95131, 96391, 95799, 94485, 95605, 96426, 94680, 97256, 95450, 98096, 97198, 94545, 94416, 96097, 96102, 96915, 97705, 95463, 96006, 96404, 96871, 98264, 96653, 96351, 97055, 98378, 96759, 95763, 96715, 98144, 98361, 97555, 97189, 96460, 96094, 95604, 96672, 97391, 96240, 94621, 96371, 95502, 95962, 96730, 95369, 98426, 95653, 98207, 94869, 94320, 96424, 96432, 98229, 96813, 95933, 97058, 95400, 95320, 95769, 95372, 97412, 98191, 95814, 97290, 96824, 98193, 94965, 98078, 96333, 96615, 96470, 96668, 95322, 96543, 96377, 95881, 98324, 97472, 98189, 98105, 95239, 97471, 97292, 98017, 98360, 98022, 95439, 98330, 96532, 98280, 97565, 97155, 95138, 96616, 98098, 96444, 96822, 96961, 97440, 95616, 96144, 97113, 95955, 96921, 97008, 95331, 97122, 97005, 98023, 97299, 98379, 97890, 94473, 96284, 96120, 94866, 94769, 98021, 96000, 96634, 95985, 98140, 96808, 94484, 97478, 96902, 95380, 98010, 98173, 97766, 95458, 96761, 95105, 97151, 97574, 96162, 98429, 95318, 97469, 97255, 98028, 95953, 98305, 96239, 97985, 95034, 95229, 96126, 97485, 96600, 96993, 96734, 97322, 95141, 95537, 95700, 95065, 98201, 98410, 97288, 95135, 95094, 98218, 97747, 97200, 96999, 96041, 94843, 97708, 97759, 96791, 95974, 97661, 94400, 97557, 97481, 98100, 94858, 96324, 97244, 96430, 95744, 97222, 97012, 94766, 98110, 97098, 96138, 95404, 94385, 97857, 96326, 98194, 94464, 96139, 95144, 96370, 98419, 97686, 98079, 95712, 94941, 97094, 98008, 97278, 98024, 97609, 98443, 97582, 96731, 94548, 98295, 98211, 97654, 96849, 98050, 96710, 95595, 95191, 94863, 95590, 97744, 97095, 98070, 96700, 97953, 94502, 95058, 96384, 96918, 96143, 96834, 96522, 96583, 96257, 95220, 94864, 95905, 96214, 96325, 98199, 98009]
+    2 => [99750, 99091, 100995, 99911, 99236, 100035, 100200, 100985, 100172, 100199, 99206, 100585, 100163, 100544, 101084, 99375, 99560, 100189, 100907, 101079, 99828, 100793, 100139, 98918, 99369, 100013, 99175, 100019, 100824, 99641, 99234, 99697, 98473, 99173, 99821, 99540, 99855, 99553, 100557, 101112, 99088, 99517, 100984, 100837, 100595, 98622, 100740, 101144, 99434, 101102, 99453, 99282, 101059, 98485, 99182, 99015, 100708, 99940, 99398, 101090, 100752, 99827, 99090, 100037, 100934, 100999, 100719, 99176, 99909, 98714, 99190, 98979, 99734, 100389, 101023, 98742, 99852, 100663, 100680, 98493, 98492, 99723, 100675, 100650, 99851, 99766, 100303, 98885, 101014, 101142, 100844, 98551, 99096, 100655, 100846, 100905, 99761, 99189, 100782, 100095, 100849, 100565, 99708, 98533, 100397, 98827, 99706, 100745, 98654, 99655, 100299, 99329, 98980, 99643, 99417, 99622, 99455, 100347, 99831, 99010, 99666, 101105, 100822, 99287, 99556, 98990, 100008, 100808, 100281, 98909, 98900, 99280, 98833, 100712, 98633, 98648, 99727, 100890, 99995, 100464, 100564, 98907, 101088, 100168, 100797, 99456, 100096, 99555, 98784, 101181, 99470, 100909, 100731, 101106, 100805, 98819, 100656, 98776, 100188, 99745, 99615, 101101, 99890, 100754, 100807, 99561, 98937, 99299, 98561, 98953, 99975, 99081, 100060, 100261, 100306, 100358, 101117, 98532, 100298, 100947, 101178, 100994, 101104, 100756, 101006, 100889, 100207, 100033, 99803, 100103, 98459, 100484, 99334, 100065, 100654, 99960, 99789, 98563, 100570, 99505, 101099, 100020, 100744, 101003, 100360, 99820, 100931, 98894, 100532, 99239, 100473, 98960, 98802, 100382, 99628, 100485, 99188, 99186, 100293, 98658, 100393, 100355, 99006, 100942, 98727, 100191, 99816, 98526, 100009, 99603, 99005, 99473, 100027, 99609, 99399, 98514, 101008, 100874, 99100, 100282, 100843, 99053, 100791, 100563, 100696, 99184, 100899, 99146, 98470, 100991, 101185, 101188, 100202, 98781, 99279, 100604, 99926, 100925, 98904, 99746, 100348, 100998, 98496, 100466, 100016, 100787, 100354, 98927, 100470, 99043, 99179, 99151, 100259, 98890, 101114, 98860, 98650, 98607, 100392, 99824, 101145, 99840, 98815, 99076, 100904, 99943, 99638, 100629, 99000, 101136, 100376, 98454, 100939, 98617, 100941, 100386, 99079, 100040, 100290, 99281, 99511, 100986, 98703]
+    3 => [103373, 102500, 102928, 102034, 102302, 102317, 102931, 103494, 102730, 103471, 101399, 101528, 102381, 103361, 102807, 101397, 103208, 101830, 103203, 102980, 103363, 101762, 102221, 102589, 102921, 101601, 101480, 102243, 102992, 102955, 103707, 102711, 102052, 101572, 102901, 103507, 101948, 102704, 102343, 103225, 102122, 103464, 101713, 101581, 101203, 103423, 101503, 103213, 103700, 101710, 103338, 102797, 103376, 103310, 103117, 102871, 102386, 101381, 101537, 101842, 102219, 103129, 101533, 102126, 101293, 102277, 103303, 101473, 103458, 103239, 102050, 103498, 102312, 101382, 102335, 103104, 102018, 101434, 103652, 101584, 102776, 101464, 102092, 103017, 102578, 101391, 102256, 103773, 101236, 101661, 103149, 102350, 102495, 101810, 102541, 103525, 103695, 103227, 103776, 102584, 103395, 102485, 101438, 103686, 103005, 102875, 103696, 103329, 102347, 102438, 102624, 103596, 101901, 102401, 103016, 102697, 103360, 102608, 102044, 103103, 103702, 101308, 103312, 103657, 102898, 101752, 102201, 102568, 102488, 101929, 102922, 102924, 102751, 101478, 103608, 101472, 102796, 101682, 101753, 102178, 102906, 102053, 102416, 101556, 102119, 102813, 101267, 101288, 103694, 102228, 102696, 101467, 101744, 102945, 102793, 102628, 102652, 103318, 102725, 101671, 103047, 102274, 101955, 102032, 102857, 103789, 103245, 103201, 102860, 103460, 103102, 103199, 102022, 102825, 102168, 101430, 103400, 102722, 102496, 101374, 101386, 103123, 101195, 102336, 102683, 101499, 102565, 101520, 103513, 102257, 101189, 103013, 102051, 102486, 103248, 103108, 101354, 102724, 103391, 102016, 101839, 101831, 101302, 102421, 101706, 102518, 101757, 102566, 103415, 101564, 101724, 101538, 101449, 101529, 103406, 101988, 101568, 102378, 101342, 102755, 102075, 103600, 101237, 101466, 102629, 103294, 102701, 102653, 102607, 102961, 102223, 101919, 103009, 103101, 103399, 102610, 102429, 102964, 103514, 101760, 102865, 102721, 103592, 102475, 102128, 101567, 102371, 103667, 102422, 102412, 102823, 103562, 103051, 102226, 101674, 101650, 101657, 101574, 101474, 103510, 103255, 103575, 102512, 103602, 102380, 102872, 102572, 103508, 103512, 103788, 101280, 103742, 101278, 101944, 103325, 102803, 101403, 102284, 102791, 102905, 101925, 101532, 102606, 101235, 103603, 101289, 102963, 102415, 101623, 101557, 102615, 102763, 103687, 103752, 102459, 103355, 101241, 103690, 102532, 102802, 102333, 102938, 101938]
+    4 => [105888, 105210, 104311, 106000, 105632, 105936, 104251, 104310, 103872, 105939, 105620, 105755, 104884, 104546, 105828, 104741, 104575, 105654, 104599, 104416, 104547, 105903, 105073, 104290, 104024, 104861, 105165, 105900, 105647, 104963, 104832, 105163, 105103, 105634, 104705, 103880, 104152, 105583, 104642, 105405, 105107, 103958, 104147, 104859, 105013, 105626, 104899, 105445, 105203, 104257, 105448, 105307, 104920, 105441, 105341, 105216, 105501, 104222, 103887, 105049, 105127, 105031, 105477, 105115, 105479, 104981, 104210, 103981, 105842, 105011, 104300, 104747, 104644, 105334, 105176, 105759, 104548, 104669, 105569, 103976, 104461, 104759, 104187, 103975, 104382, 104261, 104954, 105193, 105638, 105204, 105576, 105728, 104565, 104646, 104206, 105098, 104331, 105262, 104480, 105945, 106029, 104464, 105345, 105340, 105651, 104731, 104408, 104481, 104048, 104752, 105442, 104050, 104707, 105092, 104746, 105538, 103955, 104380, 104721, 105732, 104551, 104699, 104077, 104066, 105681, 103874, 104554, 103879, 103840, 105726, 104139, 105257, 104655, 104510, 104681, 104810, 105991, 105263, 104053, 105955, 104512, 104353, 103791, 105570, 104835, 104412, 104504, 104865, 105815, 104605, 104103, 104613, 104653, 105616, 104964, 105473, 104248, 105408, 104932, 104866, 103884, 105643, 105985, 104433, 105198, 104252, 105844, 105354, 105188, 104262, 105911, 104260, 105552, 104882, 104451, 104577, 105096, 103836, 104936, 105396, 105166, 104350, 105645, 106023, 104956, 104421, 104228, 105161, 104652, 104396, 103894, 104076, 105101, 104528, 105468, 103938, 104630, 104345, 104226, 104258, 105368, 105475, 105009, 105145, 105943, 105925, 103849, 105146, 105839, 104735, 105283, 105342, 104027, 105374, 104232, 105179, 104287, 105311, 105058, 104279, 105040, 105259, 105399, 104303, 105750, 104001, 105097, 104289, 103979, 105525, 105168, 104484, 105554, 104435, 104146, 105247, 104804, 105572, 103886, 105336, 104783, 105485, 105832, 104791, 104453, 105012, 104660, 104838, 104256, 104112, 104704, 105174, 104144, 104486, 105665, 104184, 105710, 105754, 104569, 103793, 104445, 104230, 105047, 106027, 104550, 104654, 105577, 106024, 105566, 105457, 104727, 104755, 105135, 105761, 104627, 106002, 105411, 105509, 105539, 105770, 104483, 105255, 104732, 104665, 105805, 103904, 104405, 104760, 103897, 104787, 104058, 103972, 104535, 105845, 105184, 105224, 104706, 105753]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2000,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[168/170] Processing: lineorder_lo_supplycost_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 2000 keys
+  → Sample key-value pairs:
+    0 => [54718, 54420, 54479, 54780, 54359, 54658, 54419, 54480, 54538, 54178, 54240, 54478, 54660, 54418, 54838, 54779, 54239, 54358, 54599, 54058, 54720, 54539, 54300, 54600, 54719, 54598, 54299, 54360, 54778, 54540, 54238, 54298, 54179, 54180, 54659, 54060, 54120, 54118]
+    1 => [55198, 54900, 55140, 55018, 54959, 54840, 55020, 55138, 54839, 54899, 55079, 55078, 55080, 54898, 54958, 55139, 54960, 55019]
+    2 => [55200, 55258, 55380, 55438, 55381, 55319, 55321, 55320, 55199, 55260, 55318, 55378, 55379, 55259, 55439, 55201]
+    3 => [55560, 55440, 55558, 55500, 55620, 55678, 55498, 55499, 55619, 55679, 55561, 55618, 55441, 55559, 55501, 55621]
+    4 => [55738, 55800, 55859, 55860, 55798, 55740, 55858, 55680, 55739, 55799, 55801, 55741, 55681]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (2000,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[169/170] Processing: lineorder_lo_tax_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 9 keys
+  → Sample key-value pairs:
+    0 => [1]
+    1 => [3]
+    2 => [0]
+    3 => [7]
+    4 => [2]
+  → Successfully converted to integer array of actual values
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (9,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+[170/170] Processing: lineorder_lo_shipmode_b2v
+  Shape: ()
+  Type: Array{PyObject, 0}
+  → Converting Python object array...
+  → Python object type: PyObject <class 'dict'>
+  → Dictionary with 7 keys
+  → Sample key-value pairs:
+    0 => ["SHIP"]
+    1 => ["RAIL"]
+    2 => ["FOB"]
+    3 => ["MAIL"]
+    4 => ["TRUCK"]
+  → Integer conversion failed: MethodError(convert, (Int64, "SHIP"), 0x000000000000689a)
+  → Float conversion failed: MethodError(convert, (Float64, "SHIP"), 0x000000000000689a)
+  → Creating index array 1:7
+  ✓ Successfully converted Python object to Finch.Tensor
+  ✓ Converted shape: (7,)
+  ✓ Finch tensor type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+
+==================================================
+Summary:
+Successfully converted 118 tensors to Finch format
+
+Example tensor 'lineorder_lo_quantity_b2v':
+  Type: Tensor{DenseLevel{Int64, ElementLevel{0, Int64, Int64, Vector{Int64}}}}
+  Size: (50,)

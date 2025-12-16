@@ -1,0 +1,45 @@
+let p_partkey = load('p_partkey', [], [150])
+let p_name = load('p_name', [p_partkey], [150,150])
+let p_brand1 = load('p_brand1', [p_name], [145,150])
+let p_category = select(load('p_category', [p_brand1], [25,145]), [16], 0)
+let res2 = contract('a,ba,cb,dc->ac', p_partkey, p_name, p_brand1, p_category)
+let partProb = res2
+let lineorder_nrows = tensor(0, [], [26662.0])
+let part_nrows = tensor(0, [], [600000.0])
+let dwdate_nrows = tensor(0, [], [2556.0])
+let supplier_nrows = tensor(0, [], [10000.0])
+let part_nrows = contract(',->', part_nrows, lineorder_nrows)
+let dwdate_nrows = contract(',->', dwdate_nrows, part_nrows)
+let nrows = contract(',->', supplier_nrows, dwdate_nrows)
+let s_suppkey = load('s_suppkey', [], [150])
+let s_city = load('s_city', [s_suppkey], [131,150])
+let s_nation = load('s_nation', [s_city], [25,131])
+let s_region = select(load('s_region', [s_nation], [5,25]), [0], 0)
+let res4 = contract('e,fe,gf,hg->e', s_suppkey, s_city, s_nation, s_region)
+let supplierProb = res4
+let d_datekey = load('d_datekey', [], [147])
+let d_yearmonth = load('d_yearmonth', [d_datekey], [80,147])
+let d_yearmonthnum = load('d_yearmonthnum', [d_yearmonth], [77,80])
+let d_year = load('d_year', [d_yearmonthnum], [7,77])
+let res6 = contract('i,ji,kj,lk->il', d_datekey, d_yearmonth, d_yearmonthnum, d_year)
+let dwdateProb = res6
+let lo_orderkey = load('lo_orderkey', [], [150])
+let lo_supplycost = load('lo_supplycost', [lo_orderkey], [200,150])
+let lo_suppkey = load('lo_suppkey', [lo_supplycost], [150,200])
+let lo_extendedprice = load('lo_extendedprice', [lo_supplycost], [200,200])
+let lo_revenue = load('lo_revenue', [lo_extendedprice], [200,200])
+let lo_ordertotalprice = load('lo_ordertotalprice', [lo_revenue], [200,200])
+let lo_orderdate = load('lo_orderdate', [lo_ordertotalprice], [148,200])
+let lo_partkey = load('lo_partkey', [lo_supplycost], [150,200])
+
+let lo_revenue_m = load('lo_revenue_m', [], [200])
+let lo_partkey_p_partkey = load('lo_partkey_p_partkey', [], [150,150])
+let lo_suppkey_s_suppkey = load('lo_suppkey_s_suppkey', [], [150,150])
+let lo_orderdate_d_datekey = load('lo_orderdate_d_datekey', [], [148,147])
+
+let res8 = contract('m,nm,on,pn,qp,rq,sr,tn,ac,ta,e,oe,il,si->qlc',lo_orderkey, lo_supplycost, lo_suppkey, lo_extendedprice, lo_revenue, lo_ordertotalprice, lo_orderdate, lo_partkey, partProb, lo_partkey_p_partkey, supplierProb, lo_suppkey_s_suppkey, dwdateProb, lo_orderdate_d_datekey)
+let lineorderProb = res8
+
+let lineorderPr_3Norm = normalize(lineorderProb, [0,1])
+let exp_lo_revenue = contract('qlc,q->lc', lineorderPr_3Norm, lo_revenue_m)
+exp_lo_revenue

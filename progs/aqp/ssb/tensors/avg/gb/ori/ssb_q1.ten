@@ -1,0 +1,34 @@
+let d_datekey = load('d_datekey', [], [147])
+let d_yearmonth = load('d_yearmonth', [d_datekey], [80,147])
+let d_yearmonthnum = select(load('d_yearmonthnum', [d_yearmonth], [77,80]), [46], 0)
+let d_year = select(load('d_year', [d_yearmonthnum], [7,77]), [46], -1)
+let res2 = contract('a,ba,cb,dc->ad', d_datekey, d_yearmonth, d_yearmonthnum, d_year)
+let dwdateProb = res2
+let lineorder_nrows = tensor(0, [], [26662.0])
+let dwdate_nrows = tensor(0, [], [2556.0])
+let nrows = contract(',->', dwdate_nrows, lineorder_nrows)
+let lo_orderkey = load('lo_orderkey', [], [150])
+let lo_supplycost = load('lo_supplycost', [lo_orderkey], [200,150])
+let lo_extendedprice = load('lo_extendedprice', [lo_supplycost], [200,200])
+let lo_revenue = load('lo_revenue', [lo_extendedprice], [200,200])
+let lo_ordertotalprice = load('lo_ordertotalprice', [lo_revenue], [200,200])
+let lo_orderdate = load('lo_orderdate', [lo_ordertotalprice], [148,200])
+let lo_discount = select(load('lo_discount', [lo_revenue], [10,200]), [3, 4, 5], 0)
+let lo_quantity = select(load('lo_quantity', [lo_extendedprice], [50,200]), [3, 5, 37, 39, 7, 38, 12, 46, 19, 30], 0)
+let res4 = contract('e,fe,gf,hg,ih,ji,kh,lg->jgk', lo_orderkey, lo_supplycost, lo_extendedprice, lo_revenue, lo_ordertotalprice, lo_orderdate, lo_discount, lo_quantity)
+let lineorderProb = res4
+let lo_extendedprice_m = load('lo_extendedprice_m', [], [200])
+let lo_discount_m = load('lo_discount_m', [], [10])
+let lo_discount_m = select(lo_discount_m, [3, 4, 5], 0)
+let lo_orderdate_d_datekey = load('lo_orderdate_d_datekey', [], [148,147])
+let lineorderPr_0 = contract('jgk,ad->jgkad', lineorderProb, dwdateProb)
+let lineorderPr_1 = contract('jgkad,ja->gkd', lineorderPr_0, lo_orderdate_d_datekey)
+
+let dwdate_d_year = load('dwdate_d_year', [], [7,7])
+let lineorderPr_2 = contract('gkd,dt->gkt', lineorderPr_1, dwdate_d_year)
+
+let lineorderPr_2Norm = normalize(lineorderPr_2, [2])
+let ms0 = contract('m,n->mn', lo_extendedprice_m, lo_discount_m)
+let exp_lo_extendedprice_lo_discount = contract('gkt,gk->t', lineorderPr_2Norm, ms0)
+exp_lo_extendedprice_lo_discount
+

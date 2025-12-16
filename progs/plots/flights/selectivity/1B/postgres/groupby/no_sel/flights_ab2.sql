@@ -1,0 +1,12 @@
+\copy (SELECT COUNT(*) FROM flights) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q0.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT COUNT(*) FROM flights) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q1.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights GROUP BY unique_carrier) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q2.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights GROUP BY unique_carrier) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q3.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, COUNT(*) FROM flights GROUP BY year_date) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q4.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, COUNT(*) FROM flights GROUP BY year_date) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q5.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT origin_state_abr, COUNT(*) FROM flights GROUP BY origin_state_abr) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q6.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights GROUP BY unique_carrier) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q7.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT dest_state_abr, COUNT(*) FROM flights GROUP BY dest_state_abr) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q8.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT unique_carrier, COUNT(*) FROM flights GROUP BY unique_carrier) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q9.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT year_date, COUNT(*) FROM flights GROUP BY year_date) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q10.csv' With CSV DELIMITER ',' HEADER
+\copy (SELECT dest_state_abr, COUNT(*) FROM flights GROUP BY dest_state_abr) To '~/Desktop/bayestensor/progs/plots/flights/selectivity/1B/postgres/groupby/no_sel/psql_q11.csv' With CSV DELIMITER ',' HEADER

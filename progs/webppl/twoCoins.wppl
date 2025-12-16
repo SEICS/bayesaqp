@@ -1,0 +1,15 @@
+// http://webppl.org/
+var prog = function() {
+  var firstCoin = flip(0.5);
+  var secondCoin = flip(0.5);
+  var bothHeads = firstCoin && secondCoin;
+  condition(!bothHeads);
+  return firstCoin;
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  prog);
+
+print(dist);
+// {"probs":[0.6666666666666666,0.33333333333333337],"support":[false,true]}

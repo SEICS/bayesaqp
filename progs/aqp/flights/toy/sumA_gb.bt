@@ -1,0 +1,24 @@
+let year = discrete [0.55, 0.45] in	
+let dest = match year with {		
+	  0 -> discrete [0.82, 0.18]
+	| 1 -> discrete [1.0, 0.0]
+} in
+let distance = match year with {	
+	  0 -> discrete [0.18, 0.55, 0.27]
+	| 1 -> discrete [0.56, 0.22, 0.22]
+} in
+let carrier = match distance with {
+	  0 -> discrete [0.86, 0.14]	
+	| 1 -> discrete [0.25, 0.75]
+	| 2 -> discrete [0.8, 0.2]
+} in
+let filter = select carrier [0] in
+let distance_m = vector [1823.5, 2258.4, 4055.1] in
+let expProb = query [distance, year] [filter] [] in
+let expProbNorm = normalize expProb [1] in
+let avg_gb = expectation [year] expProbNorm distance_m in
+let prob = query [year] [filter] [] in
+let vec = tensor prob in
+let nrows = 1000271700 in 
+let count_gb = nrows * vec in
+avg_gb * count_gb

@@ -1,0 +1,69 @@
+let year = discrete [0.55, 0.45] in	
+let dep_delay = match year with {
+      0 -> discrete [0.46, 0.36, 0.18]
+    | 1 -> discrete [0.89, 0, 0.1]
+} in
+
+let taxi_out = match dep_delay with {
+      0 -> discrete [0.77, 0.23, 0]
+    | 1 -> discrete [0.25, 0.5, 0.25]
+    | 2 -> discrete [0.33, 0.33, 0.34]
+} in
+
+let dest_state_abr = match dep_delay with {
+      0 -> discrete [0.69, 0.31]
+    | 1 -> discrete [0.75, 0.25]
+    | 2 -> discrete [0.0, 1.0]
+} in
+
+let distance = match dep_delay with {
+      0 -> discrete [0.62, 0.23, 0.15]
+    | 1 -> discrete [0.25, 0.25, 0.5]
+    | 2 -> discrete [0.33, 0.33, 0.34]
+} in
+
+let carrier = match taxi_out with {
+      0 -> discrete [0.67, 0.33]
+    | 1 -> discrete [0.83, 0.17]
+    | 2 -> discrete [0.0, 1.0]
+} in
+
+let origin_state_abr = match distance with {
+      0 -> discrete [0.8, 0.2]
+    | 1 -> discrete [0.4, 0.6]
+    | 2 -> discrete [0.6, 0.4]
+} in
+
+let air_time = match carrier with {
+      0 -> discrete [0.31, 0.0, 0.69]
+    | 1 -> discrete [0.14, 0.72, 0.14]
+} in
+
+let taxi_in = match air_time with {
+      0 -> discrete [0.8, 0.2, 0.0]
+    | 1 -> discrete [0.8, 0.0, 0.2]
+    | 2 -> discrete [0.2, 0.4, 0.4]
+} in
+
+let arr_delay = match taxi_in with {
+      0 -> discrete [0.4, 0.2, 0.4]
+    | 1 -> discrete [0.6, 0.4, 0.0]
+    | 2 -> discrete [0.4, 0.4, 0.2]
+} in
+
+let filter1 = select origin_state_abr [0] in
+let filter2 = select dest_state_abr [0] in 
+let expProb = query [arr_delay, dep_delay] [filter1, filter2] [] in
+let expProbNorm = normalize expProb [] in
+let arr_delay_m = vector [1442.4, 1535.8, 1588] in
+let dep_delay_m = vector [1678.4, 1824.2, 2040.7] in
+let arr_delay_m_dep_delay_m = outer arr_delay_m dep_delay_m in
+let avg = expectation [] expProbNorm arr_delay_m_dep_delay_m in
+let nrows = 1000271700 in
+let identity_m = vector [1,1,1] in
+let identity_m_identity_m = outer identity_m identity_m in
+let prob = expectation [] expProb identity_m_identity_m in 
+let count = nrows * prob in
+let sumAmultB = count * avg in
+sumAmultB
+

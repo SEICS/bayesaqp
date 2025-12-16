@@ -1,0 +1,18 @@
+// http://webppl.org/
+var earthquake = function() {
+  return flip(.0001)
+}
+
+var burglary = function() {
+  return flip(.001)
+}
+
+var alarm = function() {
+  earthquake() || burglary()
+}
+
+var dist = Infer(
+  {method: 'enumerate', maxExecutions: 1000000},
+  alarm);
+
+print(dist);

@@ -1,0 +1,37 @@
+t_start = perf_counter()
+d_datekey_ = d_datekey.reshape((147))
+d_yearmonth_ = d_yearmonth.reshape((80,147))
+d_yearmonthnum_ = d_yearmonthnum.reshape((77,80))
+d_year_ = np.take(d_year.reshape((7,77)), [2], axis=0)
+res2_ = opt_einsum.contract('a,ba,cb,dc->ad', d_datekey_, d_yearmonth_, d_yearmonthnum_, d_year_, optimize='dp')
+dwdateProb_ = res2_
+lineorder_nrows_ = 26662.0
+dwdate_nrows_ = 2556.0
+nrows_ = opt_einsum.contract(',->', dwdate_nrows_, lineorder_nrows_, optimize='dp')
+lo_orderkey_ = lo_orderkey.reshape((150))
+lo_supplycost_ = lo_supplycost.reshape((200,150))
+lo_extendedprice_ = lo_extendedprice.reshape((200,200))
+lo_revenue_ = lo_revenue.reshape((200,200))
+lo_ordertotalprice_ = lo_ordertotalprice.reshape((200,200))
+lo_orderdate_ = lo_orderdate.reshape((148,200))
+lo_discount_ = np.take(lo_discount.reshape((10,200)), [0,1,2], axis=0)
+lo_quantity_ = np.take(lo_quantity.reshape((50,200)), [0,2,4,9,10,11,13,14,15,16,17,18,20,25,26,27,29,32,35,36,40,42,45,49], axis=0)
+res4_ = opt_einsum.contract('e,fe,gf,hg,ih,ji,kh,lg->jgk', lo_orderkey_, lo_supplycost_, lo_extendedprice_, lo_revenue_, lo_ordertotalprice_, lo_orderdate_, lo_discount_, lo_quantity_, optimize='dp')
+lineorderProb_ = res4_
+lo_extendedprice_m_ = lo_extendedprice_m.reshape((200))
+lo_discount_m_ = lo_discount_m.reshape((10))
+lo_discount_m_ = np.take(lo_discount_m_, [0,1,2], axis=0)
+lo_orderdate_d_datekey_ = lo_orderdate_d_datekey.reshape((148,147))
+lineorderPr_0_ = opt_einsum.contract('jgk,ad->jgkad', lineorderProb_, dwdateProb_, optimize='dp')
+lineorderPr_1_ = opt_einsum.contract('jgkad,ja->kgd', lineorderPr_0_, lo_orderdate_d_datekey_, optimize='dp')
+lineorderPr_1Norm_ = lineorderPr_1_ / opt_einsum.contract('abc->', lineorderPr_1_, optimize='dp')
+ms0_ = opt_einsum.contract('m,n->mn', lo_extendedprice_m_, lo_discount_m_, optimize='dp')
+exp_lo_extendedprice_lo_discount_ = opt_einsum.contract('kgd,gk->d', lineorderPr_1Norm_, ms0_, optimize='dp')
+lineorderPr_1_um_ = np.ones((3,200,1))
+lineorderPr_1_count_ = opt_einsum.contract('kgd,kgd->d', lineorderPr_1_, lineorderPr_1_um_, optimize='dp')
+count_lo_extendedprice_lo_discount_ = opt_einsum.contract(',b->b', nrows_, lineorderPr_1_count_, optimize='dp')
+sum_lo_extendedprice_lo_discount_ = opt_einsum.contract(',b->b', exp_lo_extendedprice_lo_discount_, count_lo_extendedprice_lo_discount_, optimize='dp')
+sum_lo_extendedprice_lo_discount_
+t_end = perf_counter()
+latency = (t_end-t_start)*1000
+latency,sum_lo_extendedprice_lo_discount_.tolist()

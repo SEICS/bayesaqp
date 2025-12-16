@@ -1,0 +1,23 @@
+let year_date = loadDiscrete('year_date', [], [22]) in
+let distance = loadDiscrete('distance', [year_date], [3000, 22]) in
+let air_time = loadDiscrete('air_time', [distance], [1859, 3000]) in
+let arr_delay = loadDiscrete('arr_delay', [distance], [971, 3000]) in
+let taxi_out = loadDiscrete('taxi_out', [distance], [428, 3000]) in
+let origin = loadDiscrete('origin', [distance], [372, 3000]) in
+let dest = loadDiscrete('dest', [distance], [371, 3000]) in
+let taxi_in = loadDiscrete('taxi_in', [distance], [255, 3000]) in
+let unique_carrier = loadDiscrete('unique_carrier', [distance], [26, 3000]) in
+let dep_delay = loadDiscrete('dep_delay', [arr_delay], [752, 971]) in
+let origin_state_abr = loadDiscrete('origin_state_abr', [origin], [53, 372]) in
+let dest_state_abr = loadDiscrete('dest_state_abr', [dest], [53, 371]) in
+let year_date_ = select year_date [2] in
+let origin_ = select origin [5] in
+let flights_prob0 = query [dep_delay,unique_carrier] [year_date_,origin_] [] [] in
+let flights_prob0Norm = normalize flights_prob0 [1] in
+let dep_delay_m = loadTensor('dep_delay_m', [752]) in
+let res = expectation [unique_carrier] flights_prob0Norm dep_delay_m [0] in
+
+let flights_unique_carrier_b2v = loadDictionary('flights_unique_carrier_b2v', [26,26]) in
+let res1_rev = map res [flights_unique_carrier_b2v] in
+let res1_rev_lift = lift res1_rev in
+res1_rev_lift

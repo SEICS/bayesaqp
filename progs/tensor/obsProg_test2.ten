@@ -1,0 +1,6 @@
+let x  = tensor(1, [2], [0.4, 0.6]) in
+let y  = tensor(1, [2], [0.7, 0.3]) in
+let zv = tensor(3, [2, 2, 2], [1, 0, 0, 1, 0, 1, 0, 1]) in
+let zs = select(zv, [0], -1) in
+let z  = contract('i,j,ijk->k', x, y, zs) in
+z

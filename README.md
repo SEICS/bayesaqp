@@ -162,7 +162,7 @@ python run_experiments.py \
 ## Note on Paths
 The command examples use paths like `~/Desktop/data/...`. Please adjust these paths to match your local data directory structure.
 
-If you find BayesAQP useful please cite us in your work:
+If you find BayesAQP useful, please cite us in your work:
 ```bash
 @article{10.1145/3802003,
 author = {Pan, Jingwen and Cheney, James and Shaikhha, Amir},

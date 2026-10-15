@@ -61,6 +61,7 @@ python run_experiments.py \
 #### Step 3: Execution
 You need two terminals for this step: one for compilation and optimization, and one for fast execution. Note that before loading the server, you need to train the model for SSB as well. Otherwise, you might want to manually comment out the lines of code loading the SSB data in file server/tensor_server.py.
 
+
 **Terminal 1: Start the Python Tensor Server**
 This server handles the heavy tensor operations (default: NumPy CPU).
 ```bash
@@ -72,7 +73,23 @@ For optimized performance: PyTorch GPU (currently only on MacOS)
 python server/tensor_server.py --backend torch
 ```
 
-**Terminal 2: Run the BTL++ Program**
+
+**Terminal 2: Evaluate and collect results**
+Evaluate the AQP results against the ground truth:
+```bash
+python run_experiments.py \
+    --run_aqp \
+    --evaluate_aqp_results \
+    --dataset flights \
+    --ground_truth_path Benchmarks/flights/ground_truth_1B.pkl \
+    --query_path Benchmarks/flights/sql/aqp_queries.sql \
+    --evaluation_results_path Benchmarks/flights/flights_model_based_aqp.csv \
+    --backend torch \
+    --codegen_path progs/aqp/flights/codegen/test
+```
+
+
+**Optional: If you want to run specific BTL++ Program**
 Invoke `sbt` to run the generated BTL++ program. By default (NumPy CPU),
 ```bash
 sbt "run progs/aqp/flights/codegen/test/flights_q0 bt"
@@ -90,20 +107,6 @@ For faster startup, you can compile a native image:
     ```bash
     target/native-image/bayestensor progs/aqp/flights/codegen/test/flights_q0 bt
     ```
-
-#### Step 4: Evaluation
-Evaluate the AQP results against the ground truth:
-```bash
-python run_experiments.py \
-    --run_aqp \
-    --evaluate_aqp_results \
-    --dataset flights \
-    --ground_truth_path Benchmarks/flights/ground_truth_1B.pkl \
-    --query_path Benchmarks/flights/sql/aqp_queries.sql \
-    --evaluation_results_path Benchmarks/flights/flights_model_based_aqp.csv \
-    --backend torch \
-    --codegen_path progs/aqp/flights/codegen/test
-```
 
 ---
 
@@ -134,7 +137,7 @@ python run_experiments.py \
 ```
 
 #### Step 3: Execution
-Follow the same **Execution** steps as Flights 1B (start `tensor_server.py` in one terminal, run `sbt` commands in another).
+Follow the same **Execution** steps as Flights 1B (start `tensor_server.py` in one terminal, run step 4 in another).
 
 #### Step 4: Evaluation
 ```bash

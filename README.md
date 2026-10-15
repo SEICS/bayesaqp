@@ -69,7 +69,7 @@ python server/tensor_server.py
 
 For optimized performance: PyTorch GPU (currently only on MacOS)
 ```bash
-# python server/tensor_server.py --backend torch
+python server/tensor_server.py --backend torch
 ```
 
 **Terminal 2: Run the BTL++ Program**
@@ -80,7 +80,7 @@ sbt "run progs/aqp/flights/codegen/test/flights_q0 bt"
 
 For optimized performance: PyTorch-GPU (currently, the GPU configuration is only for MacOS)
 ```bash
-# sbt "run progs/aqp/flights/codegen/test/flights_q0 bt torch"
+sbt "run progs/aqp/flights/codegen/test/flights_q0 bt torch"
 ```
 
 **Alternative: Native Image (Ahead-of-time compilation)**

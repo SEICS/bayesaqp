@@ -84,10 +84,10 @@ For faster performance: PyTorch-GPU (currently, the GPU configuration is only fo
 
 **Alternative: Native Image (Ahead-of-time compilation)**
 For faster startup, you can compile a native image:
-1.  Generate image: `bayesaqp/nativeImage` (via sbt)
+1.  Generate image: `bayestensor/nativeImage` (via sbt)
 2.  Run:
     ```bash
-    target/native-image/bayesaqp progs/aqp/flights/codegen/test/flights_q0 bt
+    target/native-image/bayestensor progs/aqp/flights/codegen/test/flights_q0 bt
     ```
 
 #### Step 4: Evaluation

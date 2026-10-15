@@ -1,21 +1,21 @@
 # BayesAQP
 
 This repository contains a snapshot of Approximate Query Processing (AQP) experiments using **BayesAQP**. It allows for training per-table statistics
-using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them futher into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
+using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
 
-> **Note**: This is a research snapshot and currently supports specific experimental setups (Flights 1B, SSB 50GB). Full reproducibility for all arbitrary workloads is a work in progress. Also, all BayesTensor mentioned or implemented in this repository refers to the extension on original BTL, that is BTL++.
+> **Note**: This is a research snapshot and currently supports our main experimental setups (Flights 1B, SSB 50GB). Full reproducibility for automating all arbitrary workloads is a work in progress. Also, all BayesTensor mentioned or implemented in this repository refers to the extension on original BTL, that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase.
 
 ## Prerequisites
 
 - **Python 3.12** (managed via Conda)
 - **Scala 2.12** & **sbt** (for running the compiler/driver)
 - **GraalVM** (optional, for native image compilation)
-
+  
 ## Installation
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
+    git clone git@github.com:SEICS/bayesaqp.git
     cd bayesaqp
     ```
 
@@ -59,26 +59,28 @@ python run_experiments.py \
 ```
 
 #### Step 3: Execution
-You need two terminals for this step.
+You need two terminals for this step: one for compilation and optimization, and one for fast execution. Note that before loading the server, you need to train the model for SSB as well. Otherwise, you might want to manually comment out the lines of code loading the SSB data in file server/tensor_server.py.
 
 **Terminal 1: Start the Python Tensor Server**
-This server handles the heavy tensor operations (default: NumPy/CPU).
+This server handles the heavy tensor operations (default: NumPy CPU).
 ```bash
-# Default (NumPy CPU)
 python server/tensor_server.py
+```
 
-# Optional: PyTorch/GPU (currently only on MacOS)
-# python server/tensor_server.py --backend torch
+For optimized performance: PyTorch GPU (currently only on MacOS)
+```bash
+python server/tensor_server.py --backend torch
 ```
 
 **Terminal 2: Run the BTL++ Program**
-Invoke `sbt` to run the generated BTL++ program.
+Invoke `sbt` to run the generated BTL++ program. By default (NumPy CPU),
 ```bash
-# Default (NumPy CPU)
 sbt "run progs/aqp/flights/codegen/test/flights_q0 bt"
+```
 
-# Optional: PyTorch/GPU (currently only on MacOS)
-# sbt "run progs/aqp/flights/codegen/test/flights_q0 bt torch"
+For optimized performance: PyTorch-GPU (currently, the GPU configuration is only for MacOS)
+```bash
+sbt "run progs/aqp/flights/codegen/test/flights_q0 bt torch"
 ```
 
 **Alternative: Native Image (Ahead-of-time compilation)**
@@ -103,6 +105,9 @@ python run_experiments.py \
 ---
 
 ### 2. Star Schema Benchmark (SSB) 50GB
+
+#### Data Generation
+Generate the dataset following the steps from [DeepDB Public](https://github.com/DataManagementLab/deepdb-public).
 
 #### Step 1: Training
 ```bash
@@ -148,3 +153,22 @@ python run_experiments.py \
 
 ## Note on Paths
 The command examples use paths like `~/Desktop/data/...`. Please adjust these paths to match your local data directory structure.
+
+If you find BayesAQP useful please cite us in your work:
+```bash
+@article{10.1145/3802003,
+author = {Pan, Jingwen and Cheney, James and Shaikhha, Amir},
+title = {A Backend-Agnostic Compiler for Approximate Query Processing with Probabilistic Tensor Algebra},
+year = {2026},
+url = {https://doi.org/10.1145/3802003},
+journal = {Proc. ACM Manag. Data}
+}
+
+@inproceedings{10.1145/3578360.3580258,
+author = {Pan, Jingwen and Shaikhha, Amir},
+title = {Compiling Discrete Probabilistic Programs for Vectorized Exact Inference},
+year = {2023},
+url = {https://doi.org/10.1145/3578360.3580258},
+booktitle = {Proceedings of the 32nd ACM SIGPLAN International Conference on Compiler Construction}
+}
+```

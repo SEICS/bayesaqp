@@ -1,9 +1,8 @@
-# BayesAQP
+# BayesAQP: A Backend-Agnostic Compiler for Approximate Query Processing with Probabilistic Tensor Algebra
 
-This repository contains a snapshot of Approximate Query Processing (AQP) experiments using **BayesAQP**. It allows for training per-table statistics
-using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
+**BayesAQP** supports efficient Approximate Query Processing (AQP) with a compilation pipeline by combining probabilistic programming and advanced tensor processing. It allows for training per-table statistics using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
 
-> **Note**: This is a research snapshot and currently supports our main experimental setups (Flights 1B, SSB 50GB). Full reproducibility for automating all arbitrary workloads is a work in progress. Also, all BayesTensor mentioned or implemented in this repository refers to the extension on original BTL, that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase. All experiments are evaluated with 4 warm-ups and performance is averaged over 5 runs.
+> **Note**: All BayesTensor mentioned or implemented in this repository refers to the extension on original BTL (cc'23 paper mentioned below), that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase. All experiments are evaluated with 4 warm-ups and performance is averaged over 5 runs.
 
 ## Prerequisites
 
@@ -25,7 +24,7 @@ using Bayesian Networks and integrates join histograms for efficient multi-table
     conda activate py312
     ```
 
-## Running Experiments
+## Running Experiments & Reproducing Results
 
 All commands should be run from the root `bayesaqp` directory.
 

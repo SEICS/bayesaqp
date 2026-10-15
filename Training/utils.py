@@ -6,10 +6,12 @@ import pickle
 import sys
 from time import perf_counter
 from typing import Dict, Any, List, Optional, Set, Tuple
+from Models.BN_ensemble_model import BN_ensemble
 import opt_einsum as oe
 import sparse
 import numpy as np
 import ast
+import networkx as nx  # Added for connected components
 
 from Schemas.graph_representation import SchemaGraph
 from Schemas.flights.schema import gen_flights_1B_schema
@@ -69,7 +71,7 @@ def generate_idx_map_except_pk(
 
 def generate_idx_map(
     schema: SchemaGraph,
-    bns: Dict[str, Any],
+    bn_ensemble: BN_ensemble,
     store_pkl: bool = False,
     bin_size: int = 100,
     idx_map_path: Optional[str] = None,
@@ -90,7 +92,7 @@ def generate_idx_map(
     Returns:
         The dictionary of updated BN objects.
     """
-
+    bns = bn_ensemble.bns
     # Identify all attributes involved in relationships (PKs/FKs)
     union_pks_pairs = [(r.start_attr, r.end_attr) for r in schema.relationships]
     union_pks = set(itertools.chain.from_iterable(union_pks_pairs))
@@ -99,26 +101,28 @@ def generate_idx_map(
     for bn_name, bn in bns.items():
         bns[bn_name] = generate_idx_map_except_pk(schema, bn, union_pks)
 
-    # Handle PK/FK unification
+    # 1. Build a graph where nodes are (table, attribute) pairs
+    g = nx.Graph()
     for relationship in schema.relationships:
-        table1 = relationship.start
-        table2 = relationship.end
+        u = (relationship.start, relationship.start_attr)
+        v = (relationship.end, relationship.end_attr)
+        g.add_edge(u, v)
 
-        # Get all unique values for the join attributes from both tables
-        vals1 = itertools.chain.from_iterable(
-            bns[table1].bin_to_valname[relationship.start_attr].values()
-        )
-        vals2 = itertools.chain.from_iterable(
-            bns[table2].bin_to_valname[relationship.end_attr].values()
-        )
-
-        # Create a unified mapping for the join key
-        uniq_union_set = set(vals1).union(vals2)
+    # 2. Find connected components (groups of attributes that must share the same mapping)
+    for component in nx.connected_components(g):
+        # 3. Collect all unique values from all attributes in the component
+        all_vals = set()
+        for table, attr in component:
+            vals = itertools.chain.from_iterable(bns[table].bin_to_valname[attr].values())
+            all_vals.update(vals)
+        
+        # 4. Create a unified mapping
         # Sort for deterministic indexing
-        uniq_union = {val: i for i, val in enumerate(sorted(list(uniq_union_set)))}
-
-        bns[table1].update_idx_map({relationship.start_attr: uniq_union})
-        bns[table2].update_idx_map({relationship.end_attr: uniq_union})
+        uniq_union = {val: i for i, val in enumerate(sorted(list(all_vals)))}
+        
+        # 5. Update BN objects for all attributes in the component
+        for table, attr in component:
+            bns[table].update_idx_map({attr: uniq_union})
 
     if store_pkl and idx_map_path:
         for bn_name, bn in bns.items():
@@ -138,7 +142,8 @@ def generate_idx_map(
                 pickle.dump(bn.bn_idx_map, f, pickle.HIGHEST_PROTOCOL)
             logger.info(f"idx_map of table {bn_name} stored at: {save_path}")
 
-    return bns
+    bn_ensemble = BN_ensemble(schema, bns)
+    return bn_ensemble
 
 
 def compute_sparse_idx_mat_for_var(
@@ -183,7 +188,7 @@ def compute_sparse_idx_mat_for_var(
         return None
 
 def compute_sparse_idx_mat(
-    bns: Dict[str, Any],
+    bn_ensemble: BN_ensemble,
     schema: SchemaGraph,
     bin_size: int = 1000,
     store_pkl: bool = False,
@@ -199,6 +204,7 @@ def compute_sparse_idx_mat(
         store_pkl: Whether to save results.
         output_dir: Directory to save results.
     """
+    bns = bn_ensemble.bns
     idx_mat_pks = {}
     idx_mat_m3 = {}
 
@@ -232,7 +238,6 @@ def compute_sparse_idx_mat(
         fks = fact_tables_fks.get(bn_name, set())
 
         for var in bn.bn_idx_map:
-            # For fact tables, we only care about Foreign Keys for join purposes
             if is_fact_table and var not in fks:
                 continue
 
@@ -246,6 +251,7 @@ def compute_sparse_idx_mat(
 
         idx_mat_pks[bn_name] = idx_mat_var
         bn.update_idx_mat(idx_mat_var)
+        bns[bn_name] = bn
 
         if store_pkl and output_dir:
             table_npz_path = os.path.join(output_dir, f"{bn_name}_idx_mat.pkl")
@@ -259,6 +265,7 @@ def compute_sparse_idx_mat(
                 pickle.dump(idx_mat_var, f, protocol=pickle.HIGHEST_PROTOCOL)
             logger.info(f"Saved sparse idx_mat for {bn_name} to {table_npz_path}")
 
+    bn_ensemble = BN_ensemble(schema, bns)
     # Compute reduced primary key matrices for joins
     ts_pk = perf_counter()
     if schema.relationships:
@@ -270,7 +277,7 @@ def compute_sparse_idx_mat(
 
             pk = idx_mat_pks[start][start_attr]  # primary key side (or FK in fact)
             fk = idx_mat_pks[end][end_attr]  # foreign key side
-
+            
             # Reduce the dimension mapping from truth value to histogram bucket indice
             m3 = oe.contract("pk,fk->pf", pk, fk, optimize="dp")
             idx_mat_m3[relationship] = m3
@@ -279,6 +286,7 @@ def compute_sparse_idx_mat(
             f"Computation of primary_key_reduced_idx_mat took: {(perf_counter() - ts_pk)}s."
         )
 
+        bn_ensemble.update_primary_key_reduced_idx_mat(idx_mat_m3)
         if store_pkl and output_dir:
             m3_save_path = os.path.join(output_dir, "primary_key_reduced_idx_mat.pkl")
             if os.path.exists(m3_save_path):
@@ -289,6 +297,13 @@ def compute_sparse_idx_mat(
             with open(m3_save_path, "wb") as f:
                 pickle.dump(idx_mat_m3, f, protocol=pickle.HIGHEST_PROTOCOL)
             logger.info(f"Saved primary key reduced idx_mat to {m3_save_path}")
+    
+    return bn_ensemble
+
+def get_flights_colname():
+    return ['year_date', 'unique_carrier', 'origin', 'origin_state_abr', 'dest', 'dest_state_abr',
+            'dep_delay', 'taxi_out', 'taxi_in', 'arr_delay', 'air_time', 'distance']
+
 
 def get_flights_attr_type():
     return {'year_date': 'categorical', 'unique_carrier': 'categorical',
@@ -298,10 +313,13 @@ def get_flights_attr_type():
             'taxi_in': 'continuous', 'arr_delay': 'continuous',
             'air_time': 'continuous', 'distance': 'continuous'}
 
-def get_flights_colname():
-    return ['year_date', 'unique_carrier', 'origin', 'origin_state_abr', 'dest', 'dest_state_abr',
-            'dep_delay', 'taxi_out', 'taxi_in', 'arr_delay', 'air_time', 'distance']
-            
+def get_synthetic_colname():
+    return ['col0', 'col1']
+
+def get_synthetic_attr_type():
+    return {'col0': 'categorical', 'col1': 'categorical'}
+    
+
 def get_ssb_attr_type(table):
     attr_type = None
     if table == "lineorder" or table == "lineorder_sampled":
@@ -382,6 +400,54 @@ def usefulCols_ssb(tname):
     else:
         raise NotImplementedError("Doesn't support other dataset now.")
 
+def get_imdb_attr_type(table):
+    attr_type = None
+    if table == "title":
+        attr_type = {'id': "categorical", 'title': "categorical", 'imdb_index': "categorical", 'kind_id': "categorical", 'production_year': "categorical", 'imdb_id': "categorical", 'phonetic_code': "categorical", 'episode_of_id': "categorical", 'season_nr': "categorical", 'episode_nr': "categorical", 'series_years': "categorical", 'md5sum': "categorical"}
+    elif table == "movie_info_idx":
+        attr_type = {'id': "categorical", 'movie_id': "categorical", 'info_type_id': "categorical", 'info': "categorical", 'note': "categorical"}
+    elif table == "movie_info":
+        attr_type = {'id': "categorical", 'movie_id': "categorical", 'info_type_id': "categorical", 'info': "categorical", 'note': "categorical"}
+    elif table == "cast_info":
+        attr_type = {'id': "categorical", 'person_id': "categorical", 'movie_id': "categorical", 'person_role_id': "categorical", 'note': "categorical", 'nr_order': "categorical", 'role_id': "categorical"}
+    elif table == "movie_keyword":
+        attr_type = {'id': "categorical", 'movie_id': "categorical", 'keyword_id': "categorical"}
+    elif table == "movie_companies":
+        attr_type = {'id': "categorical", 'movie_id': "categorical", 'company_id': "categorical", 'company_type_id': "categorical", 'note': "categorical"}
+    return attr_type
+
+def get_imdb_colname(tname):
+    if tname == "title":
+        return ['id', 'title', 'imdb_index', 'kind_id', 'production_year', 'imdb_id', 'phonetic_code', 'episode_of_id', 'season_nr', 'episode_nr', 'series_years', 'md5sum']
+    elif tname == "movie_info_idx":
+        return ['id', 'movie_id', 'info_type_id', 'info', 'note']
+    elif tname == "movie_info":
+        return ['id', 'movie_id', 'info_type_id', 'info', 'note']
+    elif tname == "cast_info":
+        return ['id', 'person_id', 'movie_id', 'person_role_id', 'note', 'nr_order', 'role_id']
+    elif tname == "movie_keyword":
+        return ['id', 'movie_id', 'keyword_id']
+    elif tname == "movie_companies":
+        return ['id', 'movie_id', 'company_id', 'company_type_id', 'note']
+    else:
+        raise NotImplementedError("Doesn't support other dataset now.")
+
+def usefulCols_imdb(tname):
+    if tname == "title":
+        return ['id', 'kind_id', 'production_year']
+    elif tname == "movie_info_idx":
+        return ['id', 'movie_id', 'info_type_id']
+    elif tname == "movie_info":
+        return ['id', 'movie_id', 'info_type_id']
+    elif tname == "cast_info":
+        return ['id', 'movie_id', 'role_id']
+    elif tname == "movie_keyword":
+        return ['id', 'movie_id', 'keyword_id']
+    elif tname == "movie_companies":
+        return ['id', 'movie_id', 'company_id', 'company_type_id']
+    else:
+        raise NotImplementedError("Doesn't support other dataset now.")
+        
 def get_filter_selection(attr, con_val, symbol, bn): # attr, value, ops, bn, weight
     if isinstance(con_val, str):
         con_val = eval(con_val)

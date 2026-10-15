@@ -24,6 +24,7 @@ except ImportError:
 import opt_einsum
 from opt_einsum import contract, shared_intermediates, RandomGreedy
 import math
+import re
 import time
 from itertools import chain
 from time import perf_counter
@@ -42,8 +43,18 @@ def force_cpu(arr):
 		return arr.cpu().numpy()
 	return arr
 
+def interpret_coo_sparsity(x):
+	if isinstance(x, sparse.COO):
+		nnz = x.nnz
+		total = np.prod(x.shape)
+		density = nnz / total
+		return 1.0 - density
+
 def torch_arr(x):
 	if isinstance(x, sparse.COO):
+		# if interpret_coo_sparsity(x) > 0.67:
+		# 	t = torch.sparse_coo_tensor(x.coords, x.data, x.shape, dtype=torch.float32)
+		# else:	
 		t = torch.from_numpy(x.todense())
 	elif isinstance(x, (float, int)):
 		t = torch.tensor(x, dtype=torch.float32)
@@ -69,6 +80,12 @@ def torch_arr(x):
 		t = x
 	else:
 		raise TypeError(f"Unsupported type: {type(x)}")
+	
+	# if device.type == 'mps':
+	# 	if t.is_sparse:
+	# 		t = t.to_dense()
+	# 	return t.float().half().to(device)
+	
 	return t.float().to(device) # torch requires same dtype and device(GPU/CPU) for all tensors. Mps/mlx doesn't support float64/double()
 
 def get_true_names(dict):
@@ -174,7 +191,7 @@ def recvfull(sock):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--backend', default='numpy', help='Which backend to be used')
+	parser.add_argument('--backend', default='numpy', help='Which backend to be used (either numpy or torch)')
 	# parser.add_argument('--dataset', default='flights', help='Which dataset statistics to be loaded')
 	# parser.add_argument('--scale', default='1B', help='Which scale to be used') # 
 	args = parser.parse_args()
@@ -197,13 +214,18 @@ if __name__ == "__main__":
 	# TODO: Need to load the cpds for the different datasets and scales with argparse
 	bin_size = 1000
 	flights_cpds = dict(np.load('progs/aqp/flights/cpds/test/bin1500.npz', allow_pickle=True)) # should be passed by user with argparse
-	# flights_cpds = dict(np.load('progs/aqp/flights/cpds/1B/bin1500.npz', allow_pickle=True)) 
-	# flights_cpds = dict(np.load('progs/aqp/flights/cpds/1B/cpds/bin1500.npz', allow_pickle=True))
+	# synthetic_cpds = dict(np.load('progs/aqp/synthetic/cpds/change_s/s0.0_c0.4_dom10000/bin1500.npz', allow_pickle=True))
+
  
 	ssb_cpds = load_tensors("progs/aqp/ssb/cpds/sf50-test/bin1000_dense.npz", "progs/aqp/ssb/cpds/sf50-test/bin1000_sparse.pkl")
 	# ssb_cpds = load_tensors(f'progs/aqp/ssb/cpds/sf50/bin{bin_size}_dense.npz', f'progs/aqp/ssb/cpds/sf50/bin{bin_size}_sparse.pkl') # for sparse tensor
 	# ssb_cpds = load_tensors(f'progs/aqp/ssb/cpds/sf50-npcomressed/bin{bin_size}_dense.npz', f'progs/aqp/ssb/cpds/sf50-npcomressed/bin{bin_size}_sparse.pkl') # for sparse tensor
-	# # print(f"ssb_cpds keys: {ssb_cpds.keys()}")
+	# print(f"ssb_cpds keys: {ssb_cpds.keys()}")
+
+	# # skewness on group by p_name:
+	# skewness = "sf50-skew15"
+	# ssb_cpds = load_tensors(f"progs/aqp/ssb/cpds/{skewness}/bin1000_dense.npz", f"progs/aqp/ssb/cpds/{skewness}/bin1000_sparse.pkl")
+
 
 	# Need to manually load the cpds for the ablation study for now
 	# param = 8
@@ -217,11 +239,22 @@ if __name__ == "__main__":
 	# # # print(f"ssb_cpds keys: {ssb_cpds['part_p_name_b2v']}")	
 
 	# # print(f"ssb_cpds keys: {ssb_cpds.keys()}")	
+	# for AQP on imdb
+	imdb_cpds = load_tensors("progs/aqp/imdb/cpds/bin1000_dense.npz", "progs/aqp/imdb/cpds/bin1000_sparse.pkl") # for testing progs/update_join/sql/alltests.sql
+	# for chain join testing on imdb origin
+	# imdb_cpds = load_tensors("progs/update_join/imdb-origin/cpds/bin1000_dense.npz", "progs/update_join/imdb-origin/cpds/bin1000_sparse.pkl")
+	# for chain join testing on imdb zero, ci has zero correlation with any other table except t
+	# imdb_cpds = load_tensors("progs/update_join/imdb-zero/cpds/bin1000_dense.npz", "progs/update_join/imdb-zero/cpds/bin1000_sparse.pkl")
+
+	for (k, v) in imdb_cpds.items():
+		print(f"k: {k}, v: {v.shape}")
+	# print(f"synthetic_cpds keys: {synthetic_cpds.keys()}")
 	print(f"Finished loading the cpds.")
 
 	if args.backend == 'torch':
 		# Combine dictionaries first
-		combined_cpds = {**flights_cpds, **ssb_cpds}
+		combined_cpds = {**flights_cpds, **ssb_cpds, **imdb_cpds}
+		# combined_cpds = {**imdb_cpds}#, **synthetic_cpds}
 		for (k, v) in combined_cpds.items():
 			if v is None:
 				continue
@@ -237,7 +270,8 @@ if __name__ == "__main__":
 	else: # by default, execute in numpy
 		globals().update(flights_cpds)
 		globals().update(ssb_cpds)
-
+		globals().update(imdb_cpds)
+		# globals().update(synthetic_cpds)
 	while True:
 		connection, client_address = sock.accept()
 		print('connection from ', client_address, file=sys.stderr)
@@ -253,15 +287,43 @@ if __name__ == "__main__":
 					tensor_load(file_name, globals())
 					res = 'LOADED %s' % file_name
 				else:
-					# for i in range(warmup+runs+1):
-					res = tensor_exec(line.decode(), globals())	
-					# print(f"res: {res}")
-						# if i >= warmup:
-						# 	avg_lat.append(res[0])
+					total_lat = 0
+					
+					# Since we cannot modify code generation, we just log progress without query ID
+					# The user can correlate timestamps in logs with their execution script if needed.
+					
+					# Warmup runs
+					for i in range(warmup):
+						print(f"Warmup run {i+1}/{warmup}", file=sys.stderr)
+						tensor_exec(line.decode(), globals())
+					
+					# Measured runs
+					for i in range(runs):
+						print(f"Measured run {i+1}/{runs}", file=sys.stderr)
+						res = tensor_exec(line.decode(), globals())	
+						total_lat += res[0]
+					
+					avg_lat = total_lat / runs
+					print(f"Average latency over {runs} runs: {avg_lat:.3f} ms\n", file=sys.stderr)
+					# Use the result (res) from the last run
+					res = (avg_lat, res[1])
+
 				res_dir = "server/res/" 
 				if not os.path.exists(res_dir):
-					os.makedirs(res_dir)
-				file_path = np.save(open(os.path.join(res_dir, "result_rev_auto.npy"), "wb"), res[1], allow_pickle=True)
+					os.makedirs(res_dir) 
+				npy_path = os.path.join(res_dir, "result_rev_auto.npy")
+				np.save(open(npy_path, "wb"), res[1], allow_pickle=True)
+				
+				# Log latency and result info to JSONL
+				log_entry = {
+					"timestamp": time.time(),
+					"latency": res[0],
+					"result_path": npy_path
+				}
+				with open(f"server/server_log_{args.backend}.jsonl", "a") as log_file:
+					log_file.write(json.dumps(log_entry) + "\n")
+					log_file.flush()
+
 				# print(res)
 				# if avg_lat:
 				# 	lat = np.mean(avg_lat)

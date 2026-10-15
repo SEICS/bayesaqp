@@ -172,6 +172,9 @@ object Driver {
     // // // println(s"pyRes: ${pyRes}")
     // // // println(s"pyTime: ${pyRes(0)} pyRes: ${pyRes(1)}")
   }
+  def parseFlag(args: String): Boolean = {
+    if(args == "true") true else if(args == "false") false else raise(s"Illegal flag value: ${args}. Must be true or false.")
+  }
   def main(args: Array[String]): Unit = {
 //     PythonProxy.runPythonCodeServer("LOAD 'server/load_sample.py'")
 //     val code = """from opt_einsum import contract
@@ -195,7 +198,7 @@ object Driver {
         // case "inline" => InputBaseline("inline")
         case _ => raise(s"Not acceptable second arg: ${args.mkString(",")}")
       }, "findKind")
-      time(e2e(file, kind), "e2e execution")
+      time(e2e(file, kind, "numpy"), "e2e execution")
     } else if (args.length == 3) { // other backends, e.g., torch
       val file = args(0)
       val kind = time(args(1) match {

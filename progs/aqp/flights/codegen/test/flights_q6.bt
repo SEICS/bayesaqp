@@ -1,26 +1,26 @@
-let year_date = loadDiscrete('year_date', [], [22]) in
-let distance = loadDiscrete('distance', [year_date], [3000, 22]) in
-let air_time = loadDiscrete('air_time', [distance], [1858, 3000]) in
-let arr_delay = loadDiscrete('arr_delay', [distance], [971, 3000]) in
-let taxi_out = loadDiscrete('taxi_out', [distance], [428, 3000]) in
-let origin = loadDiscrete('origin', [distance], [372, 3000]) in
-let dest = loadDiscrete('dest', [distance], [372, 3000]) in
-let taxi_in = loadDiscrete('taxi_in', [distance], [255, 3000]) in
-let unique_carrier = loadDiscrete('unique_carrier', [distance], [26, 3000]) in
-let dep_delay = loadDiscrete('dep_delay', [arr_delay], [750, 971]) in
-let origin_state_abr = loadDiscrete('origin_state_abr', [origin], [53, 372]) in
-let dest_state_abr = loadDiscrete('dest_state_abr', [dest], [53, 372]) in
+let flights_year_date = loadDiscrete('flights_year_date_cpd', [], [22]) in
+let flights_distance = loadDiscrete('flights_distance_cpd', [flights_year_date], [3000, 22]) in
+let flights_air_time = loadDiscrete('flights_air_time_cpd', [flights_distance], [1858, 3000]) in
+let flights_arr_delay = loadDiscrete('flights_arr_delay_cpd', [flights_distance], [971, 3000]) in
+let flights_taxi_out = loadDiscrete('flights_taxi_out_cpd', [flights_distance], [428, 3000]) in
+let flights_origin = loadDiscrete('flights_origin_cpd', [flights_distance], [372, 3000]) in
+let flights_dest = loadDiscrete('flights_dest_cpd', [flights_distance], [372, 3000]) in
+let flights_taxi_in = loadDiscrete('flights_taxi_in_cpd', [flights_distance], [255, 3000]) in
+let flights_unique_carrier = loadDiscrete('flights_unique_carrier_cpd', [flights_distance], [26, 3000]) in
+let flights_dep_delay = loadDiscrete('flights_dep_delay_cpd', [flights_arr_delay], [750, 971]) in
+let flights_origin_state_abr = loadDiscrete('flights_origin_state_abr_cpd', [flights_origin], [53, 372]) in
+let flights_dest_state_abr = loadDiscrete('flights_dest_state_abr_cpd', [flights_dest], [53, 372]) in
 
-let dest_ = select dest [101] in
-let flightsProb0 = query [air_time, origin_state_abr] [dest_] [] [] in
+let flights_dest_ = select flights_dest [101] in
+let flightsProb0 = query [flights_air_time, flights_origin_state_abr] [flights_dest_] [] [] in
 
 let air_time_m = loadTensor('air_time_m', [1858]) in
 let nrows = 1000000000 in
 let flightsProb0Norm = normalize flightsProb0 [1] in
-let exp_air_time = expectation [origin_state_abr] flightsProb0Norm air_time_m [0] in
+let exp_air_time = expectation [flights_origin_state_abr] flightsProb0Norm air_time_m [0] in
 
 let flightsProb0_um = unitMat flightsProb0 in
-let flightsProb0_count = expectation [origin_state_abr] flightsProb0 flightsProb0_um [0, 1] in
+let flightsProb0_count = expectation [flights_origin_state_abr] flightsProb0 flightsProb0_um [0, 1] in
 let count_air_time = nrows * flightsProb0_count in
 let sum_air_time = exp_air_time * count_air_time in
 

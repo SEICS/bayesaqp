@@ -1,0 +1,31 @@
+let cast_info_id = loadDiscrete('cast_info_id_cpd', [], [1500]) in
+let cast_info_role_id = loadDiscrete('cast_info_role_id_cpd', [cast_info_id], [903, 1500]) in
+let cast_info_movie_id = loadDiscrete('cast_info_movie_id_cpd', [cast_info_id], [1500, 1500]) in
+let movie_companies_id = loadDiscrete('movie_companies_id_cpd', [], [1500]) in
+let movie_companies_movie_id = loadDiscrete('movie_companies_movie_id_cpd', [movie_companies_id], [1500, 1500]) in
+let movie_companies_company_id = loadDiscrete('movie_companies_company_id_cpd', [movie_companies_id], [1467, 1500]) in
+let movie_companies_company_type_id = loadDiscrete('movie_companies_company_type_id_cpd', [movie_companies_id], [2, 1500]) in
+let title_id = loadDiscrete('title_id_cpd', [], [1500]) in
+let title_kind_id = loadDiscrete('title_kind_id_cpd', [title_id], [11, 1500]) in
+let title_production_year = loadDiscrete('title_production_year_cpd', [title_id], [132, 1500]) in
+
+let cast_info_role_id_ = select cast_info_role_id [13] in
+let cast_infoProb0 = query [cast_info_movie_id] [cast_info_role_id_] [] [] in
+let title_nrows = 3486660 in
+let movie_companies_nrows = 4958300 in
+let cast_info_nrows = 63475800 in
+let movie_companies_nrows = movie_companies_nrows * title_nrows in
+let nrows = cast_info_nrows * movie_companies_nrows in
+let movie_companiesProb0 = query [movie_companies_movie_id] [] [] [] in
+let titleProb0 = query [title_id] [] [] [] in
+let m3_title_cast_info = loadTensor('title_id_cast_info_movie_id_pkfk', [1500, 1500]) in
+let m3_title_movie_companies = loadTensor('title_id_movie_companies_movie_id_pkfk', [1500, 1500]) in
+let titleProb0_0 = outer titleProb0 cast_infoProb0 in
+let titleProb0_1 = expectation [title_id] titleProb0_0 m3_title_cast_info [0, 1] in
+let titleProb0_2 = outer titleProb0_1 movie_companiesProb0 in
+let titleProb0_3 = expectation [] titleProb0_2 m3_title_movie_companies [0, 1] in
+
+let titleProb0_3_tensor = tensor titleProb0_3 in
+let count_ = nrows * titleProb0_3_tensor in
+
+count_

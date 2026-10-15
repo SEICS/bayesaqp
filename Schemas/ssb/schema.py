@@ -91,7 +91,7 @@ def gen_5gb_ssb_schema(csv_path):
                    'part': 600000,
                    'supplier': 10000,
                    'customer': 150000}
-    schema.table_dictionary['lineorder'].sample_rate = 0.10
+    schema.table_dictionary['lineorder'].sample_rate = table_sizes['lineorder']/schema.table_dictionary['lineorder'].table_size # 0.10
     for table in schema.tables:
         table.table_size = table_sizes[table.table_name]
         schema.table_dictionary[table.table_name].table_size = table_sizes[table.table_name]
@@ -99,19 +99,60 @@ def gen_5gb_ssb_schema(csv_path):
     return schema
 
 def gen_10gb_ssb_schema(csv_path):
-    schema = gen_500gb_ssb_schema(csv_path)
-    table_sizes = {'lineorder': 59986052,
+    schema = gen_50gb_ssb_schema(csv_path)
+    table_sizes = {'lineorder': 59986214,
                    'dwdate': 2556,
                    'part': 800000, 
                    'supplier': 20000,
                    'customer': 300000}
-    schema.table_dictionary['lineorder'].sample_rate = 0.20
+    # schema.table_dictionary['lineorder'].sample_rate = table_sizes['lineorder']/schema.table_dictionary['lineorder'].table_size
     for table in schema.tables:
         table.table_size = table_sizes[table.table_name]
         schema.table_dictionary[table.table_name].table_size = table_sizes[table.table_name]
 
     return schema
 
+def gen_20gb_ssb_schema(csv_path):
+    schema = gen_50gb_ssb_schema(csv_path)
+    table_sizes = {'lineorder': 119994746,
+                   'dwdate': 2556,
+                   'part': 1000000, 
+                   'supplier': 40000,
+                   'customer': 600000}
+    # schema.table_dictionary['lineorder'].sample_rate = table_sizes['lineorder']/schema.table_dictionary['lineorder'].table_size
+    for table in schema.tables:
+        table.table_size = table_sizes[table.table_name]
+        schema.table_dictionary[table.table_name].table_size = table_sizes[table.table_name]
+
+    return schema
+
+def gen_30gb_ssb_schema(csv_path):
+    schema = gen_50gb_ssb_schema(csv_path)
+    table_sizes = {'lineorder': 179998484,
+                   'dwdate': 2556,
+                   'part': 1000000, 
+                   'supplier': 60000,
+                   'customer': 900000}
+    # schema.table_dictionary['lineorder'].sample_rate = table_sizes['lineorder']/schema.table_dictionary['lineorder'].table_size # 0.20
+    for table in schema.tables:
+        table.table_size = table_sizes[table.table_name]
+        schema.table_dictionary[table.table_name].table_size = table_sizes[table.table_name]
+
+    return schema
+
+def gen_40gb_ssb_schema(csv_path):
+    schema = gen_50gb_ssb_schema(csv_path)
+    table_sizes = {'lineorder': 240012412,
+                   'dwdate': 2556,
+                   'part': 1200000, 
+                   'supplier': 80000,
+                   'customer': 1200000}
+    # schema.table_dictionary['lineorder'].sample_rate = table_sizes['lineorder']/schema.table_dictionary['lineorder'].table_size # 0.20
+    for table in schema.tables:
+        table.table_size = table_sizes[table.table_name]
+        schema.table_dictionary[table.table_name].table_size = table_sizes[table.table_name]
+
+    return schema
 
 def gen_50gb_ssb_schema(csv_path):
     schema = SchemaGraph()

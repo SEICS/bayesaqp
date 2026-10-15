@@ -1,5 +1,6 @@
 import copy
 import logging
+import math
 import os
 import pickle
 from re import L
@@ -14,7 +15,7 @@ from DeepDBUtils.evaluation.utils import parse_query
 import itertools
 from copy import deepcopy
 from itertools import chain, compress
-import math
+import json
 import sparse
 
 logging.basicConfig(
@@ -40,7 +41,7 @@ def generate_subquery(schema, dataset, query_str, bn_ensemble, epsilon=sys.float
             end = relationship.end # table at right
             if dataset.startswith("ssb"):
                 new_query["fact_table"] = "lineorder"
-            elif dataset == "imdb": 
+            elif dataset.startswith("imdb") or dataset == "job-light": 
                 new_query["fact_table"] = "title"
             
             if start not in gbpk.keys():
@@ -53,7 +54,10 @@ def generate_subquery(schema, dataset, query_str, bn_ensemble, epsilon=sys.float
             else:
                 gbpk[end].add(relationship.end_attr)
             
-            pl_eqv[(relationship.start, relationship.start_attr)] = (end, relationship.end_attr)
+            if start == new_query["fact_table"]:
+                pl_eqv[(end, relationship.end_attr)] = (start, relationship.start_attr)
+            else:
+                pl_eqv[(start, relationship.start_attr)] = (end, relationship.end_attr)
     bn_names_idx = dict([(bn.table_name, bn_idx) for (bn_idx, bn) in bn_ensemble.bns.items()])
 
     if gbpk: # join tables
@@ -153,6 +157,10 @@ def generate_subquery(schema, dataset, query_str, bn_ensemble, epsilon=sys.float
             for s in valname:
                 if isinstance(s,str):
                     s = s.strip()
+                
+                if s not in bn.valname_to_bin[attr] and str(s) in bn.valname_to_bin[attr]:
+                    s = str(s)
+                    
                 s_bin = int(bn.valname_to_bin[attr][s]) # find corresponding bin for each selected true value
                 selection.add(s_bin) 
                 ratio = 1/len(bn.bin_to_valname[attr][s_bin]) # compute the dropping ratio of that bin (i.e., the weight)
@@ -232,6 +240,8 @@ def generate_subquery(schema, dataset, query_str, bn_ensemble, epsilon=sys.float
                     break
                 
             pk_join = list(gbpk[table]) if table in gbpk.keys() else {}
+            # print(f"pk_join: {pk_join}")
+            # print(f"gbpk: {gbpk}")
             query_selections[table] = {"query": dict(),
                                        "op": op, # AggregationType(op),
                                        "n_distinct": dict(),
@@ -284,26 +294,26 @@ def load_bns(dataset, schema, model_path, learning_algo="chow-liu", max_parents=
             
         with open(f"{model_path}/primary_key_reduced_idx_mat.pkl", 'rb') as f8:
             idx_mat_m3 = pickle.load(f8)
-            bn_ensemble.idx_mat_m3 = dict([(f"{k.start_attr}_{k.end_attr}",v) for (k,v) in idx_mat_m3.items()])
+            bn_ensemble.idx_mat_m3 = dict([(f"{k.start}_{k.start_attr}_{k.end}_{k.end_attr}",v) for (k,v) in idx_mat_m3.items()])
+            # bn_ensemble.idx_mat_m3 = dict([(f"{k.start_attr}_{k.end_attr}",v) for (k,v) in idx_mat_m3.items()])
 
-    elif dataset.startswith("imdb"):
-        for (i, tn) in enumerate(["title", "movie_info_idx", "movie_info", "cast_info", "movie_keyword", "movie_companies"]):
-            mp = f"{model_path}/{tn}_{learning_algo}_{max_parents}_{bin_size}.pkl"
+    elif dataset == "job-light" or dataset.startswith("imdb"):
+        for (i, tn) in enumerate(["title", "movie_info_idx", "movie_info", "cast_info", "movie_keyword", "movie_companies"]): 
+            mp = f"{model_path}/{tn}_{learning_algo}_{max_parents}.pkl"
             with open(mp, "rb") as f:
                 bn = pickle.load(f)
                 table_name = bn.table_name
-                
-                with open(f"Benchmarks/imdb/{table_name}_idx_map.pkl","rb") as f6:
-                    idx_map = pickle.load(f6)
-                    bn.update_idx_map(idx_map, replace=True)
+                bn.nrows = schema.table_dictionary[table_name].table_size
 
-                with open(f"Benchmarks/imdb/{table_name}_idx_mat.pkl","rb") as f7:
+                with open(f"{model_path}/{table_name}_idx_mat.pkl","rb") as f7:
                     idx_mat = pickle.load(f7)
                     bn.update_idx_mat(idx_mat)
                     
             bn_ensemble.bns[bn.table_name] = bn
-        with open(f"Benchmarks/imdb/primary_key_reduced_idx_mat.pkl", 'rb') as f8:
+        with open(f"{model_path}/primary_key_reduced_idx_mat.pkl", 'rb') as f8:
             idx_mat_m3 = pickle.load(f8)
+            bn_ensemble.idx_mat_m3 = dict([(f"{k.start}_{k.start_attr}_{k.end}_{k.end_attr}",v) for (k,v) in idx_mat_m3.items()])
+    
     else: # single table
         mp = model_path
         # print(f"model_path: {model_path}")
@@ -322,7 +332,7 @@ def conditional_prob(table, par, chd, cpds, bn): # par : str - name of parent n
         cpd_ = ['{:30f}'.format(c) for c in cpd_]
         dim_update[f"{table}_{chd}"] = [cpd_.shape[0], len(bn.valname_to_bin[chd])]
         if i == 0:
-            line.append(f"let {chd} = match {par} with" + " { ")
+            line.append(f"let {table}_{chd} = match {table}_{par} with" + " { ")
             line.append(f"    {i} -> discrete [{''.join(cpd_)}]")
         else:
             line.append(f"  | {i} -> discrete [{', '.join(cpd_)}]")
@@ -340,19 +350,19 @@ def load_bn_tensor(wait_to_visit, nodes, roots, cpds, bn_query, table, table_siz
                     cpd_ = cpds[node]
                     if tensor_load:
                         # print(f"cpd_.shape: {cpd_.shape}")
-                        line.append(f"let {node} = loadDiscrete('{node}', [], {list(cpd_.shape)}) in") 
+                        line.append(f"let {table}_{node} = loadDiscrete('{table}_{node}_cpd', [], {list(cpd_.shape)}) in") 
                         dim_tracker[f"{table}_{node}"] = [cpd_.shape[0], len(bn.valname_to_bin[node])] # Map number of bins to number of unique values, used for reverse mapping, specifically decompressing
                     else:
                         # cpd_ = cpds[node][0].tolist()
                         cpd_ = ['{:30f}'.format(c) for c in cpd_]
-                        line.append(f"let {node} = discrete [{', '.join(cpd_)}] in")
+                        line.append(f"let {table}_{node} = discrete [{', '.join(cpd_)}] in")
                         dim_tracker[f"{table}_{node}"] = [cpd_.shape[0], len(bn.valname_to_bin[node])]
                         
                 for chd in children: # Visit each child node
                     # print(f"chd.shape: {cpds[chd].shape}")
                     if tensor_load:
                         cpd_ = list(cpds[chd].shape)
-                        line.append(f"let {chd} = loadDiscrete('{chd}', [{node}], {cpd_}) in")
+                        line.append(f"let {table}_{chd} = loadDiscrete('{table}_{chd}_cpd', [{table}_{node}], {cpd_}) in")
                         dim_tracker[f"{table}_{chd}"] = [cpd_[0], len(bn.valname_to_bin[chd])]
                     else:
                         line_update, dim_update = conditional_prob(table, node, chd, cpds, bn)
@@ -393,6 +403,7 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
     final_groupby = dict()
     res_name = []
     table_visit = list(parsed_query["bn_query"].keys())
+    # print(f"table_visit: {table_visit}, fact_table: {fact_table}")
     table_visit.remove(fact_table)
     table_visit.append(fact_table) # Hardcoded: Always put fact table at the end for aggregation computation.
     ft_pk = None # FIXME: Not general
@@ -408,16 +419,16 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
             weights = []
             for (attr, sel) in q_query.items():
                 if sel:
-                    line.append(f"let {attr}_ = select {attr} {list(sel)} in") # declare selections
-                    selections.append(f"{attr}_")
+                    line.append(f"let {table}_{attr}_ = select {table}_{attr} {list(sel)} in") # declare selections
+                    selections.append(f"{table}_{attr}_")
                     
                     if attr in bnq["n_distinct"]:
                         weight = bnq["n_distinct"][attr]
                         if not all(w == 1 for w in weight):
                             # line.append(f"let {attr}_weight = loadTensor('{attr}_weight', {list(weight.shape)}) in")
-                            line.append(f"let {attr}_weight = vector {list(weight)} in")
-                            line.append(f"let {attr}_weight_ = weight {attr} {attr}_weight in")
-                            weights.append(f"{attr}_weight_")
+                            line.append(f"let {table}_{attr}_weight = vector {list(weight)} in")
+                            line.append(f"let {table}_{attr}_weight_ = weight {table}_{attr} {table}_{attr}_weight in")
+                            weights.append(f"{table}_{attr}_weight_")
             # aggTargets = [q["aggTargets"] for q in bn_query] # This for count is always a empty list. We only consider COUNT(*) for now.
             aggTargets = bnq["aggTargets"]
             groupby = bnq["groupby"]
@@ -434,6 +445,8 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                     remain = list(dict.fromkeys(bn_query[0]["pk_join"]+remain))
             else:
                 remain = list(dict.fromkeys(remain))
+            
+            remain = [f"{table}_{r}" for r in remain]
                 
             prob_name = f"{table}Prob{bnq_i}"
             line.append(f"let {prob_name} = query [{', '.join(remain)}] [{', '.join(selections)}] [] [{', '.join(weights)}] in")
@@ -482,6 +495,7 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
             else:
                 outputVars[table].update(outputVars[table])
             
+            # print(f'bnq["pk_join"]: {bnq["pk_join"]}')
             if table != fact_table:
                 m3_tensors.update({table: bnq["pk_join"]}) # use to find match in pk_match
             else:
@@ -502,11 +516,11 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
             else:
                 aggVarName = aggVar
             (prob_name, aggType, aggTargets, groupby, _) = outputVars[table][aggVarName]
-            aggOutput = {prob_name: aggTargets+list(groupby)}
+            aggOutput = {prob_name: [f"{table}_{r}" for r in aggTargets+list(groupby)]}
             # groupby = groupby.union(set(list(itertools.chain(*final_groupby.values())))) # because q["groupby"] is a set
             opt_groupby = dict(parsed_query["opt_groupby"].keys())
             groupby_order = list(opt_groupby.keys()) # table order # FIXME: Didn't support if there are several attributes used for groupby
-            groupby = list(opt_groupby.values())
+            groupby = [f"{t}_{g}" for (t, g) in opt_groupby.items()]
             suffix = f"_{'_'.join(aggTargets)}"
             
             if join: # FIXME: Not general enough
@@ -514,12 +528,48 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                 m3_mat = dict()
                 probQuery2 = copy.deepcopy(probQuery)
                 del probQuery2[fact_table]
+                print(f"m3_tensors: {m3_tensors}")
+                print(f"pk_match: {pk_match}")
+                # print(f"bn_ensemble.idx_mat_m3: {bn_ensemble.idx_mat_m3}")
                 for (t, m3t) in m3_tensors.items():
-                    line += [f"let m3_{fact_table}_{t} = loadTensor('{pk_match[m3t[0]]}_{m3t[0]}', {list(bn_ensemble.idx_mat_m3[f'{pk_match[m3t[0]]}_{m3t[0]}'].shape)}) in"]
+                    pk_list = m3t if isinstance(m3t, (list, tuple)) else (list(m3t) if m3t else [])
+                    if not pk_list:
+                        raise ValueError(
+                            f"Table '{t}' has no primary key join (pk_join). "
+                            "Ensure the join condition in your SQL uses '=' (e.g. lo_partkey = p_partkey, not lo_partkey AND p_partkey)."
+                        )
+                    fk_key = (t, pk_list[0])
+                    if fk_key not in pk_match.keys():
+                        pk_match2 = dict([(v, k) for (k,v) in pk_match.items()])
+                        if fk_key not in pk_match2.keys():
+                            raise Exception(f"Foreign/Primary key {fk_key} doesn't exist in the schema.")
+                        else:
+                            pk_key = fk_key
+                            fk_key = pk_match2[pk_key]
+                    else:
+                        pk_key = pk_match[fk_key] 
+                    assert pk_key[0] == fact_table, "Primary key should be the fact table."
+                    rel_key = "_".join(pk_key)+"_"+"_".join(fk_key) #f'{fact_table}_{pk_match[m3t[0]]}_{t}_{m3t[0]}'
+                    line += [f"let m3_{fact_table}_{t} = loadTensor('{rel_key}_pkfk', {list(bn_ensemble.idx_mat_m3[rel_key].shape)}) in"]
                     m3_mat.update({t: f"m3_{fact_table}_{t}"})
                 
                 join_order = list(set(probQuery2.keys()) - set(groupby_order)) + groupby_order # table order
                 # print(f"join_order: {join_order}")
+
+                # Pre-calculate needed fact keys to handle shared keys (e.g. IMDB title.id)
+                needed_fact_keys = []
+                pk_match_rev = {v: k for k, v in pk_match.items()}
+                for t_ in join_order:
+                    fk = (t_, m3_tensors[t_][0])
+                    if fk in pk_match:
+                        val = pk_match[fk]
+                    elif fk in pk_match_rev:
+                        val = pk_match_rev[fk]
+                    else:
+                        # Should have been caught earlier or will be caught in loop
+                        continue
+                    needed_fact_keys.append(val[1])
+
                 groupby_remain = []
                 for t in join_order:
                     ft_remain = probQuery[fact_table][prob_name]
@@ -527,12 +577,26 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                     
                     prob_name_new = f"{prob_name.rsplit('_', 1)[0]}_{probNo}" # f"{prob_name[:-2]}_{i-1}"
                     line += [f"let {prob_name_new} = outer {prob_name} {list(probQuery2[t].keys())[0]} in"] # FIXME: Join should be done once with each table if not nested query, no matter how many arithmetic operation.
-                    ft_match = pk_match[m3_tensors[t][0]]
-                    exp_dims = [ft_outputVars.index(ft_match), len(ft_outputVars)] # FIXME: Not general
-                    ft_pk_.remove(ft_match)
-                    groupby_remain += list(final_groupby[t])
-                    ft_remain_ = list(dict.fromkeys(ft_remain+ft_pk_+groupby_remain))
-                    ft_remain_.remove(ft_match)
+                    ft_match = pk_match[(t, m3_tensors[t][0])] # pk_match[m3_tensors[t][0]]
+                    exp_dims = [ft_outputVars.index(f"{fact_table}_{ft_match[1]}"), len(ft_outputVars)] # FIXME: Not general
+                    # print(f"ft_pk_: {ft_pk_}")
+                    # print(f"ft_match: {ft_match}")
+                    if ft_match[1] in ft_pk_:
+                        ft_pk_.remove(ft_match[1]) # Not 100% correct but works for now.
+                    
+                    ft_pk_names = [f"{fact_table}_{pk}" for pk in ft_pk_]
+                    groupby_remain += [f"{t}_{g}" for g in list(final_groupby[t])]
+                    ft_remain_ = list(dict.fromkeys(ft_remain+ft_pk_names+groupby_remain))
+                    
+                    # Only remove the join key if it is not needed by subsequent joins
+                    if ft_match[1] in needed_fact_keys:
+                        needed_fact_keys.remove(ft_match[1])
+                    
+                    ft_match_name = f"{fact_table}_{ft_match[1]}"
+                    if ft_match[1] not in needed_fact_keys:
+                        if ft_match_name in ft_remain_:
+                             ft_remain_.remove(ft_match_name)
+                    
                     probNo += 1
                     
                     prob_name_new2 = f"{prob_name_new.rsplit('_', 1)[0]}_{probNo}" # f"{prob_name[:-2]}_{probNo}" 
@@ -555,7 +619,8 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                 res_name += [f"count{suffix}"]
                 
             elif (aggType == AggregationType.AVG) or (aggType == AggregationType.SUM): 
-                gb_idx = sorted(list(set(range(len(aggOutput[prob_name])))-set([aggOutput[prob_name].index(agg) for agg in aggTargets])))
+                # gb_idx = sorted(list(set(range(len(aggOutput[prob_name])))-set([aggOutput[prob_name].index(agg) for agg in aggTargets])))
+                gb_idx = sorted(list(set(range(len(aggOutput[prob_name])))-set([aggOutput[prob_name].index(f"{table}_{agg}") for agg in aggTargets])))
                 line += [f"let {prob_name}Norm = normalize {prob_name} {list(gb_idx)} in"]
                 aggOutput[f"{prob_name}Norm"] = aggOutput[prob_name]
                 
@@ -571,10 +636,10 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                             aggOutput[f"ms{j}"] = [at1, at2]
                         else:
                             aggOutput[f"ms{j}"] = aggOutput[f"ms{j-1}"]+[at2]
-                    exp_dim = [aggOutput[f"{prob_name}Norm"].index(agg) for agg in aggTargets]
+                    exp_dim = [aggOutput[f"{prob_name}Norm"].index(f"{table}_{agg}") for agg in aggTargets]
                     line += [f"let exp{suffix} = expectation [{exp_remain}] {prob_name}Norm ms{j} {exp_dim} in"]
                 else:
-                    exp_dim = [aggOutput[f"{prob_name}Norm"].index(aggTargets[0])]
+                    exp_dim = [aggOutput[f"{prob_name}Norm"].index(f"{table}_{aggTargets[0]}")]
                     line += [f"let exp{suffix} = expectation [{exp_remain}] {prob_name}Norm {aggTargets[0]}_m {exp_dim} in"]
                         
                 if aggType == AggregationType.SUM:
@@ -602,7 +667,7 @@ def generate_aqp_queries(parsed_query, bn_ensemble, pl_eqv, tensor_load):
     if len(bn_ensemble.bns)>1:
         join = True
     
-    pk_match = dict([(v[1], k[1]) for (k,v) in pl_eqv.items()])
+    # pk_match = dict([(v[1], k[1]) for (k,v) in pl_eqv.items()])
     # print(f"pk_match: {pk_match}")
     
     line = []
@@ -613,7 +678,7 @@ def generate_aqp_queries(parsed_query, bn_ensemble, pl_eqv, tensor_load):
         line += line_update
         dim_tracker.update(dim_update)
     
-    l, res_name = define_aggregation(parsed_query, bn_ensemble, pk_match, join=join)
+    l, res_name = define_aggregation(parsed_query, bn_ensemble, pl_eqv, join=join)
     line +=  l
     resToDecompress = None
     arithmetic = parsed_query['arithmetic']
@@ -651,7 +716,7 @@ def generate_aqp_queries(parsed_query, bn_ensemble, pl_eqv, tensor_load):
             bin_uniq = dim_tracker[attr_name]
             # if bin_uniq[0] < bin_uniq[1]: # Needs to decompress
             if join:
-                line += [f"let {attr_name} = loadTensor('{attr_name}', {bin_uniq}) in"] # Decompress the tensor in bins to its true size, i.e., the number of its unique values.
+                line += [f"let {attr_name} = loadTensor('{attr_name}_idxmat', {bin_uniq}) in"] # Decompress the tensor in bins to its true size, i.e., the number of its unique values.
                 if table in parsed_query["bn_query"].keys():
                     for q in parsed_query["bn_query"][table]:
                         if attr in q["query"].keys():
@@ -696,6 +761,7 @@ def generateBTLcode(codegen_dir, dataset, schema, model_path, query_path,
             # print(f"query no.{i}: {query_str}\n")
             parsed_query, pl_eqv, _ = generate_subquery(schema, dataset, query_str, bn_ensemble)
             # print(f"parsed_query: {parsed_query}\n")
+            # print(f"pl_eqv: {pl_eqv}")
             codegen_path = os.path.join(codegen_dir,f"{dataset}_q{i}.bt")
             line = generate_aqp_queries(parsed_query, bn_ensemble, pl_eqv, tensor_load=tensor_load)
             line = '\n'.join(line)
@@ -729,7 +795,7 @@ def single_table_BN_to_npy(model_path, dest_path, bin_size):
     bn_intervals = dict([(attr+"_m", bi) for (attr, bi) in bn.bins_intervals.items()])
     cpds = dict()
     for c in bn.model.cpds:
-        cpds[c.variables[0]] = c.values
+        cpds[f"{bn.table_name}_{c.variables[0]}_cpd"] = c.values
     mega_info = dict()
     mega_info.update(cpds)
     mega_info.update(bn_intervals)
@@ -758,7 +824,7 @@ def ssb_to_npy_dense(schema, model_path, dest_path, infer_algo="exact-jit", lear
             if table_name != "lineorder":   
                 with open(f"{model_path}/{table_name}_idx_mat.pkl","rb") as f7:
                     idx_mat = pickle.load(f7)
-                    idx_mat_reverse_map = dict([(f"{bn.table_name}_{k}",v) for (k,v) in idx_mat.items()])
+                    idx_mat_reverse_map = dict([(f"{bn.table_name}_{k}_idxmat",v) for (k,v) in idx_mat.items()])
                     mega_info.update(idx_mat_reverse_map)
                 # print(f"idx_mat_reverse_map: ${idx_mat_reverse_map.keys()}")
             
@@ -779,7 +845,7 @@ def ssb_to_npy_dense(schema, model_path, dest_path, infer_algo="exact-jit", lear
     idx_mat_m3 = dict()
     for (k,v) in idx_mat_m3_.items(): # key is Schemas.graph_representation.Relationship object
         # Example:k.identifier: lineorder.lo_custkey = customer.c_custkey
-        idx_mat_m3[f"{k.start_attr}_{k.end_attr}"] = v 
+        idx_mat_m3[f"{k.start}_{k.start_attr}_{k.end}_{k.end_attr}_pkfk"] = v 
     
     mega_info.update(idx_mat_m3)
     np.savez(dest_path, **{name:prob for (name,prob) in mega_info.items()}, allow_pickle=True)
@@ -880,67 +946,62 @@ def evaluate_aqp(query_no, aqp_res, query_str, aqp_true):
     return rel_err, q_err
 
 
-def ssb_to_npy_sparse(schema, model_path, dest_path_prefix, learning_algo="chow-liu", max_parents=1, bin_size=1000, param=None):
-    logger.info(f"Converting SSB BNs to sparse.COO format.")
-    bn_ensemble = BN_ensemble(schema)
+def multitables_to_npy_sparse(dataset, bn_ensemble, schema, model_path, dest_path_prefix, learning_algo="chow-liu", max_parents=1, bin_size=1000, param=None):
+    logger.info(f"Converting {dataset} BNs to sparse.COO format.")
     dense_dict = {}
     sparse_dict = {}
 
-    for tn in ['dwdate', 'customer', 'part', 'supplier', 'lineorder']:
-        if param is not None and tn == "part":
-            bn_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/{tn}_{learning_algo}_{max_parents}.pkl"
-        else:
-            bn_path = f"{model_path}/{tn}_{learning_algo}_{max_parents}.pkl"
-        with open(bn_path, "rb") as f:
-            bn = pickle.load(f)
-            table_name = bn.table_name
-            if table_name == "lineorder_sampled":
-                table_name = "lineorder"
-            bn.nrows = schema.table_dictionary[table_name].table_size
-            # print(f"bn.nrows: {bn.nrows}")
-            # Load idx_mat
-            if table_name != "lineorder":
-                if param is not None:
-                    idxmat_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/{table_name}_idx_mat.pkl"
+    join_keys = set()
+    for relationship in schema.relationships:
+        at1 = (relationship.start, relationship.start_attr)
+        at2 = (relationship.end, relationship.end_attr)
+        if at1 not in join_keys:
+            join_keys.add(at1)
+        if at2 not in join_keys:
+            join_keys.add(at2)
+    
+    for table_name, bn in bn_ensemble.bns.items():
+        # Handle Index Matrices
+        if bn.bn_idx_mat:
+            for k, v in bn.bn_idx_mat.items():
+                if (table_name, k) in join_keys:
+                    continue
                 else:
-                    idxmat_path = f"{model_path}/{table_name}_idx_mat.pkl"
-                with open(idxmat_path, "rb") as f_idx:
-                    idx_mat = pickle.load(f_idx)
-                    for k, v in idx_mat.items():
+                    if v is None:
+                        continue
+                    else:
                         if isinstance(v, sparse.COO):
-                            sparse_dict[f"{table_name}_{k}"] = v
+                            sparse_dict[f"{table_name}_{k}_idxmat"] = v
                         else:
-                            dense_dict[f"{table_name}_{k}"] = v
+                            dense_dict[f"{table_name}_{k}_idxmat"] = v
 
-            # CPDs
+        # CPDs
+        if bn.model:
             for c in bn.model.cpds:
-                dense_dict[c.variables[0]] = c.values
+                dense_dict[f"{table_name}_{c.variables[0]}_cpd"] = c.values
 
-            # Bin intervals
-            for attr, bins in bn.bins_intervals.items():
-                dense_dict[f"{attr}_m"] = bins # add table_name prefix to avoid conflict
+        # Bin intervals
+        for attr, bins in bn.bins_intervals.items():
+            if bins is None:
+                continue
+            else:
+                dense_dict[f"{table_name}_{attr}_m"] = bins 
 
-            # Bin to valname
-            for attr, b2v in bn.bin_to_valname.items():
+        # Bin to valname
+        for attr, b2v in bn.bin_to_valname.items():
+            if b2v is None:
+                continue
+            else:
                 dense_dict[f"{table_name}_{attr}_b2v"] = b2v
 
-            bn_ensemble.bns[table_name] = bn
-
     # Load join idx_mat_m3
-    if param is not None:
-        pm_idxmat_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/primary_key_reduced_idx_mat.pkl"
-    else:
-        pm_idxmat_path = f"{model_path}/primary_key_reduced_idx_mat.pkl"
-    
-    with open(pm_idxmat_path, 'rb') as f:
-        idx_mat_m3_ = pickle.load(f)
-        
-    for k, v in idx_mat_m3_.items():
-        key = f"{k.start_attr}_{k.end_attr}"
-        if isinstance(v, sparse.COO):
-            sparse_dict[key] = v
-        else:
-            dense_dict[key] = v
+    if hasattr(bn_ensemble, 'primary_key_reduced_idx_mat') and bn_ensemble.primary_key_reduced_idx_mat:
+        for k, v in bn_ensemble.primary_key_reduced_idx_mat.items():
+            name = f"{k.start}_{k.start_attr}_{k.end}_{k.end_attr}_pkfk"
+            if isinstance(v, sparse.COO):
+                sparse_dict[name] = v
+            else:
+                dense_dict[name] = v
     
     sparseDict = dict()
     denseDict = dict()
@@ -949,7 +1010,7 @@ def ssb_to_npy_sparse(schema, model_path, dest_path_prefix, learning_algo="chow-
             # logger.info(f"Skip {k} because of type is None.")
             continue
         sparsity = compute_sparsity(v)
-        # logger.info(f"{k}'s sparsity: {sparsity*100}%.")
+        logger.info(f"{k}'s sparsity: {sparsity*100}%.")
         if sparsity > .67:
             if not isinstance(v, sparse.COO):
                 v = sparse.asarray(v, format="coo")
@@ -984,41 +1045,141 @@ def compute_sparsity(arr):
         
     return 1-np.count_nonzero(arr)/np.product(arr.shape)
 
-def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
+def ssb_to_npy_sparse(schema, model_path, dest_path_prefix, learning_algo="chow-liu", max_parents=1, bin_size=1000, param=None):
+    logger.info(f"Converting SSB BNs to sparse.COO format.")
+    bn_ensemble = BN_ensemble(schema)
+    dense_dict = {}
+    sparse_dict = {}
+
+    for tn in ['dwdate', 'customer', 'part', 'supplier', 'lineorder']:
+        if param is not None and tn == "part":
+            bn_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/{tn}_{learning_algo}_{max_parents}.pkl"
+        else:
+            bn_path = f"{model_path}/{tn}_{learning_algo}_{max_parents}.pkl"
+        with open(bn_path, "rb") as f:
+            bn = pickle.load(f)
+            table_name = bn.table_name
+            if table_name == "lineorder_sampled":
+                table_name = "lineorder"
+            bn.nrows = schema.table_dictionary[table_name].table_size
+            # print(f"bn.nrows: {bn.nrows}")
+            # Load idx_mat
+            if table_name != "lineorder":
+                if param is not None:
+                    idxmat_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/{table_name}_idx_mat.pkl"
+                else:
+                    idxmat_path = f"{model_path}/{table_name}_idx_mat.pkl"
+                with open(idxmat_path, "rb") as f_idx:
+                    idx_mat = pickle.load(f_idx)
+                    for k, v in idx_mat.items():
+                        if isinstance(v, sparse.COO):
+                            sparse_dict[f"{table_name}_{k}_idxmat"] = v
+                        else:
+                            dense_dict[f"{table_name}_{k}_idxmat"] = v 
+
+            # CPDs
+            for c in bn.model.cpds:
+                dense_dict[c.variables[0]] = c.values
+
+            # Bin intervals
+            for attr, bins in bn.bins_intervals.items():
+                dense_dict[f"{attr}_m"] = bins # add table_name prefix to avoid conflict
+
+            # Bin to valname
+            for attr, b2v in bn.bin_to_valname.items():
+                dense_dict[f"{table_name}_{attr}_b2v"] = b2v
+
+            bn_ensemble.bns[table_name] = bn
+
+    # Load join idx_mat_m3
+    if param is not None:
+        pm_idxmat_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin1000/{param}k/primary_key_reduced_idx_mat.pkl"
+    else:
+        pm_idxmat_path = f"{model_path}/primary_key_reduced_idx_mat.pkl"
+    
+    with open(pm_idxmat_path, 'rb') as f:
+        idx_mat_m3_ = pickle.load(f)
+        
+    for k, v in idx_mat_m3_.items():
+        key = f"{k.start}_{k.start_attr}_{k.end}_{k.end_attr}_pkfk"
+        if isinstance(v, sparse.COO):
+            sparse_dict[key] = v
+        else:
+            dense_dict[key] = v
+    
+    sparseDict = dict()
+    denseDict = dict()
+    for (k,v) in {**sparse_dict, **dense_dict}.items():
+        if v is None:
+            # logger.info(f"Skip {k} because of type is None.")
+            continue
+        sparsity = compute_sparsity(v)
+        logger.info(f"{k}'s sparsity: {sparsity*100}%.")
+        if sparsity > .67:
+            if not isinstance(v, sparse.COO):
+                v = sparse.asarray(v, format="coo")
+            sparseDict[k] = v
+        else:
+            if isinstance(v, sparse.COO):
+                v = v.todense()
+            denseDict[k] = v
+        
+    # Save to dense npz and sparse pkl
+    dense_path = os.path.join(f"{dest_path_prefix}", f"bin{bin_size}_dense.npz")
+    sparse_path = os.path.join(f"{dest_path_prefix}", f"bin{bin_size}_sparse.pkl")
+    if not os.path.exists(dense_path):
+        os.makedirs(os.path.dirname(dense_path), exist_ok=True)
+    if not os.path.exists(sparse_path):
+        os.makedirs(os.path.dirname(sparse_path), exist_ok=True)
+
+    np.savez(dense_path, **denseDict)
+    with open(sparse_path, "wb") as f:
+        pickle.dump(sparseDict, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    logger.info(f"Dense data saved to {dense_path}.")
+    logger.info(f"Sparse data saved to {sparse_path}.")
+
+    return None
+
+def write_results_to_file(dataset, ground_truth_path, query_path, dest_path, result_jsonl_path=None):
     rev_auto_lst = []
-    if dataset == "flights":
-        from Training import scala_flights_1B_results
-        rev_auto_lst = [
-            scala_flights_1B_results.q0_rev_auto,
-            scala_flights_1B_results.q1_rev_auto,
-            scala_flights_1B_results.q2_rev_auto,
-            scala_flights_1B_results.q3_rev_auto,
-            scala_flights_1B_results.q4_rev_auto,
-            scala_flights_1B_results.q5_rev_auto,
-            scala_flights_1B_results.q6_rev_auto,
-            scala_flights_1B_results.q7_rev_auto,
-            scala_flights_1B_results.q8_rev_auto,
-            scala_flights_1B_results.q9_rev_auto,
-            scala_flights_1B_results.q10_rev_auto,
-            scala_flights_1B_results.q11_rev_auto
-        ]
-    elif dataset == "ssb50":
-        from Training import scala_ssb50_results
-        rev_auto_lst = [
-                scala_ssb50_results.q0_rev_auto,
-                scala_ssb50_results.q1_rev_auto,
-                scala_ssb50_results.q2_rev_auto,
-                scala_ssb50_results.q3_rev_auto,
-                scala_ssb50_results.q4_rev_auto,
-                scala_ssb50_results.q5_rev_auto,
-                scala_ssb50_results.q6_rev_auto,
-                scala_ssb50_results.q7_rev_auto,
-                scala_ssb50_results.q8_rev_auto,
-                scala_ssb50_results.q9_rev_auto,
-                scala_ssb50_results.q10_rev_auto,
-                scala_ssb50_results.q11_rev_auto,
-                scala_ssb50_results.q12_rev_auto
-        ]
+    
+    if result_jsonl_path and os.path.exists(result_jsonl_path):
+        logger.info(f"Reading results from JSONL file: {result_jsonl_path}.")
+        results_map = {}
+        latencies = dict()
+        with open(result_jsonl_path, 'r') as f:
+            for line in f:
+                try:
+                    record = json.loads(line)
+                    q_no = record['query_no']
+                    res_path = record['result_location']
+                    lat = record['inference_latency']
+                    
+                    if lat is not None:
+                        latencies[q_no] = lat
+                    
+                    if os.path.exists(res_path):
+                        res = np.load(res_path, allow_pickle=True)
+                        results_map[q_no] = res
+                    else:
+                        logger.warning(f"Result file not found: {res_path}")
+                except Exception as e:
+                    logger.warning(f"Error parsing log line: {e}")
+        
+        # Determine number of queries from ground truth
+        with open(ground_truth_path, "rb+") as gtf:
+            gt = pickle.load(gtf)
+        num_queries = len(gt)
+        
+        # Fill rev_auto_lst, using NaNs for missing results
+        for i in range(num_queries):
+            if i in results_map:
+                rev_auto_lst.append(results_map[i])
+            else:
+                logger.warning(f"No result found for query {i}, using NaN")
+                rev_auto_lst.append(np.nan)
+                
 
     with open(ground_truth_path, "rb+") as gtf:
         gt = pickle.load(gtf)
@@ -1026,18 +1187,46 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     with open(query_path, "r") as qf:
         real_query = qf.readlines()
 
+    dest_dir = os.path.dirname(dest_path)
+    if dest_dir and not os.path.exists(dest_dir):
+        os.makedirs(dest_dir, exist_ok=True)
+
+    q_error_lst = []
+    rel_err_lst = []
     with open(dest_path, "w+") as rf:
-        rf.write("query_no,relative_error(%),q_error,query_str\n")
+        rf.write("query_no,latency(ms),relative_error(%),q_error,query_str\n")
         for i, q in enumerate(range(len(rev_auto_lst))):
             query_no = q
             aqp_res = np.array(rev_auto_lst[i])
             aqp_true = gt[query_no]
+            # print(f"aqp_true: {aqp_true}")
             query_str = real_query[query_no]
-            rel_err, q_err = evaluate_aqp(query_no, aqp_res, query_str, aqp_true)
-            logger.info(f"Query no.{query_no}: {query_str}.")
-            logger.info(f"Relative error: {rel_err}%, Q_error: {round(q_err,3)}.\n") #Ignore q_error report if it is not a cardinality estimation query
-            rf.write(f"{query_no},{rel_err},{q_err},{query_str}")
+            
+            try:
+                latency = latencies[query_no]
+                rel_err, q_err = evaluate_aqp(query_no, aqp_res, query_str, aqp_true)
+                logger.info(f"Query no.{query_no}: {query_str.strip()}")
+                logger.info(f"Relative error: {rel_err}%, Q_error: {round(q_err,3)}.\n") #Ignore q_error report if it is not a cardinality estimation query
+                rf.write(f"{query_no},{latency},{rel_err},{q_err},{query_str}")
+                q_error_lst.append(q_err)
+                rel_err_lst.append(rel_err)
+            except Exception as e:
+                logger.error(f"Error evaluating query {query_no}: {e}")
+                rf.write(f"{query_no},NaN,NaN,NaN,{query_str}")
 
+        if dataset == "job-light" and q_error_lst:
+            q_error_lst.sort()
+            for i in [50, 90, 95, 99, 100]:
+                logger.info(f"q-error {i}% percentile is {np.percentile(q_error_lst, i)}")
+        
+        # Report averages if available
+        if rel_err_lst:
+            avg_rel_err = np.nanmean(rel_err_lst)
+            logger.info(f"Average Relative Error: {avg_rel_err:.3f}%")
+            
+        if result_jsonl_path and latencies:
+            avg_latency = np.mean(list(latencies.values()))
+            logger.info(f"Average Inference Latency (from log): {avg_latency:.3f} ms")
 # if __name__=="__main__":
     # dataset = "ssb-50gb" # "flights"
     # system = "macos" # "linux" # or "macos"
@@ -1054,15 +1243,15 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     #     if system == "linux":
     #         table_csv_path = "~/ssb-dbgen" + '/{}.csv'
     #     elif system == "macos":
-    #         table_csv_path = "~/Desktop/data/ssb/sf5" + '/{}.csv'
+    #         table_csv_path = "/Users/jw/Desktop/data/ssb/sf5" + '/{}.csv'
     #     else:
     #         raise Exception("Don't support other systems now")
     #     schema = gen_5gb_ssb_schema(table_csv_path)
     # elif dataset == "ssb-50gb":
     #     if system == "linux":
-    #         table_csv_path = "~/Desktop/data/ssb/sf50" + '/{}.csv'
+    #         table_csv_path = "/home/jw/Desktop/data/ssb/sf50" + '/{}.csv'
     #     elif system == "macos":
-    #         table_csv_path = "~/Desktop/data/ssb/sf50" + '/{}.csv'
+    #         table_csv_path = "/Users/jw/Desktop/data/ssb/sf50" + '/{}.csv'
     #     else:
     #         raise Exception("Don't support other systems now")
     #     schema = gen_50gb_ssb_schema(table_csv_path)
@@ -1071,29 +1260,29 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     # # # # # SSB
     # dataset = "ssb-1gb"
     # model_path = "Benchmarks/ssb/single_sf1/not_sampled"
-    # table_csv_path = "~/Desktop/data/ssb/sf1-postgres" + '/{}.csv'
+    # table_csv_path = "/Users/jw/Desktop/data/ssb/sf1-postgres" + '/{}.csv'
     # schema = gen_1gb_ssb_schema(table_csv_path)
     # infer_algo = "exact-jit"
     
     # dataset = "ssb-5gb"
     # bin_size = 1000
     # model_path = f"Benchmarks/ssb/single_sf5/not_sampled/bin{bin_size}"
-    # table_csv_path = "~/Desktop/data/ssb/sf5-postgres" + '/{}.csv'
+    # table_csv_path = "/home/jw/Desktop/data/ssb/sf5-postgres" + '/{}.csv'
     # schema = gen_5gb_ssb_schema(table_csv_path)
     # # infer_algo = "exact-jit"
     
-    # dest_path = f"~/Desktop/bayestensor/progs/aqp/ssb/cpds/{dataset}/bin{bin_size}/sparse"
+    # dest_path = f"/home/jw/Desktop/bayestensor/progs/aqp/ssb/cpds/{dataset}/bin{bin_size}/sparse"
     # # # # if not os.path.exists(dest_path):
     # # # #     os.makedirs(dest_path)
     # # # # model_path = f"./Benchmarks/ssb/single_sf1/not_sampled"
     # # # schema = gen_5gb_ssb_schema(table_csv_path)
     # # # # ssb_to_npy(schema, model_path, dest_path, bin_size=bin_size)
-    # # # codegen_path = f"~/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/bin{bin_size}"
-    # # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/bin1000/paper_example" #"~/Desktop/bayestensor/sigmod26demo/compilation_pipeline/ssb-5gb/btl/exec"
-    # # # # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/micro/training"
+    # # # codegen_path = f"/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/bin{bin_size}"
+    # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/bin1000/paper_example" #"/Users/jw/Desktop/bayestensor/sigmod26demo/compilation_pipeline/ssb-5gb/btl/exec"
+    # # # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_not_sampled/sf5/micro/training"
     # # query_path = "Benchmarks/ssb-5gb/vldb27_queries.sql"#"Benchmarks/ssb-5gb/sigmod26demo.sql" # 
     # query_path = "Benchmarks/ssb-5gb/aqp_queries.sql"
-    # # # # query_path = "~/Desktop/bayes-aqp/Benchmarks/ssb-5gb/ablation_study_sigmod/training/queries.sql"
+    # # # # query_path = "/Users/jw/Desktop/bayes-aqp/Benchmarks/ssb-5gb/ablation_study_sigmod/training/queries.sql"
     # # # query_path = "Benchmarks/ssb-5gb/aqp_queries.sql"
     # # generateBTLcode(codegen_path, dataset, schema, model_path, query_path, bin_size=bin_size)# cpd_path, relation_path, dataset, schema, model_path, query_path, infer_algo)
     # ssb_to_npy_sparse(schema, model_path, dest_path, bin_size=bin_size) 
@@ -1106,38 +1295,38 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     # model_path = f"Benchmarks/ssb/single_sf50/sampled/bin{bin_size}"
 
     # # # # numOfGB ablation study
-    # # codegen_path = "~/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/codegen"
-    # # query_path = "~/Desktop/bayestensor/progs/plots/ssb/numOfGB/queries.sql"
+    # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/plots/ssb/numOfGB/sf50/codegen"
+    # # query_path = "/Users/jw/Desktop/bayestensor/progs/plots/ssb/numOfGB/queries.sql"
 
     # # # # opt_phases ablation study
-    # # codegen_path = "~/Desktop/bayestensor/progs/plots/ssb/opt_phases/sf50/codegen/join/"
-    # # query_path = "~/Desktop/bayestensor/progs/plots/ssb/opt_phases/sf50/join/queries.sql"
+    # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/plots/ssb/opt_phases/sf50/codegen/join/"
+    # # query_path = "/Users/jw/Desktop/bayestensor/progs/plots/ssb/opt_phases/sf50/join/queries.sql"
 
     # # # # UniqValGB ablation study
     # for param in range(1, 9):
     #     # model_path = f"Benchmarks/ssb/single_sf50/sampled/ablation_study/uniqValGB/bin{bin_size}/{param}k"
-    #     codegen_path = f"~/Desktop/bayestensor/progs/plots/ssb/uniqValGB/sf50/codegen/{param}k/ori"
-    #     query_path = "~/Desktop/bayestensor/progs/plots/ssb/uniqValGB/queries.sql"
+    #     codegen_path = f"/Users/jw/Desktop/bayestensor/progs/plots/ssb/uniqValGB/sf50/codegen/{param}k/ori"
+    #     query_path = "/Users/jw/Desktop/bayestensor/progs/plots/ssb/uniqValGB/queries.sql"
     #     generateBTLcode(codegen_path, dataset, schema, model_path, query_path, bin_size=bin_size)# cpd_path, relation_path, dataset, schema, model_path, query_path, infer_algo)
 
     # # #aqp queries
-    # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_sampled/sf50/bin1000/" #"~/Desktop/bayestensor/sigmod26demo/compilation_pipeline/ssb-5gb/btl/exec"
+    # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/aqp_sampled/sf50/bin1000/" #"/Users/jw/Desktop/bayestensor/sigmod26demo/compilation_pipeline/ssb-5gb/btl/exec"
     # query_path = "Benchmarks/ssb-5gb/aqp_queries.sql"#"Benchmarks/ssb-5gb/sigmod26demo.sql" # "Benchmarks/ssb-5gb/aqp_queries.sql"
     # generateBTLcode(codegen_path, dataset, schema, model_path, query_path, bin_size=bin_size)# cpd_path, relation_path, dataset, schema, model_path, query_path, infer_algo)
     # dest_path = f"~/Desktop/bayestensor/progs/aqp/ssb/cpds/sf50/bin{bin_size}"
     # param = 8
-    # dest_path = f"~/Desktop/bayestensor/progs/plots/ssb/uniqValGB/sf50/cpds/{param}k/bin{bin_size}" # bin1000
+    # dest_path = f"/Users/jw/Desktop/bayestensor/progs/plots/ssb/uniqValGB/sf50/cpds/{param}k/bin{bin_size}" # bin1000
     # # # ssb_to_npy(schema, model_path, dest_path, bin_size=bin_size) # for dense cpds
     # ssb_to_npy_sparse(schema, model_path, dest_path, bin_size=bin_size, param=param) # store dense and sparse cpds separately
     
     
     # # # # manually do reverse mapping for group by queries
-    # # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/avg_gb" #"codegen/flights/btl" 
+    # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/avg_gb" #"codegen/flights/btl" 
     # # query_path = f"Benchmarks/ssb-5gb/avg_gb/avg_gb_reduced.sql" # "Benchmarks/ssb-5gb/test.sql"
     # # ground_truth_path = f"Benchmarks/ssb-5gb/avg_gb/avg_gb_reduced_5GB.pkl"
     # # from scala_avg_gb_reduced_results import *
     
-    # # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/sum_gb"
+    # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/sum_gb"
     # # query_path = f"Benchmarks/ssb-5gb/aqp_queries.sql" # f"Benchmarks/ssb-5gb/sum_gb/sum_gb_reduced.sql"
     # # ground_truth_path = f"Benchmarks/ssb-5gb/ground_truth_5GB.pkl" # f"Benchmarks/ssb-5gb/sum_gb/sum_gb_reduced_5GB.pkl"
     # # from scala_sum_gb_reduced_results import *
@@ -1151,7 +1340,7 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     # # from scala_ssb5gb_not_sampled_aqp_results import *
     # from scala_ssb5gb_sigmod_not_sampled_aqp_results import *
     # # # query_path = f"Benchmarks/ssb-5gb/aqp_queries.sql"
-    # # # codegen_path = "~/Desktop/bayestensor/progs/aqp/ssb/codegen/sum_gb/not_sampled"
+    # # # codegen_path = "/Users/jw/Desktop/bayestensor/progs/aqp/ssb/codegen/sum_gb/not_sampled"
     # # # generateBTLcode(codegen_path, dataset, schema, model_path, query_path)
 
     # # # # # # queries = [q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11]
@@ -1167,10 +1356,10 @@ def write_results_to_file(dataset, ground_truth_path, query_path, dest_path):
     # # # # print(f"q{query_no}: {q11.tolist()}\n")
     # # reverse_mapping(aqp_res, schema, query_path, ground_truth_path, query_no, dataset, model_path, opt_groupby_order)
     
-    # # flights_cpds = dict(np.load('~/Desktop/bayestensor/progs/aqp/flights/cpds.npz', allow_pickle=True)) # FIXME: only for flights.
+    # # flights_cpds = dict(np.load('/Users/jw/Desktop/bayestensor/progs/aqp/flights/cpds.npz', allow_pickle=True)) # FIXME: only for flights.
     # # globals().update(flights_cpds)
 
-    # # # ssb_cpds = dict(np.load('~/Desktop/bayestensor/progs/aqp/ssb/cpds.npz', allow_pickle=True))
+    # # # ssb_cpds = dict(np.load('/Users/jw/Desktop/bayestensor/progs/aqp/ssb/cpds.npz', allow_pickle=True))
     # # # globals().update(ssb_cpds)
     # # # import opt_einsum
     # # # print(f"np.array(q3_rev_auto): {np.array(q3_rev_auto).shape}")

@@ -15,24 +15,18 @@ import utils._
 object RewriteRules extends (SetarProg => SetarProg) {
   def apply(e: SetarProg): SetarProg = {
     // // // Inlining must be applied after OptimiseNorm, otherwise losing info for OptimiseNorm (i.e., need the rule's head of SetarNorm)
-    // // // println(s"SetarProg:\n${SetarCodeGenerator.codegen(e)}\n")
     val newRules = time(optimiseNorm(e.rules), "TransferNormToDiv")
-    // // // println(s"SetarProg:\n${SetarCodeGenerator.codegen(SetarProg(newRules,e.ret))}\n")
     val optNormProg = time(SetarProg(newRules, e.ret), "formSetarProg")
-    // println(s"SetarDivProg:\n${SetarCodeGenerator.codegen(optNormProg)}\n")
-    // val inlinedProg = time(Inline(optNormProg), "Inlining")
     val inlinedProg = time(Inline(optNormProg), "Inlining")
-    // println(s"inlinedProg:\n${SetarCodeGenerator.codegen(inlinedProg)}\n")
     val newRules2 = time(eliminateNorm(inlinedProg.rules), "EliminateNorm")
-    // // // // println(s"eliminateNormProg:\n${SetarCodeGenerator.codegen(SetarProg(newRules2, e.ret))}\n")
     val newRules3 = time(newRules2.map(r => mergeDivNumerator(r)), "MergeDivNumerator")
     val newRules4 = time(rewriteOnes(newRules3).filter(r => !r.body.isEmpty), "RewriteOnes")
-    // // // println(s"removeOnesProg:\n${SetarCodeGenerator.codegen(SetarProg(newRules4, e.ret))}\n")
     val finalRules = time(deadCodeElimination(newRules4), "DeadCodeElimination")
-    // // println(s"deadCodeEliminationProg:\n${SetarCodeGenerator.codegen(SetarProg(finalRules, e.ret))}\n")
-    // // SetarProg(optNormProg.rules, e.ret)
-    SetarProg(finalRules, e.ret)
-    // inlinedProg
+    if (finalRules.isEmpty) {
+        e
+    } else {
+        SetarProg(finalRules, e.ret)
+    }
   }
   def collectIdcs(sexp: SetarExp): mutable.Set[SetarIndex] = {
     val uniqueIdcs = mutable.Set[SetarIndex]()

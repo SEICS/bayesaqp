@@ -92,14 +92,17 @@ For faster startup, you can compile a native image:
     ```
 
 #### Step 4: Evaluation
-Evaluate the AQP results against the ground truth (Currently, results needs to be manually rename with query No. and organised under the server/res/dataset folder, see Training/scala_flights_1B_results.py).
+Evaluate the AQP results against the ground truth:
 ```bash
 python run_experiments.py \
+    --run_aqp \
     --evaluate_aqp_results \
     --dataset flights \
     --ground_truth_path Benchmarks/flights/ground_truth_1B.pkl \
     --query_path Benchmarks/flights/sql/aqp_queries.sql \
-    --evaluation_results_path Benchmarks/flights/flights_model_based_aqp.csv
+    --evaluation_results_path Benchmarks/flights/flights_model_based_aqp.csv \
+    --backend torch \
+    --codegen_path progs/aqp/flights/codegen/test
 ```
 
 ---
@@ -136,11 +139,14 @@ Follow the same **Execution** steps as Flights 1B (start `tensor_server.py` in o
 #### Step 4: Evaluation
 ```bash
 python run_experiments.py \
+    --run_aqp \
     --evaluate_aqp_results \
     --dataset ssb50 \
     --ground_truth_path Benchmarks/ssb/sf50/ground_truth_50GB.pkl \
     --query_path Benchmarks/ssb/sql/aqp_queries.sql \
-    --evaluation_results_path Benchmarks/ssb/ssb50_model_based_aqp.csv
+    --evaluation_results_path Benchmarks/ssb/ssb50_model_based_aqp.csv \
+    --codegen_path progs/aqp/ssb/codegen/test \
+    --backend torch
 ```
 
 ## Directory Overview

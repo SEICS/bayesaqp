@@ -15,7 +15,7 @@ using Bayesian Networks and integrates join histograms for efficient multi-table
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository_url>
+    git clone git@github.com:SEICS/bayesaqp.git
     cd bayesaqp
     ```
 

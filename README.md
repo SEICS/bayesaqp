@@ -160,6 +160,6 @@ author = {Pan, Jingwen and Cheney, James and Shaikhha, Amir},
 title = {A Backend-Agnostic Compiler for Approximate Query Processing with Probabilistic Tensor Algebra},
 year = {2026},
 url = {https://doi.org/10.1145/3802003},
-doi = {10.1145/3802003},
-journal = {Proc. ACM Manag. Data},
+journal = {Proc. ACM Manag. Data}
+}
 ```

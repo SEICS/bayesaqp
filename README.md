@@ -105,6 +105,9 @@ python run_experiments.py \
 
 ### 2. Star Schema Benchmark (SSB) 50GB
 
+#### Data Generation
+Generate the dataset following the steps from [DeepDB Public](https://github.com/DataManagementLab/deepdb-public).
+
 #### Step 1: Training
 ```bash
 python run_experiments.py \

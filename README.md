@@ -3,7 +3,7 @@
 This repository contains a snapshot of Approximate Query Processing (AQP) experiments using **BayesAQP**. It allows for training per-table statistics
 using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
 
-> **Note**: This is a research snapshot and currently supports our main experimental setups (Flights 1B, SSB 50GB). Full reproducibility for automating all arbitrary workloads is a work in progress. Also, all BayesTensor mentioned or implemented in this repository refers to the extension on original BTL, that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions.
+> **Note**: This is a research snapshot and currently supports our main experimental setups (Flights 1B, SSB 50GB). Full reproducibility for automating all arbitrary workloads is a work in progress. Also, all BayesTensor mentioned or implemented in this repository refers to the extension on original BTL, that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase.
 
 ## Prerequisites
 
@@ -162,5 +162,13 @@ title = {A Backend-Agnostic Compiler for Approximate Query Processing with Proba
 year = {2026},
 url = {https://doi.org/10.1145/3802003},
 journal = {Proc. ACM Manag. Data}
+}
+
+@inproceedings{10.1145/3578360.3580258,
+author = {Pan, Jingwen and Shaikhha, Amir},
+title = {Compiling Discrete Probabilistic Programs for Vectorized Exact Inference},
+year = {2023},
+url = {https://doi.org/10.1145/3578360.3580258},
+booktitle = {Proceedings of the 32nd ACM SIGPLAN International Conference on Compiler Construction}
 }
 ```

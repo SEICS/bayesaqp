@@ -59,15 +59,16 @@ python run_experiments.py \
 ```
 
 #### Step 3: Execution
-You need two terminals for this step. Note that before loading the server, you need to train the model for SSB as well. Otherwise, you might want to manually comment out the lines of code loading the SSB data in file server/tensor_server.py.
+You need two terminals for this step: one for compilation and optimization, and one for fast execution. Note that before loading the server, you need to train the model for SSB as well. Otherwise, you might want to manually comment out the lines of code loading the SSB data in file server/tensor_server.py.
 
 **Terminal 1: Start the Python Tensor Server**
-This server handles the heavy tensor operations (default: NumPy-CPU).
+This server handles the heavy tensor operations (default: NumPy CPU).
 ```bash
-# Default (NumPy CPU)
 python server/tensor_server.py
+```
 
-# Optional: PyTorch/GPU (currently only on MacOS)
+For optimized performance: PyTorch GPU (currently only on MacOS)
+```bash
 # python server/tensor_server.py --backend torch
 ```
 
@@ -77,7 +78,7 @@ Invoke `sbt` to run the generated BTL++ program. By default (NumPy CPU),
 sbt "run progs/aqp/flights/codegen/test/flights_q0 bt"
 ```
 
-For faster performance: PyTorch-GPU (currently, the GPU configuration is only for MacOS)
+For optimized performance: PyTorch-GPU (currently, the GPU configuration is only for MacOS)
 ```bash
 # sbt "run progs/aqp/flights/codegen/test/flights_q0 bt torch"
 ```

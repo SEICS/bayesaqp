@@ -3,7 +3,7 @@
 
 **BayesAQP** supports efficient Approximate Query Processing (AQP) with a compilation pipeline by combining probabilistic programming and advanced tensor processing. It allows for training per-table statistics using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
 
-> **Note**: All BayesTensor mentioned or implemented in this repository refers to the extension on original BTL (cc'23 paper mentioned below), that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase. All experiments are evaluated with 4 warm-ups and performance is averaged over 5 runs.
+> **Note**: All BayesTensor mentioned or implemented in this repository refers to the extension on original BTL (cc'23 paper mentioned below), that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its [codebase](https://github.com/SEICS/bayestensor). All experiments are evaluated with 4 warm-ups and performance is averaged over 5 runs.
 
 ## Hardwares 
 - **MacBook Pro M4 (silicon)**

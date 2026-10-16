@@ -100,6 +100,7 @@ python run_experiments.py \
 
 
 **Optional: If you want to run specific BTL++ Program**
+
 Invoke `sbt` to run the generated BTL++ program. By default (NumPy CPU),
 ```bash
 sbt "run progs/aqp/flights/codegen/test/flights_q0 bt"

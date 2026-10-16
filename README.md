@@ -79,7 +79,12 @@ python server/tensor_server.py --backend torch
 
 
 **Terminal 2: Evaluate and collect results**
-Evaluate the AQP results against the ground truth:
+Ahead-of-time compilation (needed for evaluation):
+```bash
+sbt bayestensor/nativeImage
+```
+
+Then, evaluate the AQP results against the ground truth:
 ```bash
 python run_experiments.py \
     --run_aqp \

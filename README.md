@@ -5,8 +5,12 @@
 
 > **Note**: All BayesTensor mentioned or implemented in this repository refers to the extension on original BTL (cc'23 paper mentioned below), that is BTL++. All experiments are conducted on MacBook Pro M4 (silicon). Running our system on other OS platforms might need adaptions. This work is built based on the CC'23 paper "Compiling Discrete Probabilistic Programs for Vectorized Exact Inference" and its codebase. All experiments are evaluated with 4 warm-ups and performance is averaged over 5 runs.
 
-## Prerequisites
+## Hardwares 
+- **MacBook Pro M4 (silicon)**
+- **1TB SSD**
+- **48GB RAM** for running experiments, but generating data from source such as Flights 1B dataset requires RAM>80GB.
 
+## Prerequisites
 - **Python 3.12** (managed via Conda)
 - **Scala 2.12** & **sbt** (for running the compiler/driver)
 - **GraalVM** (optional, for native image compilation)
@@ -114,6 +118,7 @@ For faster startup, you can compile a native image:
 
 #### Data Generation
 Generate the dataset following the steps from [DeepDB Public](https://github.com/DataManagementLab/deepdb-public).
+You can find the data source needed here: [https://github.com/greenlion/ssb-dbgen](https://github.com/greenlion/ssb-dbgen).
 
 #### Step 1: Training
 ```bash

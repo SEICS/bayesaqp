@@ -1,4 +1,5 @@
-# BayesAQP: A Backend-Agnostic Compiler for Approximate Query Processing with Probabilistic Tensor Algebra
+# BayesAQP: A Backend-Agnostic Compiler for Approximate Query Processing with Probabilistic Tensor Algebra 
+[![DOI](https://zenodo.org/badge/1117420820.svg)](https://doi.org/10.5281/zenodo.23406664)
 
 **BayesAQP** supports efficient Approximate Query Processing (AQP) with a compilation pipeline by combining probabilistic programming and advanced tensor processing. It allows for training per-table statistics using Bayesian Networks and integrates join histograms for efficient multi-table queries, compiling SQL queries into an extension of BayesTensor Language (BTL++) programs, and optimizing them further into tensor contractions for execution on tensor processing frameworks across CPUs and GPUs.
 

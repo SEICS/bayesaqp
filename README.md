@@ -79,6 +79,7 @@ python server/tensor_server.py --backend torch
 
 
 **Terminal 2: Evaluate and collect results**
+
 Ahead-of-time compilation (needed for evaluation):
 ```bash
 sbt bayestensor/nativeImage

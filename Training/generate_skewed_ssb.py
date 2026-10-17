@@ -9,20 +9,15 @@ from Schemas.ssb.schema import gen_5gb_ssb_schema
 def generate_bounded_zipfian(n, alpha, size):
     """
     Generates 'size' samples from a bounded Zipfian distribution on [1, n].
-    P(k) \propto 1/k^alpha
+    P(k) is proportional to 1/k^alpha
     """
     if alpha == 0:
         return np.random.randint(1, n + 1, size)
-    
-    # Use scipy.stats.zipfian if available, otherwise fallback to custom implementation
+        
     try:
         from scipy.stats import zipfian
-        # zipfian in scipy.stats takes (a, n) where a is the exponent and n is the max value
-        # It generates values in [1, n]
         return zipfian.rvs(alpha, n, size=size)
     except ImportError:
-        # Fallback implementation
-        # Calculate probabilities for 1 to n
         k = np.arange(1, n + 1)
         weights = 1.0 / (k ** alpha)
         probs = weights / np.sum(weights)
@@ -41,26 +36,17 @@ def generate_skewed_ssb(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0, 1.5
     print(f"Source: {src_path}")
     print(f"Destination Base: {dst_base_path}")
     
-    # Get schema info for table sizes (dummy path as we just want metadata)
+    # Get schema info for table sizes
     try:
         schema = gen_5gb_ssb_schema(os.path.join(src_path, '{}.csv'))
-        
         sizes = {}
         for table in schema.tables:
             sizes[table.table_name] = table.table_size
-            
+    
         n_cust = sizes.get('customer', 150000)
         n_part = sizes.get('part', 600000)
         n_supp = sizes.get('supplier', 10000)
-        
         print(f"Reference Table Sizes: Customer={n_cust}, Part={n_part}, Supplier={n_supp}")
-    
-    # Pre-load date keys once if possible to avoid reloading per chunk/skew loop if memory allows, 
-    # but here we load it inside the loop to be safe with available variables.
-    # Actually, let's load it here to be efficient across skews if we want, 
-    # but the loop structure makes it easier to just init inside or pass it.
-    # For simplicity, we initialize the variable outside the chunk loop.
-        
     except Exception as e:
         print(f"Error getting schema info: {e}. Using default SF5 sizes.")
         n_cust = 150000
@@ -72,7 +58,6 @@ def generate_skewed_ssb(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0, 1.5
         dst_dir = os.path.join(dst_base_path, f"skew_{skew}")
         os.makedirs(dst_dir, exist_ok=True)
         
-        # Copy dimension tables
         dims = ['customer.csv', 'part.csv', 'supplier.csv', 'date.csv']
         for dim in dims:
             src = os.path.join(src_path, dim)
@@ -86,7 +71,7 @@ def generate_skewed_ssb(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0, 1.5
             else:
                 print(f"Warning: {src} not found!")
 
-        # Process lineorder
+        # lineorder
         lo_src = os.path.join(src_path, 'lineorder.csv')
         lo_dst = os.path.join(dst_dir, 'lineorder.csv')
         
@@ -103,8 +88,7 @@ def generate_skewed_ssb(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0, 1.5
         first = True
         date_keys = None # Cache for date keys
         
-        # We assume headers exist. If not, this might fail or treat first row as header.
-        # Given project context, CSVs likely have headers.
+        # We assume headers exist
         try:
             reader = pd.read_csv(lo_src, chunksize=chunksize)
             
@@ -120,31 +104,11 @@ def generate_skewed_ssb(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0, 1.5
                     
                 if 'lo_suppkey' in chunk.columns:
                     chunk['lo_suppkey'] = generate_bounded_zipfian(n_supp, skew, n_rows)
-                    
-                # The dwdate table has primary key d_datekey, which is an integer like 19930101
-                # However, the table itself is small (2556 rows for 7 years of data)
-                # The lineorder.lo_orderdate is the FK to dwdate.d_datekey.
-                # In SSB, d_datekey spans roughly 19920101 to 19981230.
-                # But it's not a contiguous range of integers like 1..N.
-                # Instead, we should check min/max or specific values if we want perfect FK integrity.
-                # For SSB, lo_orderdate is usually an integer representation of a date.
-                # 
-                # If we want to skew this, we need valid d_datekey values.
-                # Let's assume we can query them or just sample from the existing distribution if we want.
-                # But to apply ZIPF skew, we need to map 1..N to the actual keys.
-                #
-                # A simple approach if we don't have the key list is to assume standard SSB date ranges.
-                # But safer is to just read the unique keys from the date table if possible.
-                # Since we copied date.csv, we can read it once.
                 
                 if 'lo_orderdate' in chunk.columns:
                     if date_keys is None:
-                        # Load date keys on first chunk encounter
                         try:
                             date_df = pd.read_csv(os.path.join(src_path, 'date.csv'))
-                            # Adjust column name based on schema/CSV content. Usually d_datekey.
-                            # Standard SSB date.tbl often has keys like 19920102.
-                            # We'll try to find the key column.
                             possible_keys = ['d_datekey', 'D_DATEKEY', 'datekey']
                             key_col = next((k for k in possible_keys if k in date_df.columns), None)
                             if key_col:
@@ -279,7 +243,6 @@ def generate_skewed_ssb_partname_only(
     print("\nData generation complete.")
 
 if __name__ == "__main__":
-    # Example usage for the user's requested paths.
     src = os.path.expanduser("~/Desktop/data/ssb/sf50")
     dst = os.path.expanduser("~/Desktop/data/ssb/sf50-skew")
     generate_skewed_ssb_partname_only(src, dst)

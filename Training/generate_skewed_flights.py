@@ -6,8 +6,8 @@ from tqdm import tqdm
 
 def generate_bounded_zipfian(n, alpha, size):
     """
-    Generates 'size' samples from a bounded Zipfian distribution on [1, n].
-    P(k) \propto 1/k^alpha
+    Generates samples from a bounded Zipfian distribution on [1, n].
+    P(k) is proportional to 1/k^alpha
     """
     if alpha == 0:
         return np.random.randint(1, n + 1, size)
@@ -42,26 +42,22 @@ def generate_skewed_flights(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0,
     """
     Generates skewed variants of the Flights dataset.
     
-    Note on 'mode':
-    - Flights is a single denormalized table, so strictly speaking there are no joins.
+    Note 1 on 'mode', for specific use:
+    - Flights is a single-table, so it has no joins.
     - 'join_key' mode: Skews 'origin', 'dest', and 'unique_carrier'. 
-      These act as 'implicit foreign keys' to Airport/Carrier dimensions in a star schema view.
-    - 'group_by' mode: Skews 'year_date'. 
-      This represents a temporal dimension often used for grouping/filtering.
+    - 'group_by' mode: Skews 'year_date'. (TODO: mode name could be improved.)
+
+    Note 2: For 'group_by' mode in Flights, if we treat origin/dest as Keys, 
+    then 'year_date' is the primary non-key grouper.
     """
     print(f"Generating skewed Flights datasets.")
     print(f"Source: {src_path}")
     print(f"Destination Base: {dst_base_path}")
     print(f"Mode: {mode}")
-
-    # Flights is usually a single file
-    # We expect 'dataset_sampled.csv' or 'flights.csv'
-    # schema.py says 'dataset_sampled'
     
     filename = 'dataset_sampled.csv'
     src_file = os.path.join(src_path, filename)
     if not os.path.exists(src_file):
-        # Fallback
         filename = 'flights.csv'
         src_file = os.path.join(src_path, filename)
         if not os.path.exists(src_file):
@@ -88,16 +84,15 @@ def generate_skewed_flights(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0,
     try:
         reader = pd.read_csv(src_file, usecols=lambda x: x in cols_to_scan, chunksize=chunksize)
         for chunk in tqdm(reader, desc="Scanning domains"):
-            # Origin
+            # origin
             if 'origin' in chunk.columns:
                 if 'origin_state_abr' in chunk.columns:
-                    # Drop dups in chunk
                     tmp = chunk[['origin', 'origin_state_abr']].drop_duplicates('origin')
                     for _, row in tmp.iterrows():
                         origin_map[row['origin']] = row['origin_state_abr']
                 unique_origins.update(chunk['origin'].dropna().unique())
             
-            # Dest
+            # dest
             if 'dest' in chunk.columns:
                 if 'dest_state_abr' in chunk.columns:
                     tmp = chunk[['dest', 'dest_state_abr']].drop_duplicates('dest')
@@ -105,11 +100,11 @@ def generate_skewed_flights(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0,
                         dest_map[row['dest']] = row['dest_state_abr']
                 unique_dests.update(chunk['dest'].dropna().unique())
                 
-            # Carrier
+            # carrier
             if 'unique_carrier' in chunk.columns:
                 unique_carriers.update(chunk['unique_carrier'].dropna().unique())
             
-            # Date
+            # date
             if 'year_date' in chunk.columns and mode == "group_by":
                 unique_dates.update(chunk['year_date'].dropna().unique())
                 
@@ -143,9 +138,7 @@ def generate_skewed_flights(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0,
             for chunk in tqdm(reader):
                 n_rows = len(chunk)
                 
-                if mode == "join_key":
-                    # Skew "Pseudo-Join Keys" (Dimensions): Origin, Dest, Carrier
-                    
+                if mode == "join_key": # Skew dimensions: origin, dest, carrier
                     # Origin
                     if 'origin' in chunk.columns:
                         indices = generate_bounded_zipfian(len(origins_list), skew, n_rows) - 1
@@ -185,7 +178,3 @@ def generate_skewed_flights(src_path, dst_base_path, skew_params=[0.0, 0.5, 1.0,
             print(f"Failed to process chunk: {e}")
 
     print("\nData generation complete.")
-
-# Note: For 'group_by' mode in Flights, if we treat Origin/Dest as Keys, 
-# then `year_date` is the primary non-key grouper.
-# I will update the scanning logic to include year_date if mode is group_by.

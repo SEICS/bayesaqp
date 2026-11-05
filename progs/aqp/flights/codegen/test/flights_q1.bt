@@ -14,8 +14,8 @@ let flights_dest_state_abr = loadDiscrete('flights_dest_state_abr_cpd', [flights
 let flights_unique_carrier_ = select flights_unique_carrier [15] in
 let flightsProb0 = query [flights_distance] [flights_unique_carrier_] [] [] in
 
-let distance_m = loadTensor('distance_m', [3000]) in
+let flights_distance_m = loadTensor('flights_distance_m', [3000]) in
 let flightsProb0Norm = normalize flightsProb0 [] in
-let exp_distance = expectation [] flightsProb0Norm distance_m [0] in
+let exp_distance = expectation [] flightsProb0Norm flights_distance_m [0] in
 
 exp_distance

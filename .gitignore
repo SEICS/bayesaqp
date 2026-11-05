@@ -41,6 +41,8 @@ progs/aqp/ssb/cpds/*
 progs/aqp/ssb/cpds/sf50/*.pkl
 progs/aqp/ssb/cpds/sf50/*.npz
 progs/aqp/ssb/cpds/sf50/bin1000_sparse.pkl
+progs/aqp/flights/cpds/*
+progs/aqp/flights/cpds/test/*.npz
 *.npz
 *.pkl
 

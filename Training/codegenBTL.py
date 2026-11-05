@@ -458,11 +458,16 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                 bn = bn_ensemble.bns[table]
                 binsMean_dict = bn.bins_intervals
                 for agg in aggTargets:
+                    # Server stores bin means as {table}_{attr}_m (e.g. lineorder_lo_revenue_m).
+                    mean_name = f"{table}_{agg}_m"
                     if agg in q_query.keys():
-                        line.append(f"let {agg}_m_ = loadTensor('{agg}_m', {list(binsMean_dict[agg].shape)}) in") # load binsMean of aggregated attributes
-                        line.append(f"let {agg}_m = filter {agg}_m_ {q_query[agg]} in")
+                        # line.append(f"let {agg}_m_ = loadTensor('{agg}_m', {list(binsMean_dict[agg].shape)}) in") # load binsMean of aggregated attributes
+                        # line.append(f"let {agg}_m = filter {agg}_m_ {q_query[agg]} in")
+                        line.append(f"let {mean_name}_ = loadTensor('{mean_name}', {list(binsMean_dict[agg].shape)}) in") # load binsMean of aggregated attributes
+                        line.append(f"let {mean_name} = filter {mean_name}_ {q_query[agg]} in")
                     else:
-                        line.append(f"let {agg}_m = loadTensor('{agg}_m', {list(binsMean_dict[agg].shape)}) in")
+                        # line.append(f"let {agg}_m = loadTensor('{agg}_m', {list(binsMean_dict[agg].shape)}) in")
+                        line.append(f"let {mean_name} = loadTensor('{mean_name}', {list(binsMean_dict[agg].shape)}) in")
                         
             if not nrow_flag:
                 if (aggOp == AggregationType.COUNT) or (aggOp == AggregationType.SUM):
@@ -528,8 +533,8 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                 m3_mat = dict()
                 probQuery2 = copy.deepcopy(probQuery)
                 del probQuery2[fact_table]
-                print(f"m3_tensors: {m3_tensors}")
-                print(f"pk_match: {pk_match}")
+                # print(f"m3_tensors: {m3_tensors}")
+                # print(f"pk_match: {pk_match}")
                 # print(f"bn_ensemble.idx_mat_m3: {bn_ensemble.idx_mat_m3}")
                 for (t, m3t) in m3_tensors.items():
                     pk_list = m3t if isinstance(m3t, (list, tuple)) else (list(m3t) if m3t else [])
@@ -631,7 +636,7 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                 exp_remain = ",".join(exp_remain)
                 if len(aggTargets) > 1: # Wrong: FIXME
                     for (j, (at1, at2)) in enumerate(zip(aggTargets[:-1], aggTargets[1:])):
-                        line += [f"let ms{j} = outer {at1}_m {at2}_m in"]
+                        line += [f"let ms{j} = outer {table}_{at1}_m {table}_{at2}_m in"]
                         if j == 0:
                             aggOutput[f"ms{j}"] = [at1, at2]
                         else:
@@ -640,7 +645,7 @@ def define_aggregation(parsed_query, bn_ensemble, pk_match, join=False):
                     line += [f"let exp{suffix} = expectation [{exp_remain}] {prob_name}Norm ms{j} {exp_dim} in"]
                 else:
                     exp_dim = [aggOutput[f"{prob_name}Norm"].index(f"{table}_{aggTargets[0]}")]
-                    line += [f"let exp{suffix} = expectation [{exp_remain}] {prob_name}Norm {aggTargets[0]}_m {exp_dim} in"]
+                    line += [f"let exp{suffix} = expectation [{exp_remain}] {prob_name}Norm {table}_{aggTargets[0]}_m {exp_dim} in"]
                         
                 if aggType == AggregationType.SUM:
                     line += [""]
@@ -792,7 +797,7 @@ def single_table_BN_to_npy(model_path, dest_path, bin_size):
     with open(model_path, "rb+") as f2:
         bn = pickle.load(f2)
 
-    bn_intervals = dict([(attr+"_m", bi) for (attr, bi) in bn.bins_intervals.items()])
+    bn_intervals = dict([(f"{bn.table_name}_{attr}_m", bi) for (attr, bi) in bn.bins_intervals.items()])
     cpds = dict()
     for c in bn.model.cpds:
         cpds[f"{bn.table_name}_{c.variables[0]}_cpd"] = c.values
@@ -831,7 +836,7 @@ def ssb_to_npy_dense(schema, model_path, dest_path, infer_algo="exact-jit", lear
             cpds = dict()
             for c in bn.model.cpds:
                 cpds[c.variables[0]] = c.values
-            bn_intervals = dict([(attr+"_m", bi) for (attr, bi) in bn.bins_intervals.items()])
+            bn_intervals = dict([(f"{bn.table_name}_{attr}_m", bi) for (attr, bi) in bn.bins_intervals.items()])
             mega_info.update(cpds)  
             mega_info.update(bn_intervals)
             bin2valname = dict([(f"{bn.table_name}_{attr}_b2v", b2v) for (attr, b2v) in bn.bin_to_valname.items()])
@@ -1083,7 +1088,7 @@ def ssb_to_npy_sparse(schema, model_path, dest_path_prefix, learning_algo="chow-
 
             # Bin intervals
             for attr, bins in bn.bins_intervals.items():
-                dense_dict[f"{attr}_m"] = bins # add table_name prefix to avoid conflict
+                dense_dict[f"{table_name}_{attr}_m"] = bins
 
             # Bin to valname
             for attr, b2v in bn.bin_to_valname.items():

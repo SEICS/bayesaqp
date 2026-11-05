@@ -238,22 +238,23 @@ if __name__ == "__main__":
 	# # print(f"finished updating ssb_cpds")
 	# # # print(f"ssb_cpds keys: {ssb_cpds['part_p_name_b2v']}")	
 
-	# # print(f"ssb_cpds keys: {ssb_cpds.keys()}")	
-	# for AQP on imdb
-	imdb_cpds = load_tensors("progs/aqp/imdb/cpds/bin1000_dense.npz", "progs/aqp/imdb/cpds/bin1000_sparse.pkl") # for testing progs/update_join/sql/alltests.sql
-	# for chain join testing on imdb origin
-	# imdb_cpds = load_tensors("progs/update_join/imdb-origin/cpds/bin1000_dense.npz", "progs/update_join/imdb-origin/cpds/bin1000_sparse.pkl")
-	# for chain join testing on imdb zero, ci has zero correlation with any other table except t
-	# imdb_cpds = load_tensors("progs/update_join/imdb-zero/cpds/bin1000_dense.npz", "progs/update_join/imdb-zero/cpds/bin1000_sparse.pkl")
+	# # # print(f"ssb_cpds keys: {ssb_cpds.keys()}")	
+	# # for AQP on imdb
+	# imdb_cpds = load_tensors("progs/aqp/imdb/cpds/bin1000_dense.npz", "progs/aqp/imdb/cpds/bin1000_sparse.pkl") # for testing progs/update_join/sql/alltests.sql
+	# # for chain join testing on imdb origin
+	# # imdb_cpds = load_tensors("progs/update_join/imdb-origin/cpds/bin1000_dense.npz", "progs/update_join/imdb-origin/cpds/bin1000_sparse.pkl")
+	# # for chain join testing on imdb zero, ci has zero correlation with any other table except t
+	# # imdb_cpds = load_tensors("progs/update_join/imdb-zero/cpds/bin1000_dense.npz", "progs/update_join/imdb-zero/cpds/bin1000_sparse.pkl")
 
-	for (k, v) in imdb_cpds.items():
-		print(f"k: {k}, v: {v.shape}")
-	# print(f"synthetic_cpds keys: {synthetic_cpds.keys()}")
+	# for (k, v) in imdb_cpds.items():
+	# 	print(f"k: {k}, v: {v.shape}")
+	# # print(f"synthetic_cpds keys: {synthetic_cpds.keys()}")
 	print(f"Finished loading the cpds.")
 
 	if args.backend == 'torch':
 		# Combine dictionaries first
-		combined_cpds = {**flights_cpds, **ssb_cpds, **imdb_cpds}
+		# combined_cpds = {**flights_cpds, **ssb_cpds, **imdb_cpds}
+		combined_cpds = {**flights_cpds, **ssb_cpds}
 		# combined_cpds = {**imdb_cpds}#, **synthetic_cpds}
 		for (k, v) in combined_cpds.items():
 			if v is None:
@@ -270,7 +271,7 @@ if __name__ == "__main__":
 	else: # by default, execute in numpy
 		globals().update(flights_cpds)
 		globals().update(ssb_cpds)
-		globals().update(imdb_cpds)
+		# globals().update(imdb_cpds)
 		# globals().update(synthetic_cpds)
 	while True:
 		connection, client_address = sock.accept()

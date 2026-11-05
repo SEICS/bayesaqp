@@ -15,9 +15,9 @@ let flights_year_date_ = select flights_year_date [2] in
 let flights_origin_ = select flights_origin [5] in
 let flightsProb0 = query [flights_dep_delay, flights_unique_carrier] [flights_year_date_, flights_origin_] [] [] in
 
-let dep_delay_m = loadTensor('dep_delay_m', [750]) in
+let flights_dep_delay_m = loadTensor('flights_dep_delay_m', [750]) in
 let flightsProb0Norm = normalize flightsProb0 [1] in
-let exp_dep_delay = expectation [flights_unique_carrier] flightsProb0Norm dep_delay_m [0] in
+let exp_dep_delay = expectation [flights_unique_carrier] flightsProb0Norm flights_dep_delay_m [0] in
 
 let flights_unique_carrier_b2v = loadDictionary('flights_unique_carrier_b2v', [26, 26]) in
 

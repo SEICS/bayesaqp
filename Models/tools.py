@@ -76,7 +76,7 @@ def discretize_series(series: pd.Series, n_mcv, n_bins, is_continuous=False, con
         
     # Remove trailing whitespace
     if s.dtype == 'object':
-        s = s.str.strip()
+        s = s.astype(str).str.strip()
     domains = list(s.unique())
     # Treat most common values
     value_counts = s.value_counts()
@@ -116,6 +116,6 @@ def discretize_series(series: pd.Series, n_mcv, n_bins, is_continuous=False, con
     del s
     
     if drop_na:
-        temp = temp.fillna(n_mcv+n_bins+1, inplace=True) # Replace np.nan with some integer that is not in valname_to_bin
+        temp.fillna(n_mcv+n_bins+1, inplace=True) # Replace np.nan with some integer that is not in valname_to_bin
 
     return temp, n_distinct, None, None, domains, valname_to_bin, bin_to_valname #, sorted(range(len(bin_to_valname))) #self.valname_to_bin[col], self.bin_to_valname[col]

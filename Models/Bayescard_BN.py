@@ -68,7 +68,7 @@ class Bayescard_BN(BN_Single):
                     res_n_distinct.append(n_distinct[i])
         return res_value, res_n_distinct
 
-    def build_from_data(self, df, dataset_name, attr_type=None, sample_size=1000000, n_mcv=30, n_bins=60, ignore_cols=['id'],
+    def build_from_data(self, df, dataset_name, attr_type=None, sample_size=1000000, n_mcv=30, n_bins=60, ignore_cols=[],
                         algorithm="chow-liu", drop_na=True, max_parents=-1, root=0, n_jobs=8, discretized=False, bn_count=0, model_path=None, spec=[]): 
         """ Build the Pomegranate model from data, including structure learning and paramter learning
             ::Param:: dataset: pandas.dataframe
@@ -398,7 +398,8 @@ class Bayescard_BN(BN_Single):
             else:
                 for var in map.keys():
                     if var in self.bn_idx_map:
-                        self.bn_idx_map[var] = dict(self.bn_idx_map.items()+map[var].items())  
+                        # self.bn_idx_map[var] = dict(self.bn_idx_map.items()+map[var].items())  
+                        self.bn_idx_map[var].update(map[var])
                     else:
                         self.bn_idx_map[var] = map[var]
             return None

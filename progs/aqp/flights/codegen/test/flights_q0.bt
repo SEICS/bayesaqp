@@ -14,8 +14,8 @@ let flights_dest_state_abr = loadDiscrete('flights_dest_state_abr_cpd', [flights
 let flights_origin_ = select flights_origin [0] in
 let flightsProb0 = query [flights_dep_delay] [flights_origin_] [] [] in
 
-let dep_delay_m = loadTensor('dep_delay_m', [750]) in
+let flights_dep_delay_m = loadTensor('flights_dep_delay_m', [750]) in
 let flightsProb0Norm = normalize flightsProb0 [] in
-let exp_dep_delay = expectation [] flightsProb0Norm dep_delay_m [0] in
+let exp_dep_delay = expectation [] flightsProb0Norm flights_dep_delay_m [0] in
 
 exp_dep_delay

@@ -29,7 +29,8 @@ class BN_ensemble():
     def __init__(self, schema_graph, bns=dict()):
         self.schema_graph = schema_graph
         self.bns = bns
-
+        self.primary_key_reduced_idx_mat = None
+        
     def add_BN(self, bn):
         self.bns[bn.table_name] = bn
 
@@ -40,3 +41,6 @@ class BN_ensemble():
         else:
             with open(path, 'wb') as f:
                 pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
+
+    def update_primary_key_reduced_idx_mat(self, primary_key_reduced_idx_mat):
+        self.primary_key_reduced_idx_mat = primary_key_reduced_idx_mat

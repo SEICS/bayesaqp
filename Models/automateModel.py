@@ -346,7 +346,7 @@ def generate_BayesCardBNmodel_cSharp(relation):
     return lib + "namespace learningdotnet\n{\n" + innerCode + "}\n"
 
 def write_file(relation):
-    save_path = "~/Projects/learningdotnet/learningdotnet"
+    save_path = "/Users/jw/Projects/learningdotnet/learningdotnet"
     file_name = "BayesCardModelAutomation.cs"
     data_name = "Census.csv"
     path = os.path.join(save_path,file_name)

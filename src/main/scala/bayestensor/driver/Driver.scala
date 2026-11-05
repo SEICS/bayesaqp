@@ -43,7 +43,7 @@ object Driver {
         BayesTensorNormalizer 
     }, "optimize btExpr")
     val exp = time(btExpr |> new TensorLowering(linear), "TensorLowering btExpr")
-    // println(s"exp: ${TensorCodeGenerator.codegen(exp)}")
+    println(s"texp: ${TensorCodeGenerator.codegen(exp)}")
     
     // // // // Inling
     val sexp = time(TensorToSetar(exp), "TensorToSetar")
@@ -51,7 +51,7 @@ object Driver {
     // // // // val sexp_inlined = Inline(sexp)
     // // // // println(s"sexp_inlined:\n${SetarCodeGenerator.codegen(sexp_inlined)}\n")
     val sexp_opt = time(RewriteRules(sexp), "RewriteRules(Total)")
-    // println(s"\nsexp_opt:\n${SetarCodeGenerator.codegen(sexp_opt)}\n")
+    println(s"\nsexp_opt:\n${SetarCodeGenerator.codegen(sexp_opt)}\n")
     val texp = time(SetarToTensor(sexp_opt), "SetarToTensor")
     // val texp = exp // mircobenchmark - opt_phases: baseline
     // println(s"\ntexp:\n${TensorCodeGenerator.codegen(texp)}\n")
@@ -150,7 +150,7 @@ object Driver {
     //   case _ => 
     //     compile(filePath, kind)
     // }, "compile")
-    // println(s"genCode: ${genCode}")
+    println(s"genCode: ${genCode}")
 
     // println(s"npcode: ${npCode} \nnpCode")
     // println(PythonProxy.runPythonCodeServer(npCode))
@@ -171,9 +171,6 @@ object Driver {
     // // // val pyTime = pyRes.split(",")(0).replace("(","").toDouble
     // // // println(s"pyRes: ${pyRes}")
     // // // println(s"pyTime: ${pyRes(0)} pyRes: ${pyRes(1)}")
-  }
-  def parseFlag(args: String): Boolean = {
-    if(args == "true") true else if(args == "false") false else raise(s"Illegal flag value: ${args}. Must be true or false.")
   }
   def main(args: Array[String]): Unit = {
 //     PythonProxy.runPythonCodeServer("LOAD 'server/load_sample.py'")
@@ -198,7 +195,7 @@ object Driver {
         // case "inline" => InputBaseline("inline")
         case _ => raise(s"Not acceptable second arg: ${args.mkString(",")}")
       }, "findKind")
-      time(e2e(file, kind, "numpy"), "e2e execution")
+      time(e2e(file, kind), "e2e execution")
     } else if (args.length == 3) { // other backends, e.g., torch
       val file = args(0)
       val kind = time(args(1) match {

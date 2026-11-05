@@ -14,10 +14,10 @@ let flights_dest_state_abr = loadDiscrete('flights_dest_state_abr_cpd', [flights
 let flights_dest_ = select flights_dest [101] in
 let flightsProb0 = query [flights_air_time, flights_origin_state_abr] [flights_dest_] [] [] in
 
-let air_time_m = loadTensor('air_time_m', [1858]) in
+let flights_air_time_m = loadTensor('flights_air_time_m', [1858]) in
 let nrows = 1000000000 in
 let flightsProb0Norm = normalize flightsProb0 [1] in
-let exp_air_time = expectation [flights_origin_state_abr] flightsProb0Norm air_time_m [0] in
+let exp_air_time = expectation [flights_origin_state_abr] flightsProb0Norm flights_air_time_m [0] in
 
 let flightsProb0_um = unitMat flightsProb0 in
 let flightsProb0_count = expectation [flights_origin_state_abr] flightsProb0 flightsProb0_um [0, 1] in

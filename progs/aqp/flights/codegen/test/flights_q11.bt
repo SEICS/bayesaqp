@@ -15,15 +15,15 @@ let flights_unique_carrier_ = select flights_unique_carrier [3] in
 let flights_origin_ = select flights_origin [0] in
 let flightsProb0 = query [flights_taxi_out, flights_dest_state_abr] [flights_unique_carrier_, flights_origin_] [] [] in
 
-let taxi_out_m = loadTensor('taxi_out_m', [428]) in
+let flights_taxi_out_m = loadTensor('flights_taxi_out_m', [428]) in
 let nrows = 1000000000 in
 let flights_unique_carrier_ = select flights_unique_carrier [3] in
 let flights_origin_ = select flights_origin [0] in
 let flightsProb1 = query [flights_taxi_in, flights_dest_state_abr] [flights_unique_carrier_, flights_origin_] [] [] in
 
-let taxi_in_m = loadTensor('taxi_in_m', [255]) in
+let flights_taxi_in_m = loadTensor('flights_taxi_in_m', [255]) in
 let flightsProb0Norm = normalize flightsProb0 [1] in
-let exp_taxi_out = expectation [flights_dest_state_abr] flightsProb0Norm taxi_out_m [0] in
+let exp_taxi_out = expectation [flights_dest_state_abr] flightsProb0Norm flights_taxi_out_m [0] in
 
 let flightsProb0_um = unitMat flightsProb0 in
 let flightsProb0_count = expectation [flights_dest_state_abr] flightsProb0 flightsProb0_um [0, 1] in
@@ -31,7 +31,7 @@ let count_taxi_out = nrows * flightsProb0_count in
 let sum_taxi_out = exp_taxi_out * count_taxi_out in
 
 let flightsProb1Norm = normalize flightsProb1 [1] in
-let exp_taxi_in = expectation [flights_dest_state_abr] flightsProb1Norm taxi_in_m [0] in
+let exp_taxi_in = expectation [flights_dest_state_abr] flightsProb1Norm flights_taxi_in_m [0] in
 
 let flightsProb1_um = unitMat flightsProb1 in
 let flightsProb1_count = expectation [flights_dest_state_abr] flightsProb1 flightsProb1_um [0, 1] in

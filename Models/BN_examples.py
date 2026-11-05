@@ -1,7 +1,7 @@
 import os, sys, clr
 import faulthandler; faulthandler.enable()
-# sys.path.append("~/Desktop/pythonnet")
-sys.path.append(os.path.join(os.path.dirname(__file__), r'~/Desktop/infer/test/Tests/bin/Release/net461'))
+# sys.path.append("/Users/jw/Desktop/pythonnet")
+sys.path.append(os.path.join(os.path.dirname(__file__), r'/Users/jw/Desktop/infer/test/Tests/bin/Release/net461'))
 clr.AddReference("Microsoft.ML.Probabilistic.Compiler")
 clr.AddReference("Microsoft.ML.Probabilistic")
 clr.AddReference("System")

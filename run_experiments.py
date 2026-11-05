@@ -100,9 +100,9 @@ if __name__=="__main__":
     elif args.dataset == "flights":
         schema = gen_flights_1B_schema(args.table_csv_path)
     elif args.dataset == "job-light": # imdb job-light benchmark
-        # schema = gen_job_light_imdb_schema(os.path.join(args.table_csv_path, '{}.csv'))
-        from Schemas.imdb.schema_toy import gen_job_light_imdb_schema_toy # for testing progs/update_join/sql/alltests.sql
-        schema = gen_job_light_imdb_schema_toy(os.path.join(args.table_csv_path, '{}.csv'))
+        schema = gen_job_light_imdb_schema(os.path.join(args.table_csv_path, '{}.csv'))
+        # from Schemas.imdb.schema_toy import gen_job_light_imdb_schema_toy # for testing progs/update_join/sql/alltests.sql
+        # schema = gen_job_light_imdb_schema_toy(os.path.join(args.table_csv_path, '{}.csv'))
     elif args.dataset == "synthetic":
         schema = gen_synthetic_schema(os.path.join(args.table_csv_path, '{}.csv'))
     else:

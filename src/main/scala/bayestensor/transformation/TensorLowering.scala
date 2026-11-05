@@ -136,9 +136,15 @@ class TensorLowering(val linear: Boolean) extends (Exp => TensorExp) {
                   // println(s"einsumOutputMap: ${einsumOutputMap}")
                   // println(s"einsumOutput: ${einsumOutput}")
                   var toSumOverDim = Seq[Int]()
+                  def argMatchesOutput(arg: Exp, outSym: Sym): Boolean = arg match {
+                    case s: Sym => outSym.name == s.name || outSym.name.endsWith("_" + s.name)
+                    case _ => false
+                  }
                   einsumOutputMap(e1Sym).zipWithIndex.map(
-                    x => args.map(a => einsumOutput(e1Sym).indexOf(a)).map(a2 =>
-                      if (x._2 == a2) {
+                    // x => args.map(a => einsumOutput(e1Sym).indexOf(a)).map(a2 =>
+                    //   if (x._2 == a2) {
+                    x => args.map(a => einsumOutput(e1Sym).indexWhere(argMatchesOutput(a, _))).map(a2 =>
+                      if (a2 >= 0 && x._2 == a2) {
                         toSumOverDim = toSumOverDim :+ x._2
                       }
                     )
